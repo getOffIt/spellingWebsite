@@ -81,7 +81,9 @@ export default function SpellingTest() {
             );
           })}
         </ul>
-        <button className="spelling-btn" onClick={() => window.location.reload()}>Try Again</button>
+        {incorrectWords.length === 0 && (
+          <button className="spelling-btn" onClick={() => window.location.reload()}>Try Again</button>
+        )}
         {incorrectWords.length > 0 && (
           <button className="spelling-btn" style={{marginLeft: 16}} onClick={() => setShowPractice(true)}>
             Practice Misspelled Words
