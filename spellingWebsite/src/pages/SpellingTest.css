@@ -102,10 +102,12 @@
 .spelling-results li {
   font-size: 1.5rem;
   margin: 18px 0;
-  padding: 18px 0;
+  padding: 18px 24px;
   border-radius: 18px;
   background: #fff;
   box-shadow: 0 1px 6px #60a5fa22;
+  width: 100%;
+  text-align: left;
 }
 .spelling-results .correct {
   color: #22c55e;
@@ -120,6 +122,7 @@
   font-size: 1.2rem;
   display: block;
   margin-top: 4px;
+  text-align: left;
 }
 
 @media (max-width: 900px) {
