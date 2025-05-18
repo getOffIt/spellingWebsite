@@ -1,0 +1,146 @@
+.spelling-container {
+  min-height: 100vh;
+  min-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  padding: 0;
+}
+
+.spelling-title {
+  color: #2563eb;
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+  text-shadow: 1px 2px 8px #fff6, 0 2px 0 #60a5fa;
+}
+
+.spelling-progress {
+  font-size: 1.2rem;
+  color: #2563eb;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.spelling-listen-btn {
+  background: #60a5fa;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 18px 36px;
+  font-size: 1.5rem;
+  margin: 18px 0 12px 0;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #60a5fa55;
+  transition: background 0.2s;
+  touch-action: manipulation;
+}
+.spelling-listen-btn:hover {
+  background: #2563eb;
+}
+
+.spelling-sentence {
+  color: #2563eb;
+  font-size: 1.2rem;
+  margin-bottom: 24px;
+  font-style: italic;
+}
+
+.spelling-input {
+  font-size: 2rem;
+  padding: 18px 24px;
+  border-radius: 18px;
+  border: 2px solid #60a5fa;
+  margin-bottom: 24px;
+  outline: none;
+  width: 90vw;
+  max-width: 500px;
+  text-align: center;
+  background: #fff;
+  color: #2563eb;
+  font-family: inherit;
+  box-shadow: 0 1px 6px #60a5fa33;
+  touch-action: manipulation;
+}
+
+.spelling-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 18px 40px;
+  font-size: 1.7rem;
+  margin-top: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 8px #2563eb55;
+  transition: background 0.2s;
+  touch-action: manipulation;
+}
+.spelling-btn:disabled {
+  background: #a1c4fd;
+  color: #fff;
+  cursor: not-allowed;
+}
+.spelling-btn:hover:not(:disabled) {
+  background: #60a5fa;
+}
+
+.spelling-results {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 16px 0;
+  width: 90vw;
+  max-width: 500px;
+}
+.spelling-results li {
+  font-size: 1.5rem;
+  margin: 18px 0;
+  padding: 18px 0;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 6px #60a5fa22;
+}
+.spelling-results .correct {
+  color: #22c55e;
+  border: 2px solid #22c55e;
+}
+.spelling-results .incorrect {
+  color: #ef4444;
+  border: 2px solid #ef4444;
+}
+.correction {
+  color: #2563eb;
+  font-size: 1.2rem;
+  display: block;
+  margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .spelling-title {
+    font-size: 2rem;
+  }
+  .spelling-input, .spelling-results, .spelling-btn, .spelling-listen-btn {
+    font-size: 1.2rem;
+    padding: 14px 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .spelling-title {
+    font-size: 1.5rem;
+  }
+  .spelling-input, .spelling-results, .spelling-btn, .spelling-listen-btn {
+    font-size: 1rem;
+    padding: 10px 10px;
+  }
+  .spelling-container {
+    padding: 0;
+  }
+} 
