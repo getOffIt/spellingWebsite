@@ -44,6 +44,12 @@ export default function SpellingTest() {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && answers[step]) {
+      handleNext();
+    }
+  };
+
   if (showResults) {
     return (
       <div className="spelling-container">
@@ -88,6 +94,7 @@ export default function SpellingTest() {
         onChange={handleInput}
         placeholder="Type the word here"
         autoFocus
+        onKeyDown={handleKeyDown}
       />
       <button className="spelling-btn" onClick={handleNext} disabled={!answers[step]}>
         {step === WORDS.length - 1 ? 'See Results' : 'Next'}
