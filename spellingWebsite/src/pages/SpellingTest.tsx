@@ -102,7 +102,6 @@ export default function SpellingTest() {
       <button className="spelling-listen-btn" onClick={() => speak(current.word)}>
         🔊 Listen to the word
       </button>
-      <div className="spelling-sentence">(Hint: {current.sentence})</div>
       <input
         className="spelling-input"
         type="text"
