@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SpellingTest.css';
+import confetti from 'canvas-confetti';
 
 interface PracticePageProps {
   words: string[];
@@ -10,6 +11,16 @@ export default function PracticePage({ words }: PracticePageProps) {
   const [count, setCount] = useState(0);
   const [input, setInput] = useState('');
   const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (done) {
+      confetti({
+        particleCount: 150,
+        spread: 90,
+        origin: { y: 0.6 }
+      });
+    }
+  }, [done]);
 
   if (words.length === 0) {
     return (

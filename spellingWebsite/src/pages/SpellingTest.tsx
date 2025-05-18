@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SpellingTest.css';
 import PracticePage from './PracticePage';
+import confetti from 'canvas-confetti';
 
 const WORDS = [
   { word: 'harmless', sentence: 'The butterfly is harmless.' },
@@ -19,6 +20,20 @@ export default function SpellingTest() {
   const [showResults, setShowResults] = useState(false);
   const [showPractice, setShowPractice] = useState(false);
   const spokenOnMount = useRef(false);
+
+  useEffect(() => {
+    if (
+      showResults &&
+      answers.length === WORDS.length &&
+      answers.every((ans, idx) => ans.trim().toLowerCase() === WORDS[idx].word)
+    ) {
+      confetti({
+        particleCount: 150,
+        spread: 90,
+        origin: { y: 0.6 }
+      });
+    }
+  }, [showResults, answers]);
 
   useEffect(() => {
     if (!showResults) {
