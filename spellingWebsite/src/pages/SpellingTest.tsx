@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './SpellingTest.css';
 
 const WORDS = [
   { word: 'cat', sentence: 'The cat is sleeping.' },
@@ -32,25 +33,27 @@ export default function SpellingTest() {
 
   if (showResults) {
     return (
-      <div>
-        <h2>Results</h2>
-        <ul>
+      <div className="spelling-container">
+        <h2 className="spelling-title">🎉 Results 🎉</h2>
+        <ul className="spelling-results">
           {WORDS.map((item, idx) => {
             const correct = answers[idx].trim().toLowerCase() === item.word;
             return (
-              <li key={item.word}>
+              <li key={item.word} className={correct ? 'correct' : 'incorrect'}>
                 <strong>{item.word}</strong>:&nbsp;
                 {correct ? (
-                  <span style={{ color: 'green' }}>Correct!</span>
+                  <span>✅ Great job!</span>
                 ) : (
-                  <span style={{ color: 'red' }}>
-                    Incorrect (You wrote: "{answers[idx]}")
+                  <span>
+                    ❌ Oops! You wrote: "{answers[idx]}"<br />
+                    <span className="correction">Correct spelling: <b>{item.word}</b></span>
                   </span>
                 )}
               </li>
             );
           })}
         </ul>
+        <button className="spelling-btn" onClick={() => window.location.reload()}>Try Again</button>
       </div>
     );
   }
@@ -58,20 +61,22 @@ export default function SpellingTest() {
   const current = WORDS[step];
 
   return (
-    <div>
-      <h2>Spelling Test</h2>
-      <p>Word {step + 1} of {WORDS.length}</p>
-      <button onClick={() => speak(current.word)}>🔊 Listen to the word</button>
-      <br />
+    <div className="spelling-container">
+      <h2 className="spelling-title">🚀 Spelling Test 🚀</h2>
+      <div className="spelling-progress">Word {step + 1} of {WORDS.length}</div>
+      <button className="spelling-listen-btn" onClick={() => speak(current.word)}>
+        🔊 Listen to the word
+      </button>
+      <div className="spelling-sentence">(Hint: {current.sentence})</div>
       <input
+        className="spelling-input"
         type="text"
         value={answers[step]}
         onChange={handleInput}
         placeholder="Type the word here"
         autoFocus
       />
-      <br />
-      <button onClick={handleNext} disabled={!answers[step]}>
+      <button className="spelling-btn" onClick={handleNext} disabled={!answers[step]}>
         {step === WORDS.length - 1 ? 'See Results' : 'Next'}
       </button>
     </div>
