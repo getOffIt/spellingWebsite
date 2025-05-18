@@ -1,15 +1,27 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%) !important;
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
 .spelling-container {
   min-height: 100vh;
   min-width: 100vw;
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
-  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+  background: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Sans', 'Arial Rounded MT Bold', 'Arial', sans-serif;
   padding: 0;
 }
 
