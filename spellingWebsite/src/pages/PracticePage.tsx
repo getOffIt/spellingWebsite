@@ -64,12 +64,12 @@ export default function PracticePage({ words }: PracticePageProps) {
       <div className="spelling-progress">
         Practice: <b>{currentWord}</b> ({count + 1} of 3)
       </div>
+      <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#2563eb', margin: '16px 0 8px 0', letterSpacing: '2px' }}>{currentWord}</div>
       <input
         className="spelling-input"
         type="text"
         value={input}
         onChange={handleInput}
-        placeholder={`Type "${currentWord}"`}
         autoFocus
         onKeyDown={handleKeyDown}
         autoComplete="off"
