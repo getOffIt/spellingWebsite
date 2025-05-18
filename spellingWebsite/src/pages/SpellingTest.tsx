@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './SpellingTest.css';
 
 const WORDS = [
@@ -16,6 +16,19 @@ export default function SpellingTest() {
   const [step, setStep] = useState(0); // 0, 1, 2 for questions, 3 for results
   const [answers, setAnswers] = useState<string[]>(['', '', '']);
   const [showResults, setShowResults] = useState(false);
+  const spokenOnMount = useRef(false);
+
+  useEffect(() => {
+    if (!showResults) {
+      // Only speak on mount once, or on step change after mount
+      if (step === 0 && !spokenOnMount.current) {
+        speak(WORDS[0].word);
+        spokenOnMount.current = true;
+      } else if (step !== 0) {
+        speak(WORDS[step].word);
+      }
+    }
+  }, [step, showResults]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newAnswers = [...answers];
@@ -34,7 +47,7 @@ export default function SpellingTest() {
   if (showResults) {
     return (
       <div className="spelling-container">
-        <h2 className="spelling-title">🎉 Results 🎉</h2>
+        <h2 className="spelling-title">🚀 Spelling Test 🚀</h2>
         <ul className="spelling-results">
           {WORDS.map((item, idx) => {
             const correct = answers[idx].trim().toLowerCase() === item.word;
