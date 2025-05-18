@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SpellingTest.css';
+import PracticePage from './PracticePage';
 
 const WORDS = [
   { word: 'harmless', sentence: 'The butterfly is harmless.' },
@@ -16,6 +17,7 @@ export default function SpellingTest() {
   const [step, setStep] = useState(0); // 0, 1, 2 for questions, 3 for results
   const [answers, setAnswers] = useState<string[]>(['', '', '']);
   const [showResults, setShowResults] = useState(false);
+  const [showPractice, setShowPractice] = useState(false);
   const spokenOnMount = useRef(false);
 
   useEffect(() => {
@@ -50,7 +52,14 @@ export default function SpellingTest() {
     }
   };
 
+  if (showPractice) {
+    // Pass the list of incorrect words to the practice page
+    const incorrectWords = WORDS.filter((item, idx) => answers[idx].trim().toLowerCase() !== item.word);
+    return <PracticePage words={incorrectWords.map(w => w.word)} />;
+  }
+
   if (showResults) {
+    const incorrectWords = WORDS.filter((item, idx) => answers[idx].trim().toLowerCase() !== item.word);
     return (
       <div className="spelling-container">
         <h2 className="spelling-title">🚀 Spelling Test 🚀</h2>
@@ -73,6 +82,11 @@ export default function SpellingTest() {
           })}
         </ul>
         <button className="spelling-btn" onClick={() => window.location.reload()}>Try Again</button>
+        {incorrectWords.length > 0 && (
+          <button className="spelling-btn" style={{marginLeft: 16}} onClick={() => setShowPractice(true)}>
+            Practice Misspelled Words
+          </button>
+        )}
       </div>
     );
   }
@@ -95,6 +109,8 @@ export default function SpellingTest() {
         placeholder="Type the word here"
         autoFocus
         onKeyDown={handleKeyDown}
+        autoComplete="off"
+        spellCheck={false}
       />
       <button className="spelling-btn" onClick={handleNext} disabled={!answers[step]}>
         {step === WORDS.length - 1 ? 'See Results' : 'Next'}
