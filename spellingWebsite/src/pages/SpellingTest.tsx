@@ -110,8 +110,11 @@ export default function SpellingTest() {
         placeholder="Type the word here"
         autoFocus
         onKeyDown={handleKeyDown}
-        autoComplete="off"
+        autoComplete="new-password"
         spellCheck={false}
+        inputMode="text"
+        autoCapitalize="off"
+        autoCorrect="off"
       />
       <button className="spelling-btn" onClick={handleNext} disabled={!answers[step]}>
         {step === WORDS.length - 1 ? 'See Results' : 'Next'}
