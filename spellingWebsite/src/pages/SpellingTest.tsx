@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import './SpellingTest.css';
 
 const WORDS = [
-  { word: 'cat', sentence: 'The cat is sleeping.' },
-  { word: 'dog', sentence: 'The dog barks loudly.' },
-  { word: 'sun', sentence: 'The sun is bright.' },
+  { word: 'harmless', sentence: 'The butterfly is harmless.' },
+  { word: 'helpless', sentence: 'The kitten looked helpless.' },
+  { word: 'joyless', sentence: 'A rainy day can feel joyless.' },
 ];
 
 function speak(text: string) {
