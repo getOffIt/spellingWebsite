@@ -3,7 +3,13 @@ import './SpellingTest.css';
 import PracticePage from './PracticePage';
 import confetti from 'canvas-confetti';
 
-const WORDS = [
+const BASE_WORDS = [
+  { word: 'harm', sentence: 'Don\'t harm others.' },
+  { word: 'help', sentence: 'Help your friends.' },
+  { word: 'joy', sentence: 'Joy makes us happy.' },
+];
+
+const FULL_WORDS = [
   { word: 'harmless', sentence: 'The butterfly is harmless.' },
   { word: 'helpless', sentence: 'The kitten looked helpless.' },
   { word: 'joyless', sentence: 'A rainy day can feel joyless.' },
@@ -15,17 +21,20 @@ function speak(text: string) {
 }
 
 export default function SpellingTest() {
-  const [step, setStep] = useState(0); // 0, 1, 2 for questions, 3 for results
+  const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>(['', '', '']);
   const [showResults, setShowResults] = useState(false);
   const [showPractice, setShowPractice] = useState(false);
+  const [currentLevel, setCurrentLevel] = useState<'base' | 'full'>('base');
   const spokenOnMount = useRef(false);
+
+  const currentWords = currentLevel === 'base' ? BASE_WORDS : FULL_WORDS;
 
   useEffect(() => {
     if (
       showResults &&
-      answers.length === WORDS.length &&
-      answers.every((ans, idx) => ans.trim().toLowerCase() === WORDS[idx].word)
+      answers.length === currentWords.length &&
+      answers.every((ans, idx) => ans.trim().toLowerCase() === currentWords[idx].word)
     ) {
       confetti({
         particleCount: 150,
@@ -33,19 +42,18 @@ export default function SpellingTest() {
         origin: { y: 0.6 }
       });
     }
-  }, [showResults, answers]);
+  }, [showResults, answers, currentWords]);
 
   useEffect(() => {
     if (!showResults) {
-      // Only speak on mount once, or on step change after mount
       if (step === 0 && !spokenOnMount.current) {
-        speak(WORDS[0].word);
+        speak(currentWords[0].word);
         spokenOnMount.current = true;
       } else if (step !== 0) {
-        speak(WORDS[step].word);
+        speak(currentWords[step].word);
       }
     }
-  }, [step, showResults]);
+  }, [step, showResults, currentWords]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newAnswers = [...answers];
@@ -54,10 +62,27 @@ export default function SpellingTest() {
   };
 
   const handleNext = () => {
-    if (step < WORDS.length - 1) {
+    if (step < currentWords.length - 1) {
       setStep(step + 1);
     } else {
-      setShowResults(true);
+      if (currentLevel === 'base') {
+        // Check if all base words are correct
+        const allCorrect = answers.every((ans, idx) => 
+          ans.trim().toLowerCase() === BASE_WORDS[idx].word
+        );
+        
+        if (allCorrect) {
+          // Move to full words
+          setCurrentLevel('full');
+          setStep(0);
+          setAnswers(['', '', '']);
+          spokenOnMount.current = false;
+        } else {
+          setShowResults(true);
+        }
+      } else {
+        setShowResults(true);
+      }
     }
   };
 
@@ -68,18 +93,21 @@ export default function SpellingTest() {
   };
 
   if (showPractice) {
-    // Pass the list of incorrect words to the practice page
-    const incorrectWords = WORDS.filter((item, idx) => answers[idx].trim().toLowerCase() !== item.word);
+    const incorrectWords = currentWords.filter((item, idx) => 
+      answers[idx].trim().toLowerCase() !== item.word
+    );
     return <PracticePage words={incorrectWords.map(w => w.word)} />;
   }
 
   if (showResults) {
-    const incorrectWords = WORDS.filter((item, idx) => answers[idx].trim().toLowerCase() !== item.word);
+    const incorrectWords = currentWords.filter((item, idx) => 
+      answers[idx].trim().toLowerCase() !== item.word
+    );
     return (
       <div className="spelling-container">
         <h2 className="spelling-title">🚀 Spelling Test 🚀</h2>
         <ul className="spelling-results">
-          {WORDS.map((item, idx) => {
+          {currentWords.map((item, idx) => {
             const correct = answers[idx].trim().toLowerCase() === item.word;
             return (
               <li key={item.word} className={correct ? 'correct' : 'incorrect'}>
@@ -108,12 +136,14 @@ export default function SpellingTest() {
     );
   }
 
-  const current = WORDS[step];
+  const current = currentWords[step];
 
   return (
     <div className="spelling-container">
       <h2 className="spelling-title">🚀 Spelling Test 🚀</h2>
-      <div className="spelling-progress">Word {step + 1} of {WORDS.length}</div>
+      <div className="spelling-progress">
+        {currentLevel === 'base' ? 'Base Words' : 'Full Words'} - Word {step + 1} of {currentWords.length}
+      </div>
       <button className="spelling-listen-btn" onClick={() => speak(current.word)}>
         🔊 Listen to the word
       </button>
@@ -132,7 +162,7 @@ export default function SpellingTest() {
         autoCorrect="off"
       />
       <button className="spelling-btn" onClick={handleNext} disabled={!answers[step]}>
-        {step === WORDS.length - 1 ? 'See Results' : 'Next'}
+        {step === currentWords.length - 1 ? 'See Results' : 'Next'}
       </button>
     </div>
   );
