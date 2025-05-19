@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SpellingTest.css';
 import PracticePage from './PracticePage';
+import SpellingResults from './SpellingResults';
 import confetti from 'canvas-confetti';
 
 const BASE_WORDS = [
@@ -92,6 +93,10 @@ export default function SpellingTest() {
     }
   };
 
+  const handleRetry = () => {
+    window.location.reload();
+  };
+
   if (showPractice) {
     const incorrectWords = currentWords.filter((item, idx) => 
       answers[idx].trim().toLowerCase() !== item.word
@@ -100,39 +105,13 @@ export default function SpellingTest() {
   }
 
   if (showResults) {
-    const incorrectWords = currentWords.filter((item, idx) => 
-      answers[idx].trim().toLowerCase() !== item.word
-    );
     return (
-      <div className="spelling-container">
-        <h2 className="spelling-title">🚀 Spelling Test 🚀</h2>
-        <ul className="spelling-results">
-          {currentWords.map((item, idx) => {
-            const correct = answers[idx].trim().toLowerCase() === item.word;
-            return (
-              <li key={item.word} className={correct ? 'correct' : 'incorrect'}>
-                <strong>{item.word}</strong>:&nbsp;
-                {correct ? (
-                  <span>✅ Great job!</span>
-                ) : (
-                  <span>
-                    ❌ Oops! You wrote: "{answers[idx]}"<br />
-                    <span className="correction">Correct spelling: <b>{item.word}</b></span>
-                  </span>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-        {incorrectWords.length === 0 && (
-          <button className="spelling-btn" onClick={() => window.location.reload()}>Try Again</button>
-        )}
-        {incorrectWords.length > 0 && (
-          <button className="spelling-btn" style={{marginLeft: 16}} onClick={() => setShowPractice(true)}>
-            Practice Misspelled Words
-          </button>
-        )}
-      </div>
+      <SpellingResults
+        words={currentWords}
+        answers={answers}
+        onPractice={() => setShowPractice(true)}
+        onRetry={handleRetry}
+      />
     );
   }
 
