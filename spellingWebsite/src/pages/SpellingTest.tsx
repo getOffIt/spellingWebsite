@@ -21,9 +21,13 @@ function speak(text: string) {
   window.speechSynthesis.speak(utterance);
 }
 
-export default function SpellingTest() {
+export default function SpellingTest({ words }: { words: string[] }) {
+  if (!words || !Array.isArray(words) || words.length === 0) {
+    return null;
+  }
+
   const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<string[]>(['', '', '']);
+  const [answers, setAnswers] = useState<string[]>(Array(words.length).fill(''));
   const [showResults, setShowResults] = useState(false);
   const [showPractice, setShowPractice] = useState(false);
   const [currentLevel, setCurrentLevel] = useState<'base' | 'full'>('base');
@@ -34,8 +38,8 @@ export default function SpellingTest() {
   useEffect(() => {
     if (
       showResults &&
-      answers.length === currentWords.length &&
-      answers.every((ans, idx) => ans.trim().toLowerCase() === currentWords[idx].word)
+      answers.length === words.length &&
+      answers.every((ans, idx) => ans.trim().toLowerCase() === words[idx])
     ) {
       confetti({
         particleCount: 150,
@@ -43,18 +47,18 @@ export default function SpellingTest() {
         origin: { y: 0.6 }
       });
     }
-  }, [showResults, answers, currentWords]);
+  }, [showResults, answers, words]);
 
   useEffect(() => {
     if (!showResults) {
       if (step === 0 && !spokenOnMount.current) {
-        speak(currentWords[0].word);
+        speak(words[0]);
         spokenOnMount.current = true;
       } else if (step !== 0) {
-        speak(currentWords[step].word);
+        speak(words[step]);
       }
     }
-  }, [step, showResults, currentWords]);
+  }, [step, showResults, words]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newAnswers = [...answers];
@@ -63,7 +67,7 @@ export default function SpellingTest() {
   };
 
   const handleNext = () => {
-    if (step < currentWords.length - 1) {
+    if (step < words.length - 1) {
       setStep(step + 1);
     } else {
       if (currentLevel === 'base') {
@@ -98,16 +102,16 @@ export default function SpellingTest() {
   };
 
   if (showPractice) {
-    const incorrectWords = currentWords.filter((item, idx) => 
-      answers[idx].trim().toLowerCase() !== item.word
+    const incorrectWords = words.filter((word, idx) => 
+      answers[idx].trim().toLowerCase() !== word
     );
-    return <PracticePage words={incorrectWords.map(w => w.word)} />;
+    return <PracticePage words={incorrectWords} />;
   }
 
   if (showResults) {
     return (
       <SpellingResults
-        words={currentWords}
+        words={words.map(word => ({ word, sentence: '' }))}
         answers={answers}
         onPractice={() => setShowPractice(true)}
         onRetry={handleRetry}
@@ -115,15 +119,15 @@ export default function SpellingTest() {
     );
   }
 
-  const current = currentWords[step];
+  const current = words[step];
 
   return (
     <div className="spelling-container">
       <h2 className="spelling-title">🚀 Spelling Test 🚀</h2>
       <div className="spelling-progress">
-        {currentLevel === 'base' ? 'Base Words' : 'Full Words'} - Word {step + 1} of {currentWords.length}
+        {currentLevel === 'base' ? 'Base Words' : 'Full Words'} - Word {step + 1} of {words.length}
       </div>
-      <button className="spelling-listen-btn" onClick={() => speak(current.word)}>
+      <button className="spelling-listen-btn" onClick={() => speak(current)}>
         🔊 Listen to the word
       </button>
       <input
@@ -141,7 +145,7 @@ export default function SpellingTest() {
         autoCorrect="off"
       />
       <button className="spelling-btn" onClick={handleNext} disabled={!answers[step]}>
-        {step === currentWords.length - 1 ? 'See Results' : 'Next'}
+        {step === words.length - 1 ? 'See Results' : 'Next'}
       </button>
     </div>
   );
