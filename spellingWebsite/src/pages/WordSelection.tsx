@@ -6,6 +6,10 @@ const wordLists = [
     name: 'List 1',
     words: ['careless', 'painless', 'homeless'],
   },
+  {
+    name: 'List 2',
+    words: ['harmless', 'homeless', 'joyless'],
+  },
   // Future lists can be added here
   // { name: 'List 2', words: ['joyless', 'thankless', 'useless'] },
 ];
