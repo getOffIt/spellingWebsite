@@ -1,0 +1,55 @@
+.word-selection-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+  font-family: 'Comic Sans MS', 'Comic Sans', 'Arial Rounded MT Bold', 'Arial', sans-serif;
+}
+
+.word-selection-title {
+  color: #2563eb;
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+  text-shadow: 1px 2px 8px #fff6, 0 2px 0 #60a5fa;
+}
+
+.word-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 90vw;
+  max-width: 500px;
+}
+
+.word-list-item {
+  font-size: 1.3rem;
+  margin: 18px 0;
+  padding: 18px 24px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 6px #60a5fa22;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.word-list-item:hover {
+  background: #60a5fa;
+  color: #fff;
+}
+
+.list-name {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 6px;
+}
+
+.list-words {
+  font-size: 1em;
+  color: #2563eb;
+} 
