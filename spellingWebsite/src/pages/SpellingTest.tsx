@@ -5,15 +5,15 @@ import SpellingResults from './SpellingResults';
 import confetti from 'canvas-confetti';
 
 const BASE_WORDS = [
-  { word: 'harm', sentence: 'Don\'t harm others.' },
-  { word: 'help', sentence: 'Help your friends.' },
-  { word: 'joy', sentence: 'Joy makes us happy.' },
+  { word: 'care', sentence: 'Take care of yourself.' },
+  { word: 'pain', sentence: 'Pain can be temporary.' },
+  { word: 'home', sentence: 'Home is where the heart is.' },
 ];
 
 const FULL_WORDS = [
-  { word: 'harmless', sentence: 'The butterfly is harmless.' },
-  { word: 'helpless', sentence: 'The kitten looked helpless.' },
-  { word: 'joyless', sentence: 'A rainy day can feel joyless.' },
+  { word: 'careless', sentence: 'Being careless can lead to mistakes.' },
+  { word: 'painless', sentence: 'The procedure was painless.' },
+  { word: 'homeless', sentence: 'Many people are homeless.' },
 ];
 
 function speak(text: string) {
