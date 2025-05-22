@@ -83,8 +83,10 @@ export default function PracticePage({ words }: PracticePageProps) {
         onChange={handleInput}
         autoFocus
         onKeyDown={handleKeyDown}
-        autoComplete="off"
+        autoComplete="new-password"
         spellCheck={false}
+        autoCapitalize='off'
+        autoCorrect='off'
       />
       <button className="spelling-btn" onClick={handleSubmit} disabled={!input}>
         Submit
