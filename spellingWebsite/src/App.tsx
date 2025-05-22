@@ -4,16 +4,16 @@ import WordSelection from './pages/WordSelection'
 import SpellingTest from './pages/SpellingTest'
 
 function App() {
-  const [selectedWords, setSelectedWords] = useState<string[]>([])
+  const [selectedList, setSelectedList] = useState<{ words: string[]; type: 'single' | 'less_family' } | null>(null)
 
-  const handleSelectWords = (words: string[]) => {
-    setSelectedWords(words)
+  const handleSelectWords = (words: string[], type: 'single' | 'less_family') => {
+    setSelectedList({ words, type })
   }
 
   return (
     <>
-      {selectedWords.length > 0 ? (
-        <SpellingTest words={selectedWords} />
+      {selectedList ? (
+        <SpellingTest words={selectedList.words} listType={selectedList.type} />
       ) : (
         <WordSelection onSelectWords={handleSelectWords} />
       )}

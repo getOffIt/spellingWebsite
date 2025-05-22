@@ -1,20 +1,28 @@
 import React from 'react';
 import './WordSelection.css';
 
-const wordLists = [
+interface WordList {
+  name: string;
+  words: string[];
+  type: 'single' | 'less_family';
+}
+
+const wordLists: WordList[] = [
   {
-    name: 'List 1',
+    name: 'List 1 (-less family)',
     words: ['careless', 'painless', 'homeless'],
+    type: 'less_family',
   },
   {
     name: 'List 2',
     words: ['harmless', 'homeless', 'joyless'],
+    type: 'single',
   },
   // Future lists can be added here
   // { name: 'List 2', words: ['joyless', 'thankless', 'useless'] },
 ];
 
-const WordSelection = ({ onSelectWords }: { onSelectWords: (words: string[]) => void }) => {
+const WordSelection = ({ onSelectWords }: { onSelectWords: (words: string[], type: 'single' | 'less_family') => void }) => {
   return (
     <div className="word-selection-container">
       <h2 className="word-selection-title">Select a List to Practice</h2>
@@ -25,7 +33,7 @@ const WordSelection = ({ onSelectWords }: { onSelectWords: (words: string[]) => 
           <li
             key={idx}
             className="word-list-item"
-            onClick={() => onSelectWords(list.words)}
+            onClick={() => onSelectWords(list.words, list.type)}
           >
             <div className="list-name">{list.name}</div>
             <div className="list-words">{list.words.join(', ')}</div>
