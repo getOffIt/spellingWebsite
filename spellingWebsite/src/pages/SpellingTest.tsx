@@ -36,24 +36,29 @@ export default function SpellingTest({ words, listType }: { words: string[]; lis
   const [answers, setAnswers] = useState<string[]>(Array(wordsForCurrentStage.length).fill(''));
   const [showResults, setShowResults] = useState(false);
   const [showPractice, setShowPractice] = useState(false);
-  const spokenOnMount = useRef(false);
+  // New state to control speaking
+  const [wordToUtter, setWordToUtter] = useState<string | null>(null);
 
   // Check if the words for the current stage are all correct
   const areCurrentStageWordsCorrect = answers.every((ans, idx) => 
     ans.trim().toLowerCase() === wordsForCurrentStage[idx].toLowerCase()
   );
 
-  // Effect for speaking the word
+  // Effect for speaking the word when wordToUtter changes
   useEffect(() => {
-    if (!showResults && wordsForCurrentStage.length > 0) {
-      if (step === 0 && !spokenOnMount.current) {
-        speak(wordsForCurrentStage[0]);
-        spokenOnMount.current = true;
-      } else if (step > 0 && step < wordsForCurrentStage.length) {
-        speak(wordsForCurrentStage[step]);
-      }
+    if (wordToUtter) {
+      speak(wordToUtter);
+      // Reset wordToUtter after speaking, so it only speaks once per update
+      setWordToUtter(null);
     }
-  }, [step, showResults, wordsForCurrentStage]);
+  }, [wordToUtter]);
+
+  // Effect to set the initial word to be spoken or when stage/step changes
+  useEffect(() => {
+      if (!showResults && wordsForCurrentStage.length > 0) {
+          setWordToUtter(wordsForCurrentStage[step]);
+      }
+  }, [step, showResults, wordsForCurrentStage, currentStage]); // Trigger when step, stage, or word list changes
 
   // Effect for confetti on completing all words in the test (last stage)
   useEffect(() => {
@@ -88,7 +93,7 @@ export default function SpellingTest({ words, listType }: { words: string[]; lis
           setCurrentStage('full');
           setStep(0); // Reset step for the new stage
           setAnswers(Array(words.length).fill('')); // Initialize answers for full words
-          spokenOnMount.current = false; // Allow speaking the first full word
+          // The useEffect triggered by currentStage/step change will set the next word to utter
         } else {
           // If base words were incorrect, show results for base words
           setShowResults(true);
@@ -100,6 +105,7 @@ export default function SpellingTest({ words, listType }: { words: string[]; lis
     } else {
       // Not the last word, move to the next step in the current stage
       setStep(step + 1);
+      // The useEffect triggered by step change will set the next word to utter
     }
   };
 
@@ -113,25 +119,21 @@ export default function SpellingTest({ words, listType }: { words: string[]; lis
     // Reset everything to the beginning of the test
     setCurrentStage(listType === 'less_family' ? 'base' : 'full');
     setStep(0);
-    setAnswers(Array(wordsForCurrentStage.length).fill('')); // Initialize for the initial stage
+    // Re-initialize answers based on the initial stage's words
+    const initialStageWords = listType === 'less_family' ? baseWords : words;
+    setAnswers(Array(initialStageWords.length).fill(''));
     setShowResults(false);
     setShowPractice(false);
-    spokenOnMount.current = false;
+    // The useEffect triggered by currentStage/step change will set the first word to utter
   };
 
   // Determine which words to show on the results/practice page
   const wordsForResultsOrPractice = listType === 'less_family' && currentStage === 'base' ? baseWords : words;
-  const answersForResultsOrPractice = listType === 'less_family' && currentStage === 'base' ? answers : answers; // Answers are always for the last completed stage
+  const answersForResultsOrPractice = answers; // Answers are always for the last completed stage
 
   if (showPractice) {
-    // Determine the words that were relevant to the stage just completed.
-    // If it was the base word stage for a less_family list, these are the base words.
-    // Otherwise, they are the full words.
-    const completedStageWords = listType === 'less_family' && currentStage === 'base' ? baseWords : words;
-
-    // Filter the completed stage words to find the ones that were answered incorrectly.
-    // Compare the answer to the word from the completed stage.
-    const incorrectWords = completedStageWords.filter((word, idx) =>
+    // Filter incorrect words from the completed stage
+    const incorrectWords = wordsForResultsOrPractice.filter((word, idx) =>
       answersForResultsOrPractice[idx].trim().toLowerCase() !== word.toLowerCase()
     );
 
@@ -141,12 +143,15 @@ export default function SpellingTest({ words, listType }: { words: string[]; lis
 
   if (showResults) {
     // For results, always show the comparison against the final word list (full words if less_family, otherwise the single list)
-    const finalWords = listType === 'less_family' ? words : wordsForCurrentStage; // words is the full list, wordsForCurrentStage is for the last stage
-    // Need to map answers correctly to finalWords, might need to store answers per stage
-    // For now, assuming answers corresponds to the last attempted stage
+    const wordsForSpellingResults = listType === 'less_family' ? words : wordsForCurrentStage;
+
+    // We need to pair the words shown on the results page with the answers given for the completed stage
+    // This mapping might need adjustment depending on how SpellingResults uses the words and answers props
+    // For now, passing the final words list and the answers from the last completed stage.
+    // The SpellingResults component needs to handle the index mapping correctly.
     return (
       <SpellingResults
-        words={finalWords.map(word => ({ word, sentence: '' }))} // Assuming SpellingResults expects Word[]
+        words={wordsForSpellingResults.map(word => ({ word, sentence: '' }))} // Pass the relevant word objects
         answers={answersForResultsOrPractice} // Use answers from the last attempted stage
         onPractice={() => setShowPractice(true)}
         onRetry={handleRetry}
