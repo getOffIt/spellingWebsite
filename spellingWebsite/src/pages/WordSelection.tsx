@@ -16,7 +16,7 @@ const wordLists: WordList[] = [
   {
     name: 'List 2',
     words: ['harmless', 'homeless', 'joyless'],
-    type: 'single',
+    type: 'less_family',
   },
   // Future lists can be added here
   // { name: 'List 2', words: ['joyless', 'thankless', 'useless'] },
