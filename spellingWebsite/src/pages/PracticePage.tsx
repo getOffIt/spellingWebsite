@@ -85,6 +85,7 @@ export default function PracticePage({ words }: PracticePageProps) {
         onKeyDown={handleKeyDown}
         autoComplete="new-password"
         spellCheck={false}
+        inputMode='text'
         autoCapitalize='off'
         autoCorrect='off'
       />
