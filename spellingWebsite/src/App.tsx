@@ -1,23 +1,37 @@
 import React, { useState } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import './App.css'
 import WordSelection from './pages/WordSelection'
 import SpellingTest from './pages/SpellingTest'
+import NotFoundPage from './pages/NotFoundPage'
 
 function App() {
   const [selectedList, setSelectedList] = useState<{ words: string[]; type: 'single' | 'less_family' } | null>(null)
+  const navigate = useNavigate()
 
   const handleSelectWords = (words: string[], type: 'single' | 'less_family') => {
     setSelectedList({ words, type })
   }
 
+  const handleReset = () => {
+    setSelectedList(null)
+  }
+
   return (
-    <>
-      {selectedList ? (
-        <SpellingTest words={selectedList.words} listType={selectedList.type} />
-      ) : (
-        <WordSelection onSelectWords={handleSelectWords} />
-      )}
-    </>
+    <Routes>
+      <Route path="/" element={
+        selectedList ? (
+          <SpellingTest 
+            words={selectedList.words} 
+            listType={selectedList.type} 
+            onComplete={handleReset}
+          />
+        ) : (
+          <WordSelection onSelectWords={handleSelectWords} />
+        )
+      } />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   )
 }
 

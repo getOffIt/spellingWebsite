@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './SpellingTest.css';
 import PracticePage from './PracticePage';
 import SpellingResults from './SpellingResults';
@@ -22,7 +23,14 @@ function getBaseWord(word: string): string {
   return word;
 }
 
-export default function SpellingTest({ words, listType }: { words: string[]; listType: 'single' | 'less_family' }) {
+interface SpellingTestProps {
+  words: string[];
+  listType: 'single' | 'less_family';
+  onComplete: () => void;
+}
+
+export default function SpellingTest({ words, listType, onComplete }: SpellingTestProps) {
+  const navigate = useNavigate();
   // If listType is 'less_family', generate base words
   const baseWords = listType === 'less_family' ? words.map(word => getBaseWord(word)) : [];
 
@@ -38,6 +46,7 @@ export default function SpellingTest({ words, listType }: { words: string[]; lis
   const [showPractice, setShowPractice] = useState(false);
   // New state to control speaking
   const [wordToUtter, setWordToUtter] = useState<string | null>(null);
+  const [done, setDone] = useState(false);
 
   // Check if the words for the current stage are all correct
   const areCurrentStageWordsCorrect = answers.every((ans, idx) => 
@@ -99,8 +108,14 @@ export default function SpellingTest({ words, listType }: { words: string[]; lis
           setShowResults(true);
         }
       } else {
-        // If it's the full word stage or a single list, show final results
-        setShowResults(true);
+        // If it's the full word stage or a single list
+        if (areCurrentStageWordsCorrect) {
+          // If all words are correct, show congratulations
+          setDone(true);
+        } else {
+          // If there are mistakes, show results
+          setShowResults(true);
+        }
       }
     } else {
       // Not the last word, move to the next step in the current stage
@@ -131,6 +146,33 @@ export default function SpellingTest({ words, listType }: { words: string[]; lis
   const wordsForResultsOrPractice = listType === 'less_family' && currentStage === 'base' ? baseWords : words;
   const answersForResultsOrPractice = answers; // Answers are always for the last completed stage
 
+  if (done) {
+    return (
+      <div className="spelling-container">
+        <h2 className="spelling-title">🎉 Congratulations! 🎉</h2>
+        <div style={{ 
+          fontSize: '1.5rem', 
+          color: '#2563eb', 
+          margin: '20px 0',
+          textAlign: 'center',
+          lineHeight: '1.5'
+        }}>
+          You've completed all the words correctly!<br />
+          Great job! 🌟
+        </div>
+        <button 
+          className="spelling-btn" 
+          onClick={() => {
+            setDone(false);
+            onComplete();
+          }}
+        >
+          Done
+        </button>
+      </div>
+    );
+  }
+
   if (showPractice) {
     // Filter incorrect words from the completed stage
     const incorrectWords = wordsForResultsOrPractice.filter((word, idx) =>
@@ -138,7 +180,15 @@ export default function SpellingTest({ words, listType }: { words: string[]; lis
     );
 
     // Pass the filtered incorrect words (which are strings) to PracticePage
-    return <PracticePage words={incorrectWords} />;
+    return <PracticePage 
+      words={incorrectWords} 
+      onBackToTest={() => {
+        setShowPractice(false);
+        setShowResults(false);
+        setStep(0);
+        setAnswers(Array(wordsForCurrentStage.length).fill(''));
+      }} 
+    />;
   }
 
   if (showResults) {
