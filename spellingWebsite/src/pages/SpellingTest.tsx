@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './SpellingTest.css';
 import PracticePage from './PracticePage';
 import SpellingResults from './SpellingResults';
-import confetti from 'canvas-confetti';
+import CongratulationsPage from './CongratulationsPage';
 
 interface Word {
   word: string;
@@ -69,22 +69,6 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
       }
   }, [step, showResults, wordsForCurrentStage, currentStage]); // Trigger when step, stage, or word list changes
 
-  // Effect for confetti on completing all words in the test (last stage)
-  useEffect(() => {
-    if (
-      showResults && 
-      listType === 'single' ? 
-      areCurrentStageWordsCorrect : // For single list, confetti if all are correct in the only stage
-      (currentStage === 'full' && areCurrentStageWordsCorrect) // For less_family, confetti only if full words are correct
-    ) {
-      confetti({
-        particleCount: 150,
-        spread: 90,
-        origin: { y: 0.6 }
-      });
-    }
-  }, [showResults, areCurrentStageWordsCorrect, currentStage, listType]);
-
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newAnswers = [...answers];
     newAnswers[step] = e.target.value;
@@ -147,30 +131,7 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
   const answersForResultsOrPractice = answers; // Answers are always for the last completed stage
 
   if (done) {
-    return (
-      <div className="spelling-container">
-        <h2 className="spelling-title">🎉 Congratulations! 🎉</h2>
-        <div style={{ 
-          fontSize: '1.5rem', 
-          color: '#2563eb', 
-          margin: '20px 0',
-          textAlign: 'center',
-          lineHeight: '1.5'
-        }}>
-          You've completed all the words correctly!<br />
-          Great job! 🌟
-        </div>
-        <button 
-          className="spelling-btn" 
-          onClick={() => {
-            setDone(false);
-            onComplete();
-          }}
-        >
-          Done
-        </button>
-      </div>
-    );
+    return <CongratulationsPage onComplete={onComplete} />;
   }
 
   if (showPractice) {
