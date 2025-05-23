@@ -26,8 +26,6 @@ const WordSelection = ({ onSelectWords }: { onSelectWords: (words: string[], typ
   return (
     <div className="word-selection-container">
       <h2 className="word-selection-title">Select a List to Practice</h2>
-      {/* Debugging Text */}
-      <h3>Debugging: Word Selection Component is Rendering</h3>
       <ul className="word-list">
         {wordLists.map((list, idx) => (
           <li

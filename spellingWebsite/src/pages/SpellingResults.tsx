@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import PracticePage from './PracticePage';
 
 interface Word {
@@ -15,7 +16,7 @@ function getBaseWord(word: string): string {
 }
 
 interface WordResultProps {
-  word: { word: string; sentence?: string };
+  word: Word;
   answer: string;
   isCorrect: boolean;
   showCorrection: boolean;
@@ -37,7 +38,7 @@ const WordResult: React.FC<WordResultProps> = ({ word, answer, isCorrect, showCo
 };
 
 interface SpellingResultsProps {
-  words: { word: string; sentence?: string }[];
+  words: Word[];
   answers: string[];
   onPractice: () => void;
   onRetry: () => void;
@@ -46,6 +47,7 @@ interface SpellingResultsProps {
 }
 
 export default function SpellingResults({ words, answers, onPractice, onRetry, listType, isBaseStageResults }: SpellingResultsProps) {
+  const navigate = useNavigate();
   // We need to check correctness against the words corresponding to the stage being displayed
   // Map over the word objects and get the base word string if it's the base stage
   const wordsForCorrectionCheck = isBaseStageResults && listType === 'less_family'
@@ -59,7 +61,7 @@ export default function SpellingResults({ words, answers, onPractice, onRetry, l
 
   return (
     <div className="spelling-container">
-      <h2 className="spelling-title">🚀 Spelling Test 🚀</h2>
+      <h2 className="spelling-title">🚀 Spelling Test Results 🚀</h2>
       <ul className="spelling-results">
         {words.map((item, idx) => {
           // Check correctness against the correct word for the stage
