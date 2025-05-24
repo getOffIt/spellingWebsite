@@ -6,6 +6,7 @@ export type Word = {
 }
 
 export const YEAR1_WORDS: Word[] = [
+  // Level 1: Simple double consonants
   // ff
   { id: 'off', text: 'off', year: 1, category: 'ff' },
   { id: 'stuff', text: 'stuff', year: 1, category: 'ff' },
@@ -39,6 +40,7 @@ export const YEAR1_WORDS: Word[] = [
   { id: 'whizz', text: 'whizz', year: 1, category: 'zz' },
   { id: 'jazz', text: 'jazz', year: 1, category: 'zz' },
 
+  // Level 2: Common consonant digraphs
   // ck
   { id: 'back', text: 'back', year: 1, category: 'ck' },
   { id: 'thick', text: 'thick', year: 1, category: 'ck' },
@@ -56,13 +58,6 @@ export const YEAR1_WORDS: Word[] = [
   { id: 'link-nk', text: 'link', year: 1, category: 'nk' },
   { id: 'pink', text: 'pink', year: 1, category: 'nk' },
 
-  // two syllable words
-  { id: 'pocket', text: 'pocket', year: 1, category: 'two syllable words' },
-  { id: 'rabbit', text: 'rabbit', year: 1, category: 'two syllable words' },
-  { id: 'carrot', text: 'carrot', year: 1, category: 'two syllable words' },
-  { id: 'thunder', text: 'thunder', year: 1, category: 'two syllable words' },
-  { id: 'sunset', text: 'sunset', year: 1, category: 'two syllable words' },
-
   // tch
   { id: 'catch', text: 'catch', year: 1, category: 'tch' },
   { id: 'fetch', text: 'fetch', year: 1, category: 'tch' },
@@ -70,6 +65,7 @@ export const YEAR1_WORDS: Word[] = [
   { id: 'notch', text: 'notch', year: 1, category: 'tch' },
   { id: 'match', text: 'match', year: 1, category: 'tch' },
 
+  // Level 3: Common single letter patterns and simple suffixes
   // v
   { id: 'have', text: 'have', year: 1, category: 'v' },
   { id: 'live', text: 'live', year: 1, category: 'v' },
@@ -94,6 +90,7 @@ export const YEAR1_WORDS: Word[] = [
   { id: 'boxes', text: 'boxes', year: 1, category: '-es' },
   { id: 'foxes', text: 'foxes', year: 1, category: '-es' },
 
+  // Level 4: Vowel digraphs
   // ai
   { id: 'rain', text: 'rain', year: 1, category: 'ai' },
   { id: 'wait', text: 'wait', year: 1, category: 'ai' },
@@ -101,49 +98,6 @@ export const YEAR1_WORDS: Word[] = [
   { id: 'paid', text: 'paid', year: 1, category: 'ai' },
   { id: 'afraid', text: 'afraid', year: 1, category: 'ai' },
   { id: 'aid', text: 'aid', year: 1, category: 'ai' },
-
-  // // adding 'ing'/'ed'/'er' to a verb
-  // { id: 'hunt', text: 'hunt', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'hunting', text: 'hunting', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'hunted', text: 'hunted', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'hunter', text: 'hunter', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'buzzing', text: 'buzzing', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'buzzed', text: 'buzzed', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'jumper', text: 'jumper', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'jump', text: 'jump', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'jumping', text: 'jumping', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'walk', text: 'walk', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'walking', text: 'walking', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'walked', text: 'walked', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'walker', text: 'walker', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'pour', text: 'pour', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'pouring', text: 'pouring', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'poured', text: 'poured', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'pourer', text: 'pourer', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'crash', text: 'crash', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'crashing', text: 'crashing', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'crashed', text: 'crashed', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-  // { id: 'crasher', text: 'crasher', year: 1, category: "adding 'ing'/'ed'/'er' to a verb" },
-
-  // // adding 'er'/'est' to an adjective
-  // { id: 'grand', text: 'grand', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'grander', text: 'grander', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'grandest', text: 'grandest', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'fresh', text: 'fresh', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'fresher', text: 'fresher', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'freshest', text: 'freshest', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'quick', text: 'quick', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'quicker', text: 'quicker', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'quickest', text: 'quickest', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'small', text: 'small', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'smaller', text: 'smaller', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'smallest', text: 'smallest', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'fast', text: 'fast', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'faster', text: 'faster', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'fastest', text: 'fastest', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'round', text: 'round', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'rounder', text: 'rounder', year: 1, category: "adding 'er'/'est' to an adjective" },
-  // { id: 'roundest', text: 'roundest', year: 1, category: "adding 'er'/'est' to an adjective" },
 
   // oi
   { id: 'oil', text: 'oil', year: 1, category: 'oi' },
@@ -160,6 +114,13 @@ export const YEAR1_WORDS: Word[] = [
   { id: 'say', text: 'say', year: 1, category: 'ay' },
   { id: 'stay', text: 'stay', year: 1, category: 'ay' },
   { id: 'clay', text: 'clay', year: 1, category: 'ay' },
+
+  // Level 5: Two syllable words (most complex)
+  { id: 'pocket', text: 'pocket', year: 1, category: 'two syllable words' },
+  { id: 'rabbit', text: 'rabbit', year: 1, category: 'two syllable words' },
+  { id: 'carrot', text: 'carrot', year: 1, category: 'two syllable words' },
+  { id: 'thunder', text: 'thunder', year: 1, category: 'two syllable words' },
+  { id: 'sunset', text: 'sunset', year: 1, category: 'two syllable words' },
 ];
 
 export const YEAR2_WORDS: Word[] = [
