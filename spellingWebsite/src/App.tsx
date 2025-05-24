@@ -4,7 +4,7 @@ import './App.css'
 import WordSelection from './pages/WordSelection'
 import SpellingTest from './pages/SpellingTest'
 import NotFoundPage from './pages/NotFoundPage'
-import Year1 from './pages/Year1'
+import KS1_1 from './pages/KS1_1'
 
 function App() {
   const [selectedList, setSelectedList] = useState<{ words: string[]; type: 'single' | 'less_family' } | null>(null)
@@ -31,7 +31,7 @@ function App() {
           <WordSelection onSelectWords={handleSelectWords} />
         )
       } />
-      <Route path="/year1" element={<Year1 onSelectWords={handleSelectWords} />} />
+      <Route path="/ks1-1" element={<KS1_1 onSelectWords={handleSelectWords} />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
