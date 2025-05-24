@@ -17,42 +17,35 @@
 }
 
 .year1-categories {
+  column-count: 8;
+  column-gap: 0.7rem;
   width: 100%;
   max-width: 1600px;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 0.7rem;
 }
 
 @media (max-width: 1400px) {
-  .year1-categories {
-    grid-template-columns: repeat(6, 1fr);
-  }
+  .year1-categories { column-count: 6; }
 }
 
 @media (max-width: 1000px) {
-  .year1-categories {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  .year1-categories { column-count: 3; }
 }
 
 @media (max-width: 700px) {
-  .year1-categories {
-    grid-template-columns: 1fr;
-  }
+  .year1-categories { column-count: 1; }
 }
 
 .year1-category {
+  display: block;
+  break-inside: avoid;
+  margin-bottom: 0.7rem;
   background: rgba(255, 255, 255, 0.97);
   border-radius: 10px;
   padding: 0.6rem 0.3rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.06);
-  display: flex;
   flex-direction: column;
   align-items: center;
   min-width: 0;
-  max-width: 200px;
-  margin: 0 auto;
 }
 
 .year1-category-header {
