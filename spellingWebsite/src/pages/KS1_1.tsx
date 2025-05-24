@@ -2,17 +2,17 @@ import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { YEAR1_WORDS } from '../data/words';
 import { useProgress } from '../contexts/ProgressProvider';
-import './Year1.css';
+import './KS1_1.css';
 
-interface Year1Props {
+interface KS1_1Props {
   onSelectWords: (words: string[], type: 'single' | 'less_family') => void;
 }
 
 const getStatusIcon = (status: string) => {
-  return <span className={`word-status ${status}`}>•</span>;
+  return <span className={`ks1-1-word-status ${status}`}>•</span>;
 };
 
-const Year1: React.FC<Year1Props> = ({ onSelectWords }) => {
+const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
   const { progress } = useProgress();
   const navigate = useNavigate();
 
@@ -47,26 +47,26 @@ const Year1: React.FC<Year1Props> = ({ onSelectWords }) => {
   };
 
   return (
-    <div className="year1-container">
-      <h1 className="year1-title">Year 1 Spelling</h1>
-      <div className="year1-overall-progress">
-        <div className="year1-overall-progress-bar">
+    <div className="ks1-1-container">
+      <h1 className="ks1-1-title">KS1 - 1 Spelling</h1>
+      <div className="ks1-1-overall-progress">
+        <div className="ks1-1-overall-progress-bar">
           <div
-            className="year1-overall-progress-fill"
+            className="ks1-1-overall-progress-fill"
             style={{ width: `${overallPercent}%` }}
           />
         </div>
-        <span className="year1-overall-progress-text">
+        <span className="ks1-1-overall-progress-text">
           {masteredWords}/{totalWords} mastered
         </span>
       </div>
-      <div className="year1-categories">
+      <div className="ks1-1-categories">
         {categories.map(([category, words]) => {
           const catProgress = getCategoryProgress(words);
           return (
             <div
               key={category}
-              className="year1-category"
+              className="ks1-1-category"
               onClick={() => {
                 const firstThree = words.slice(0, 3).map(w => w.text);
                 onSelectWords(firstThree, 'single');
@@ -74,27 +74,27 @@ const Year1: React.FC<Year1Props> = ({ onSelectWords }) => {
               }}
               style={{ cursor: 'pointer' }}
             >
-              <div className="year1-category-header">
-                <h2 className="year1-category-title">{category}</h2>
-                <div className="year1-category-progress">
-                  <div className="year1-progress-bar">
+              <div className="ks1-1-category-header">
+                <h2 className="ks1-1-category-title">{category}</h2>
+                <div className="ks1-1-category-progress">
+                  <div className="ks1-1-progress-bar">
                     <div 
-                      className="year1-progress-fill"
+                      className="ks1-1-progress-fill"
                       style={{ width: `${catProgress.percentage}%` }}
                     />
                   </div>
-                  <span className="year1-progress-text">
+                  <span className="ks1-1-progress-text">
                     {catProgress.mastered}/{catProgress.total}
                   </span>
                 </div>
               </div>
-              <div className="year1-words-list">
+              <div className="ks1-1-words-list">
                 {words.map(word => {
                   const status = progress[word.id]?.status || 'not-started';
                   return (
                     <span
                       key={word.id}
-                      className={`year1-word ${status}`}
+                      className={`ks1-1-word ${status}`}
                     >
                       {getStatusIcon(status)} {word.text}
                     </span>
@@ -109,4 +109,4 @@ const Year1: React.FC<Year1Props> = ({ onSelectWords }) => {
   );
 };
 
-export default Year1; 
+export default KS1_1; 

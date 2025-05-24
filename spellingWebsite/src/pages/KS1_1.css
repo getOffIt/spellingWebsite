@@ -1,4 +1,5 @@
-.year1-container {
+/* Renamed from year1 to ks1-1 */
+.ks1-1-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,7 +9,7 @@
   font-family: 'Comic Sans MS', 'Comic Sans', 'Arial Rounded MT Bold', 'Arial', sans-serif;
 }
 
-.year1-title {
+.ks1-1-title {
   color: #2563eb;
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -16,26 +17,23 @@
   text-shadow: 1px 2px 8px #fff6, 0 2px 0 #60a5fa;
 }
 
-.year1-categories {
-  column-count: 8;
-  column-gap: 0.7rem;
+.ks1-1-categories {
   width: 100%;
   max-width: 1600px;
+  column-count: 8;
+  column-gap: 0.7rem;
 }
-
 @media (max-width: 1400px) {
-  .year1-categories { column-count: 6; }
+  .ks1-1-categories { column-count: 6; }
 }
-
 @media (max-width: 1000px) {
-  .year1-categories { column-count: 3; }
+  .ks1-1-categories { column-count: 3; }
 }
-
 @media (max-width: 700px) {
-  .year1-categories { column-count: 1; }
+  .ks1-1-categories { column-count: 1; }
 }
 
-.year1-category {
+.ks1-1-category {
   display: block;
   break-inside: avoid;
   margin-bottom: 0.7rem;
@@ -48,13 +46,13 @@
   min-width: 0;
 }
 
-.year1-category-header {
+.ks1-1-category-header {
   margin-bottom: 0.3rem;
   width: 100%;
   text-align: center;
 }
 
-.year1-category-title {
+.ks1-1-category-title {
   color: #1e40af;
   font-size: 1.05rem;
   margin-bottom: 0.15rem;
@@ -62,14 +60,14 @@
   font-weight: bold;
 }
 
-.year1-category-progress {
+.ks1-1-category-progress {
   display: flex;
   align-items: center;
   gap: 0.3rem;
   justify-content: center;
 }
 
-.year1-progress-bar {
+.ks1-1-progress-bar {
   flex: 1;
   height: 6px;
   background: #e5e7eb;
@@ -79,20 +77,55 @@
   max-width: 70px;
 }
 
-.year1-progress-fill {
+.ks1-1-progress-fill {
   height: 100%;
   background: #10b981;
   transition: width 0.3s ease;
 }
 
-.year1-progress-text {
+.ks1-1-progress-text {
   color: #4b5563;
   font-size: 0.75rem;
   min-width: 40px;
   text-align: right;
 }
 
-.year1-words-list {
+.ks1-1-overall-progress {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 1.2rem auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ks1-1-overall-progress-bar {
+  flex: 1;
+  height: 14px;
+  background: #e5e7eb;
+  border-radius: 7px;
+  overflow: hidden;
+  min-width: 120px;
+  max-width: 400px;
+  box-shadow: 0 1px 4px #0001;
+}
+
+.ks1-1-overall-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #60a5fa 0%, #10b981 100%);
+  transition: width 0.3s ease;
+}
+
+.ks1-1-overall-progress-text {
+  color: #2563eb;
+  font-size: 1.1rem;
+  font-weight: bold;
+  min-width: 90px;
+  text-align: right;
+  letter-spacing: 1px;
+}
+
+.ks1-1-words-list {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -101,7 +134,7 @@
   width: 100%;
 }
 
-.year1-word {
+.ks1-1-word {
   display: flex;
   align-items: center;
   font-size: 0.97em;
@@ -115,71 +148,30 @@
   transition: color 0.2s;
 }
 
-.year1-word.mastered {
+.ks1-1-word.mastered {
   color: #15803d;
   font-weight: 600;
 }
-.year1-word.in-progress {
+.ks1-1-word.in-progress {
   color: #b45309;
 }
-.year1-word.not-started {
+.ks1-1-word.not-started {
   color: #64748b;
 }
 
-.word-status {
+.ks1-1-word-status {
   margin-right: 0.18em;
   font-size: 1.15em;
   line-height: 1;
   display: inline-block;
   font-weight: bold;
 }
-.word-status.mastered {
+.ks1-1-word-status.mastered {
   color: #10b981;
 }
-.word-status.in-progress {
+.ks1-1-word-status.in-progress {
   color: #f59e42;
 }
-.word-status.not-started {
+.ks1-1-word-status.not-started {
   color: #64748b;
-}
-
-.year1-description {
-  font-size: 1.3rem;
-  color: #2563eb;
-  text-align: center;
-}
-
-.year1-overall-progress {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto 1.2rem auto;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.year1-overall-progress-bar {
-  flex: 1;
-  height: 14px;
-  background: #e5e7eb;
-  border-radius: 7px;
-  overflow: hidden;
-  min-width: 120px;
-  max-width: 400px;
-  box-shadow: 0 1px 4px #0001;
-}
-
-.year1-overall-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #60a5fa 0%, #10b981 100%);
-  transition: width 0.3s ease;
-}
-
-.year1-overall-progress-text {
-  color: #2563eb;
-  font-size: 1.1rem;
-  font-weight: bold;
-  min-width: 90px;
-  text-align: right;
-  letter-spacing: 1px;
 } 
