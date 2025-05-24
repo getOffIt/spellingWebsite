@@ -31,7 +31,7 @@ function App() {
           <WordSelection onSelectWords={handleSelectWords} />
         )
       } />
-      <Route path="/year1" element={<Year1 />} />
+      <Route path="/year1" element={<Year1 onSelectWords={handleSelectWords} />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
