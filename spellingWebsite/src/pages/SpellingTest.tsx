@@ -4,6 +4,7 @@ import './SpellingTest.css';
 import PracticePage from './PracticePage';
 import SpellingResults from './SpellingResults';
 import CongratulationsPage from './CongratulationsPage';
+import { useProgress, WordProgress } from '../contexts/ProgressProvider';
 
 interface Word {
   word: string;
@@ -31,6 +32,7 @@ interface SpellingTestProps {
 
 export default function SpellingTest({ words, listType, onComplete }: SpellingTestProps) {
   const navigate = useNavigate();
+  const { update, progress } = useProgress();
   // If listType is 'less_family', generate base words
   const baseWords = listType === 'less_family' ? words.map(word => getBaseWord(word)) : [];
 
@@ -76,6 +78,21 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
   };
 
   const handleNext = () => {
+    // Update progress for the current word
+    const currentWord = wordsForCurrentStage[step];
+    const isCorrect = answers[step].trim().toLowerCase() === currentWord.toLowerCase();
+    
+    const currentProgress = progress[currentWord] ?? { status: 'not-started', attempts: 0, streak: 0, lastSeen: null };
+    const newStreak = isCorrect ? currentProgress.streak + 1 : 0;
+    const newStatus = newStreak >= 3 ? 'mastered' : isCorrect ? 'in-progress' : 'in-progress';
+    
+    update(currentWord, {
+      status: newStatus,
+      attempts: currentProgress.attempts + 1,
+      streak: newStreak,
+      lastSeen: new Date().toISOString()
+    });
+
     // Check if it's the last word in the current stage
     if (step === wordsForCurrentStage.length - 1) {
       // If it's the base word stage for a less_family list

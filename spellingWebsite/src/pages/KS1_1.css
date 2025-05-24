@@ -149,22 +149,22 @@
 }
 
 .ks1-1-word.mastered {
-  color: #15803d;
   font-weight: 600;
 }
 .ks1-1-word.in-progress {
-  color: #b45309;
+  /* Remove color change */
 }
 .ks1-1-word.not-started {
-  color: #64748b;
+  /* Remove color change */
 }
 
 .ks1-1-word-status {
-  margin-right: 0.18em;
-  font-size: 1.15em;
+  margin-right: 0.25em;
+  font-size: 1.4em;
   line-height: 1;
   display: inline-block;
   font-weight: bold;
+  transform: translateY(-0.05em); /* Slight vertical adjustment to align with text */
 }
 .ks1-1-word-status.mastered {
   color: #10b981;
