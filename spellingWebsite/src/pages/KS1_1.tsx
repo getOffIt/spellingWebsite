@@ -46,6 +46,25 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
     };
   };
 
+  const selectNextWords = (words: typeof YEAR1_WORDS) => {
+    // Sort words by priority: in-progress > not-started > mastered
+    const sortedWords = [...words].sort((a, b) => {
+      const statusA = progress[a.id]?.status || 'not-started';
+      const statusB = progress[b.id]?.status || 'not-started';
+      
+      const priority = {
+        'in-progress': 0,
+        'not-started': 1,
+        'mastered': 2
+      };
+      
+      return priority[statusA] - priority[statusB];
+    });
+
+    // Take the first 3 words
+    return sortedWords.slice(0, 3).map(w => w.text);
+  };
+
   return (
     <div className="ks1-1-container">
       <h1 className="ks1-1-title">KS1 - 1 Spelling</h1>
@@ -68,8 +87,8 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
               key={category}
               className="ks1-1-category"
               onClick={() => {
-                const firstThree = words.slice(0, 3).map(w => w.text);
-                onSelectWords(firstThree, 'single');
+                const selectedWords = selectNextWords(words);
+                onSelectWords(selectedWords, 'single');
                 navigate('/');
               }}
               style={{ cursor: 'pointer' }}
