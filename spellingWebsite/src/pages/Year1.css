@@ -128,9 +128,10 @@
 
 .word-status {
   margin-right: 0.18em;
-  font-size: 1em;
+  font-size: 1.15em;
   line-height: 1;
   display: inline-block;
+  font-weight: bold;
 }
 .word-status.mastered {
   color: #10b981;
@@ -146,4 +147,39 @@
   font-size: 1.3rem;
   color: #2563eb;
   text-align: center;
+}
+
+.year1-overall-progress {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 1.2rem auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.year1-overall-progress-bar {
+  flex: 1;
+  height: 14px;
+  background: #e5e7eb;
+  border-radius: 7px;
+  overflow: hidden;
+  min-width: 120px;
+  max-width: 400px;
+  box-shadow: 0 1px 4px #0001;
+}
+
+.year1-overall-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #60a5fa 0%, #10b981 100%);
+  transition: width 0.3s ease;
+}
+
+.year1-overall-progress-text {
+  color: #2563eb;
+  font-size: 1.1rem;
+  font-weight: bold;
+  min-width: 90px;
+  text-align: right;
+  letter-spacing: 1px;
 } 
