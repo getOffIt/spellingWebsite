@@ -18,49 +18,53 @@
 
 .year1-categories {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1600px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.7rem;
 }
 
-@media (min-width: 1400px) {
+@media (max-width: 1400px) {
   .year1-categories {
     grid-template-columns: repeat(6, 1fr);
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .year1-categories {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .year1-categories {
     grid-template-columns: 1fr;
   }
 }
 
 .year1-category {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.97);
   border-radius: 10px;
-  padding: 0.75rem 0.5rem;
+  padding: 0.6rem 0.3rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.06);
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   min-width: 0;
+  max-width: 200px;
+  margin: 0 auto;
 }
 
 .year1-category-header {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
+  width: 100%;
+  text-align: center;
 }
 
 .year1-category-title {
   color: #1e40af;
-  font-size: 1.1rem;
-  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+  margin-bottom: 0.15rem;
   text-transform: capitalize;
   font-weight: bold;
 }
@@ -68,7 +72,8 @@
 .year1-category-progress {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
+  justify-content: center;
 }
 
 .year1-progress-bar {
@@ -77,6 +82,8 @@
   background: #e5e7eb;
   border-radius: 3px;
   overflow: hidden;
+  min-width: 40px;
+  max-width: 70px;
 }
 
 .year1-progress-fill {
@@ -87,22 +94,24 @@
 
 .year1-progress-text {
   color: #4b5563;
-  font-size: 0.8rem;
-  min-width: 60px;
+  font-size: 0.75rem;
+  min-width: 40px;
   text-align: right;
 }
 
 .year1-words-list {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 0.5rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
   padding: 0.1rem 0 0 0;
+  width: 100%;
 }
 
 .year1-word {
   display: flex;
   align-items: center;
-  font-size: 0.98em;
+  font-size: 0.97em;
   color: #222;
   background: none;
   border: none;
@@ -125,7 +134,7 @@
 }
 
 .word-status {
-  margin-right: 0.2em;
+  margin-right: 0.18em;
   font-size: 1em;
   line-height: 1;
   display: inline-block;
