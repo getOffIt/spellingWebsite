@@ -4,18 +4,16 @@ import { useProgress } from '../contexts/ProgressProvider';
 import './Year1.css';
 
 const getStatusIcon = (status: string) => {
-  switch (status) {
-    case 'mastered':
-      return <span className="word-status mastered">✔︎</span>;
-    case 'in-progress':
-      return <span className="word-status in-progress">•</span>;
-    default:
-      return <span className="word-status not-started">❔</span>;
-  }
+  return <span className={`word-status ${status}`}>•</span>;
 };
 
 const Year1: React.FC = () => {
   const { progress } = useProgress();
+
+  // Overall progress calculation
+  const totalWords = YEAR1_WORDS.length;
+  const masteredWords = YEAR1_WORDS.filter(word => progress[word.id]?.status === 'mastered').length;
+  const overallPercent = Math.round((masteredWords / totalWords) * 100);
 
   const categories = useMemo(() => {
     const grouped = YEAR1_WORDS.reduce((acc, word) => {
@@ -43,6 +41,17 @@ const Year1: React.FC = () => {
   return (
     <div className="year1-container">
       <h1 className="year1-title">Year 1 Spelling</h1>
+      <div className="year1-overall-progress">
+        <div className="year1-overall-progress-bar">
+          <div
+            className="year1-overall-progress-fill"
+            style={{ width: `${overallPercent}%` }}
+          />
+        </div>
+        <span className="year1-overall-progress-text">
+          {masteredWords}/{totalWords} mastered
+        </span>
+      </div>
       <div className="year1-categories">
         {categories.map(([category, words]) => {
           const catProgress = getCategoryProgress(words);
