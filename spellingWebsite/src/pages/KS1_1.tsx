@@ -22,6 +22,14 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
   const overallPercent = Math.round((masteredWords / totalWords) * 100);
 
   const categories = useMemo(() => {
+    // Create a map of category to its first occurrence index
+    const categoryOrder = new Map<string, number>();
+    YEAR1_WORDS.forEach((word, index) => {
+      if (!categoryOrder.has(word.category)) {
+        categoryOrder.set(word.category, index);
+      }
+    });
+
     const grouped = YEAR1_WORDS.reduce((acc, word) => {
       if (!acc[word.category]) {
         acc[word.category] = [];
@@ -29,9 +37,14 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
       acc[word.category].push(word);
       return acc;
     }, {} as Record<string, typeof YEAR1_WORDS>);
+
     return Object.entries(grouped)
       .filter(([cat]) => !cat.toLowerCase().startsWith('adding'))
-      .sort(([a], [b]) => a.localeCompare(b));
+      .sort(([a], [b]) => {
+        const orderA = categoryOrder.get(a) ?? Infinity;
+        const orderB = categoryOrder.get(b) ?? Infinity;
+        return orderA - orderB;
+      });
   }, []);
 
   const getCategoryProgress = (categoryWords: typeof YEAR1_WORDS) => {
