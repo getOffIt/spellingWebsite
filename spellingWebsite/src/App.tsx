@@ -1,40 +1,35 @@
-import React, { useState } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "react-oidc-context";
+import Login from "./pages/Login";
+import WordSelection from "./pages/WordSelection";
 import './App.css'
-import WordSelection from './pages/WordSelection'
 import SpellingTest from './pages/SpellingTest'
 import NotFoundPage from './pages/NotFoundPage'
 import KS1_1 from './pages/KS1_1'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
-  const [selectedList, setSelectedList] = useState<{ words: string[]; type: 'single' | 'less_family' } | null>(null)
-  const navigate = useNavigate()
+  const auth = useAuth();
 
-  const handleSelectWords = (words: string[], type: 'single' | 'less_family') => {
-    setSelectedList({ words, type })
-  }
-
-  const handleReset = () => {
-    setSelectedList(null)
-  }
+  // Provide a no-op for onSelectWords to satisfy required prop
+  const handleSelectWords = () => {};
 
   return (
     <Routes>
-      <Route path="/" element={
-        selectedList ? (
-          <SpellingTest 
-            words={selectedList.words} 
-            listType={selectedList.type} 
-            onComplete={handleReset}
-          />
-        ) : (
-          <WordSelection onSelectWords={handleSelectWords} />
-        )
-      } />
-      <Route path="/ks1-1" element={<KS1_1 onSelectWords={handleSelectWords} />} />
-      <Route path="*" element={<NotFoundPage />} />
+      {/* Unprotected login route */}
+      <Route path="/login" element={<Login />} />
+      {/* Protected routes */}
+      <Route
+        path="/ks1-1"
+        element={auth.isAuthenticated ? <KS1_1 onSelectWords={handleSelectWords} /> : <Navigate to="/login" replace />}
+        />
+      <Route
+        path="/*"
+        element={auth.isAuthenticated ? <WordSelection onSelectWords={handleSelectWords} /> : <Navigate to="/login" replace />}
+      />
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;
