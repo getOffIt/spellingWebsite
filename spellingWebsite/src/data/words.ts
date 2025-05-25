@@ -124,6 +124,19 @@ export const YEAR1_WORDS: Word[] = [
 ];
 
 export const YEAR2_WORDS: Word[] = [
+  // -less words
+  { id: 'careless', text: 'careless', year: 2, category: '-less' },
+  { id: 'harmless', text: 'harmless', year: 2, category: '-less' },
+  { id: 'helpless', text: 'helpless', year: 2, category: '-less' },
+  { id: 'homeless', text: 'homeless', year: 2, category: '-less' },
+  { id: 'joyless', text: 'joyless', year: 2, category: '-less' },
+  { id: 'mindless', text: 'mindless', year: 2, category: '-less' },
+  { id: 'painless', text: 'painless', year: 2, category: '-less' },
+  { id: 'speechless', text: 'speechless', year: 2, category: '-less' },
+  { id: 'thankless', text: 'thankless', year: 2, category: '-less' },
+  { id: 'useless', text: 'useless', year: 2, category: '-less' },
+
+  // Other Year 2 words
   { id: 'door', text: 'door', year: 2, category: 'misc' },
   { id: 'floor', text: 'floor', year: 2, category: 'misc' },
   { id: 'poor', text: 'poor', year: 2, category: 'misc' },
@@ -188,6 +201,6 @@ export const YEAR2_WORDS: Word[] = [
   { id: 'mrs', text: 'Mrs', year: 2, category: 'misc' },
   { id: 'parents', text: 'parents', year: 2, category: 'misc' },
   { id: 'christmas', text: 'Christmas', year: 2, category: 'misc' }
-]
+];
 
 export const ALL_WORDS = [...YEAR1_WORDS, ...YEAR2_WORDS] 
