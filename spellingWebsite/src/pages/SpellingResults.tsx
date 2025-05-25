@@ -83,8 +83,11 @@ export default function SpellingResults({ words, answers, onPractice, onRetry, l
         <button className="spelling-btn" onClick={onRetry}>Try Again</button>
       )}
       {incorrectWords.length > 0 && (
-        <button className="spelling-btn" style={{marginLeft: 16}} onClick={onPractice}>
-          Practice Misspelled Words
+        <button
+          className="spelling-results-practice-btn"
+          onClick={onPractice}
+        >
+          Practice misspelled words
         </button>
       )}
     </div>
