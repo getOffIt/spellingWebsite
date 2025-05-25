@@ -9,11 +9,17 @@ import NotFoundPage from './pages/NotFoundPage'
 import KS1_1 from './pages/KS1_1'
 import ProtectedRoute from './components/ProtectedRoute'
 
-function App() {
+export default function App() {
   const auth = useAuth();
-
+  console.log('OIDC:', auth);
+  console.log('OIDC:', { isAuthenticated: auth.isAuthenticated, user: auth.user, error: auth.error });
   // Provide a no-op for onSelectWords to satisfy required prop
   const handleSelectWords = () => {};
+
+  if (auth.isLoading) {
+    // Wait for OIDC to finish loading before rendering routes
+    return <div>Loading...</div>;
+  }
 
   return (
     <Routes>
@@ -25,11 +31,14 @@ function App() {
         element={auth.isAuthenticated ? <KS1_1 onSelectWords={handleSelectWords} /> : <Navigate to="/login" replace />}
         />
       <Route
-        path="/*"
-        element={auth.isAuthenticated ? <WordSelection onSelectWords={handleSelectWords} /> : <Navigate to="/login" replace />}
+        path="/"
+        element={
+          auth.isAuthenticated
+            ? <WordSelection onSelectWords={handleSelectWords} />
+            : <Navigate to="/login" replace />
+        }
       />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
-
-export default App;
