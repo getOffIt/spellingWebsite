@@ -11,7 +11,12 @@ const cognitoAuthConfig = {
   client_id: "3ua09or8n2k4cqldeu3u8bv585",
   redirect_uri: "http://localhost:5173/",
   response_type: "code",
-  scope: "email openid phone",
+  scope: "openid email phone",
+  automaticSilentRenew: true,
+  onSigninCallback: () => {
+
+   console.log(document.title)
+  }
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
