@@ -10,49 +10,70 @@ html, body {
   -webkit-overflow-scrolling: touch;
 }
 
-.spelling-container {
+.spelling-test-container {
   min-height: 100vh;
-  min-width: 100vw;
-  width: 100vw;
-  height: 100vh;
-  box-sizing: border-box;
-  background: none;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  font-family: 'Comic Sans MS', 'Comic Sans', 'Arial Rounded MT Bold', 'Arial', sans-serif;
-  padding: 0 0;
+  justify-content: flex-start;
+  max-width: 420px;
+  width: 100vw;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2.5rem 1rem 1.5rem 1rem;
+  box-sizing: border-box;
+}
+
+.spelling-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 420px;
+  width: 100vw;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2.5rem 1rem 1.5rem 1rem;
+  box-sizing: border-box;
 }
 
 .spelling-title {
+  text-align: center;
+  font-size: 2rem;
   color: #2563eb;
-  font-size: 2.5rem;
-  margin-bottom: 16px;
+  margin-bottom: 0.7rem;
   letter-spacing: 2px;
   text-shadow: 1px 2px 8px #fff6, 0 2px 0 #60a5fa;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .spelling-progress {
-  font-size: 1.2rem;
-  color: #2563eb;
-  margin-bottom: 12px;
-  font-weight: bold;
+  text-align: center;
+  color: #1e40af;
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .spelling-listen-btn {
+  display: block;
+  margin: 0 auto 1.2rem auto;
   background: #60a5fa;
   color: #fff;
+  font-size: 1.1rem;
   border: none;
-  border-radius: 24px;
-  padding: 18px 36px;
-  font-size: 1.5rem;
-  margin: 18px 0 12px 0;
+  border-radius: 10px;
+  padding: 0.7rem 1.5rem;
   cursor: pointer;
-  box-shadow: 0 2px 8px #60a5fa55;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
   transition: background 0.2s;
-  touch-action: manipulation;
+  margin-left: auto;
+  margin-right: auto;
 }
+
 .spelling-listen-btn:hover {
   background: #2563eb;
 }
@@ -62,47 +83,56 @@ html, body {
   font-size: 1.2rem;
   margin-bottom: 24px;
   font-style: italic;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .spelling-input {
-  font-size: 2rem;
-  padding: 18px 24px;
-  border-radius: 18px;
+  display: block;
+  margin: 0 auto 1.2rem auto;
+  width: 100%;
+  max-width: 340px;
+  min-width: 0;
+  font-size: 1.3rem;
+  padding: 0.7rem 1.2rem;
   border: 2px solid #60a5fa;
-  margin-bottom: 24px;
-  outline: none;
-  width: 90vw;
-  max-width: 500px;
+  border-radius: 12px;
+  box-sizing: border-box;
   text-align: center;
   background: #fff;
-  color: #2563eb;
-  font-family: inherit;
-  box-shadow: 0 1px 6px #60a5fa33;
-  touch-action: manipulation;
-  box-sizing: border-box;
+  color: #222;
+  outline: none;
+  transition: border 0.2s;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.spelling-btn {
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  border-radius: 24px;
-  padding: 18px 40px;
-  font-size: 1.7rem;
-  margin-top: 16px;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: 0 2px 8px #2563eb55;
-  transition: background 0.2s;
-  touch-action: manipulation;
+.spelling-input:focus {
+  border: 2px solid #2563eb;
 }
+
+.spelling-btn, .spelling-results-practice-btn {
+  display: block;
+  margin: 1.5rem auto 0 auto;
+  background: #60a5fa;
+  color: #fff;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 2.2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  transition: background 0.2s;
+  text-align: center;
+}
+
 .spelling-btn:disabled {
   background: #a1c4fd;
-  color: #fff;
   cursor: not-allowed;
 }
-.spelling-btn:hover:not(:disabled) {
-  background: #60a5fa;
+
+.spelling-btn:hover:not(:disabled), .spelling-results-practice-btn:hover:not(:disabled) {
+  background: #2563eb;
 }
 
 .spelling-results {
@@ -113,6 +143,8 @@ html, body {
   max-width: 500px;
   box-sizing: border-box;
   max-width: 100vw;
+  margin-left: auto;
+  margin-right: auto;
 }
 .spelling-results li {
   font-size: 1.5rem;
@@ -140,6 +172,8 @@ html, body {
   display: block;
   margin-top: 4px;
   text-align: left;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (max-width: 900px) {
@@ -160,8 +194,11 @@ html, body {
     font-size: 1rem;
     padding: 10px 10px;
   }
-  .spelling-container {
-    padding: 0 2vw;
+  .spelling-test-container {
+    max-width: 100vw;
+    width: 100vw;
+    padding-left: 3vw;
+    padding-right: 3vw;
   }
   .spelling-results {
     width: 98vw;
