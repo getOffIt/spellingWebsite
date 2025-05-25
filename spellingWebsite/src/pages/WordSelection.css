@@ -251,4 +251,19 @@ input:checked + .toggle-slider {
 
 input:checked + .toggle-slider:before {
   transform: translateX(26px);
+}
+
+.word-selection-section {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto 2rem auto;
+}
+
+.word-selection-section-title {
+  color: #2563eb;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 4px #fff6;
 } 
