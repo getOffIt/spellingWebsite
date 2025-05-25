@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SpellingTest.css';
 import PracticePage from './PracticePage';
@@ -49,6 +49,9 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
   // New state to control speaking
   const [wordToUtter, setWordToUtter] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const inputContainerRef = useRef<HTMLDivElement>(null);
 
   // Check if the words for the current stage are all correct
   const areCurrentStageWordsCorrect = answers.every((ans, idx) => 
@@ -147,6 +150,13 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
   const wordsForResultsOrPractice = listType === 'less_family' && currentStage === 'base' ? baseWords : words;
   const answersForResultsOrPractice = answers; // Answers are always for the last completed stage
 
+  // Scroll input into view on focus (for iPad/mobile)
+  const handleInputFocus = () => {
+    setTimeout(() => {
+      inputContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200); // Delay to allow keyboard to open
+  };
+
   if (done) {
     return <CongratulationsPage onComplete={onComplete} />;
   }
@@ -192,7 +202,7 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
   const currentWord = wordsForCurrentStage[step];
 
   return (
-    <div className="spelling-container">
+    <div className="spelling-test-container" style={{ minHeight: '100vh', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
       <h2 className="spelling-title">🚀 Spelling Test 🚀</h2>
       <div className="spelling-progress">
         {currentStage === 'base' ? 'Base Words' : 'Full Words'} - Word {step + 1} of {wordsForCurrentStage.length}
@@ -201,20 +211,24 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
         🔊 Listen to the word
       </button>
       {/* Removed sentence display as requested previously */}
-      <input
-        className="spelling-input"
-        type="text"
-        value={answers[step]}
-        onChange={handleInput}
-        placeholder="Type the word here"
-        autoFocus
-        onKeyDown={handleKeyDown}
-        autoComplete="new-password"
-        spellCheck={false}
-        inputMode="text"
-        autoCapitalize="off"
-        autoCorrect="off"
-      />
+      <div ref={inputContainerRef}>
+        <input
+          ref={inputRef}
+          className="spelling-input"
+          type="text"
+          value={answers[step]}
+          onChange={handleInput}
+          placeholder="Type the word here"
+          autoFocus
+          onKeyDown={handleKeyDown}
+          autoComplete="new-password"
+          spellCheck={false}
+          inputMode="text"
+          autoCapitalize="off"
+          autoCorrect="off"
+          onFocus={handleInputFocus}
+        />
+      </div>
       <button className="spelling-btn" onClick={handleNext} disabled={!answers[step]}>
         {step === wordsForCurrentStage.length - 1 ? (currentStage === 'base' && listType === 'less_family' ? 'Next Stage' : 'See Results') : 'Next'}
       </button>
