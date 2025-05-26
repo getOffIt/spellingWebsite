@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
+import { useAuth } from 'react-oidc-context';
 
 // Each attempt is stored with date, correctness, and the user's attempt
 export type WordAttempt = {
@@ -34,14 +35,18 @@ export function useProgress() {
 }
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
+  const auth = useAuth();
+  const userId = auth.user?.profile?.sub || 'anonymous';
+  const storageKey = `spelling-progress-${userId}`;
+
   const [progress, setProgress] = useState<ProgressData>(() => {
-    const saved = localStorage.getItem('spelling-progress-functional')
+    const saved = localStorage.getItem(storageKey)
     return saved ? JSON.parse(saved) : {}
   })
 
   useEffect(() => {
-    localStorage.setItem('spelling-progress-functional', JSON.stringify(progress))
-  }, [progress])
+    localStorage.setItem(storageKey, JSON.stringify(progress))
+  }, [progress, storageKey])
 
   // Utility to always return an array for a wordId
   function safeAttempts(progress: ProgressData, wordId: string) {
