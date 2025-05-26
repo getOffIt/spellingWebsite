@@ -1,6 +1,15 @@
 import React from 'react';
 import { useAuth } from 'react-oidc-context';
 
+const signOutRedirect = (auth: ReturnType<typeof useAuth>) => {
+  const clientId = "3ua09or8n2k4cqldeu3u8bv585";
+  const logoutUri = `${window.location.origin}/`;
+  const cognitoDomain = "https://eu-west-2xeqbqosjj.auth.eu-west-2.amazoncognito.com";
+  auth.removeUser().then(() => {
+    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
+  });
+};
+
 export default function ProfilePage() {
   const auth = useAuth();
   if (!auth.isAuthenticated || !auth.user) return null;
@@ -14,7 +23,7 @@ export default function ProfilePage() {
           <strong>Username:</strong> {username}
         </div>
         <button
-          onClick={() => auth.removeUser()}
+          onClick={() => signOutRedirect(auth)}
           style={{
             width: '100%',
             padding: '0.75rem',
