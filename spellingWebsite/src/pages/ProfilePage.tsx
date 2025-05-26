@@ -20,7 +20,7 @@ export default function ProfilePage() {
       <div style={{ maxWidth: 400, width: '100%', margin: '2rem auto', padding: '2rem', background: 'white', borderRadius: 10, boxShadow: '0 2px 8px #0001', textAlign: 'center' }}>
         <h2 style={{ color: '#2563eb', marginBottom: '1.5rem' }}>Account Profile</h2>
         <div style={{ marginBottom: '2rem', fontSize: '1.1rem' }}>
-          <strong>Username:</strong> {username}
+          <strong>Username:</strong> {String(username || '')}
         </div>
         <button
           onClick={() => signOutRedirect(auth)}
