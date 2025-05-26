@@ -11,8 +11,6 @@ import ProtectedRoute from './components/ProtectedRoute'
 
 export default function App() {
   const auth = useAuth();
-  console.log('OIDC:', auth);
-  console.log('OIDC:', { isAuthenticated: auth.isAuthenticated, user: auth.user, error: auth.error });
   // Provide a no-op for onSelectWords to satisfy required prop
   const handleSelectWords = () => {};
 
