@@ -5,6 +5,7 @@ import PracticePage from './PracticePage';
 import SpellingResults from './SpellingResults';
 import CongratulationsPage from './CongratulationsPage';
 import { useWord } from '../hooks/useWord';
+import { useProgress } from '../contexts/ProgressProvider';
 
 interface Word {
   word: string;
