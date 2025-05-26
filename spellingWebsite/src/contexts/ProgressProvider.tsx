@@ -43,12 +43,17 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('spelling-progress', JSON.stringify(progress))
   }, [progress])
 
+  // Utility to always return an array for a wordId
+  function safeAttempts(progress: ProgressData, wordId: string) {
+    return Array.isArray(progress[wordId]) ? progress[wordId] : [];
+  }
+
   // Add a new attempt for a word
   const recordAttempt = (wordId: string, correct: boolean, attempt: string) => {
     setProgress(prev => ({
       ...prev,
       [wordId]: [
-        ...(prev[wordId] || []),
+        ...safeAttempts(prev, wordId),
         { date: new Date().toISOString(), correct, attempt }
       ]
     }))
@@ -56,7 +61,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
   // Compute stats from attempt history
   const getWordStats = (wordId: string): WordStats => {
-    const attemptsArr = progress[wordId] || [];
+    const attemptsArr = safeAttempts(progress, wordId);
     let streak = 0;
     let lastSeen: string | null = null;
     // Calculate streak (consecutive correct answers from the end)
