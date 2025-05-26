@@ -29,7 +29,7 @@ export default function Login() {
     <div className="login-container">
       <div className="login-box">
         <h1>Welcome to SpellingMate</h1>
-        <button onClick={() => auth.signinRedirect()}>Sign In with Cognito</button>
+        <button onClick={() => auth.signinRedirect()}>Sign in</button>
         {/* <button onClick={() => auth.removeUser()}>Log out</button> */}
       </div>
     </div>
