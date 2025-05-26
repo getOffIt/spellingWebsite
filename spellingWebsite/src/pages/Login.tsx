@@ -6,17 +6,14 @@ export default function Login() {
   const auth = useAuth();
 
   if (auth.isLoading) {
-    console.log('Loading...');
     return <div>Loading...</div>;
   }
 
   if (auth.error) {
-    console.log('Error:', auth.error);
     return <div>Encountering error... {auth.error.message}</div>;
   }
 
   if (auth.isAuthenticated) {
-    console.log('You are already signed in.');
     return (
       <div className="login-container">
         <div className="login-box">
