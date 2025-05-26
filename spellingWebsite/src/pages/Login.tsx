@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAuth } from 'react-oidc-context';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
 const signOutRedirect = (auth: ReturnType<typeof useAuth>) => {
@@ -13,6 +14,13 @@ const signOutRedirect = (auth: ReturnType<typeof useAuth>) => {
 
 export default function Login() {
   const auth = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      navigate('/profile');
+    }
+  }, [auth.isAuthenticated, navigate]);
 
   if (auth.isLoading) {
     return <div>Loading...</div>;
@@ -20,18 +28,6 @@ export default function Login() {
 
   if (auth.error) {
     return <div>Encountering error... {auth.error.message}</div>;
-  }
-
-  if (auth.isAuthenticated) {
-    return (
-      <div className="login-container">
-        <div className="login-box">
-          <h1>Welcome to SpellingMate</h1>
-          <div>You are already signed in.</div>
-          <button onClick={() => signOutRedirect(auth)}>Log out</button>
-        </div>
-      </div>
-    );
   }
 
   return (
