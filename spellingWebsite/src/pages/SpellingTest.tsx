@@ -13,6 +13,7 @@ interface Word {
 }
 
 function speak(text: string) {
+  window.speechSynthesis.cancel(); // Stop any ongoing speech
   const utterance = new window.SpeechSynthesisUtterance(text);
   window.speechSynthesis.speak(utterance);
 }
@@ -73,17 +74,23 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
   useEffect(() => {
     if (wordToUtter) {
       speak(wordToUtter);
-      // Reset wordToUtter after speaking, so it only speaks once per update
       setWordToUtter(null);
     }
   }, [wordToUtter]);
 
-  // Effect to set the initial word to be spoken or when stage/step changes
+  // Effect to set the word to utter when step or showResults changes
   useEffect(() => {
-      if (!showResults && wordsForCurrentStage.length > 0) {
-          setWordToUtter(wordsForCurrentStage[step]);
-      }
-  }, [step, showResults, wordsForCurrentStage, currentStage]); // Trigger when step, stage, or word list changes
+    if (!showResults && wordsForCurrentStage.length > 0) {
+      setWordToUtter(prev => {
+        if (prev !== wordsForCurrentStage[step]) {
+          return wordsForCurrentStage[step];
+        }
+        return prev;
+      });
+    }
+    // Only run when step or showResults changes
+    // eslint-disable-next-line
+  }, [step, showResults]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newAnswers = [...answers];
