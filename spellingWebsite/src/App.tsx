@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import Login from "./pages/Login";
@@ -11,10 +11,20 @@ import ProtectedRoute from './components/ProtectedRoute'
 import ProfilePage from './pages/ProfilePage'
 import Header from './components/Header'
 
+
 export default function App() {
   const auth = useAuth();
-  // Provide a no-op for onSelectWords to satisfy required prop
-  const handleSelectWords = () => {};
+ 
+  const [selectedList, setSelectedList] = useState<{ words: string[]; type: 'single' | 'less_family' } | null>(null)
+
+  const handleSelectWords = (words: string[], type: 'single' | 'less_family') => {
+    setSelectedList({ words, type })
+  }
+  // const handleSelectWords = () => {};
+
+  const handleReset = () => {
+    setSelectedList(null)
+  }
 
   if (auth.isLoading) {
     // Wait for OIDC to finish loading before rendering routes
@@ -40,8 +50,8 @@ export default function App() {
           path="/"
           element={
             auth.isAuthenticated
-              ? <WordSelection onSelectWords={handleSelectWords} />
-              : <Navigate to="/login" replace />
+              ? ( selectedList ? <SpellingTest words={selectedList.words} listType={selectedList.type} onComplete={handleReset} /> : <WordSelection onSelectWords={handleSelectWords} />)
+              : (<Navigate to="/login" replace />)
           }
         />
         <Route path="*" element={<Navigate to="/" replace />} />
