@@ -9,7 +9,7 @@ import './index.css'
 const cognitoAuthConfig = {
   authority: "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_XeQbQOSjJ",
   client_id: "3ua09or8n2k4cqldeu3u8bv585",
-  redirect_uri: "http://localhost:5173/",
+  redirect_uri: window.location.origin + "/",
   response_type: "code",
   scope: "openid email phone",
   automaticSilentRenew: true,
