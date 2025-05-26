@@ -8,6 +8,8 @@ import SpellingTest from './pages/SpellingTest'
 import NotFoundPage from './pages/NotFoundPage'
 import KS1_1 from './pages/KS1_1'
 import ProtectedRoute from './components/ProtectedRoute'
+import ProfilePage from './pages/ProfilePage'
+import Header from './components/Header'
 
 export default function App() {
   const auth = useAuth();
@@ -20,23 +22,30 @@ export default function App() {
   }
 
   return (
-    <Routes>
-      {/* Unprotected login route */}
-      <Route path="/login" element={<Login />} />
-      {/* Protected routes */}
-      <Route
-        path="/ks1-1"
-        element={auth.isAuthenticated ? <KS1_1 onSelectWords={handleSelectWords} /> : <Navigate to="/login" replace />}
+    <>
+      <Header />
+      <Routes>
+        {/* Unprotected login route */}
+        <Route path="/login" element={<Login />} />
+        {/* Protected routes */}
+        <Route
+          path="/ks1-1"
+          element={auth.isAuthenticated ? <KS1_1 onSelectWords={handleSelectWords} /> : <Navigate to="/login" replace />}
         />
-      <Route
-        path="/"
-        element={
-          auth.isAuthenticated
-            ? <WordSelection onSelectWords={handleSelectWords} />
-            : <Navigate to="/login" replace />
-        }
-      />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        <Route
+          path="/profile"
+          element={auth.isAuthenticated ? <ProfilePage /> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/"
+          element={
+            auth.isAuthenticated
+              ? <WordSelection onSelectWords={handleSelectWords} />
+              : <Navigate to="/login" replace />
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   );
 }
