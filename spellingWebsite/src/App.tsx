@@ -36,21 +36,38 @@ export default function App() {
       <Routes>
         {/* Unprotected login route */}
         <Route path="/login" element={<Login />} />
+        
         {/* Protected routes */}
         <Route
           path="/ks1-1"
-          element={auth.isAuthenticated ? <KS1_1 onSelectWords={handleSelectWords} /> : <Navigate to="/login" replace />}
+          element={
+            <ProtectedRoute>
+              <KS1_1 onSelectWords={handleSelectWords} />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/profile"
-          element={auth.isAuthenticated ? <ProfilePage /> : <Navigate to="/login" replace />}
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/"
           element={
-            auth.isAuthenticated
-              ? ( selectedList ? <SpellingTest words={selectedList.words} listType={selectedList.type} onComplete={handleReset} /> : <WordSelection onSelectWords={handleSelectWords} />)
-              : (<Navigate to="/login" replace />)
+            <ProtectedRoute>
+              {selectedList ? (
+                <SpellingTest 
+                  words={selectedList.words} 
+                  listType={selectedList.type} 
+                  onComplete={handleReset} 
+                />
+              ) : (
+                <WordSelection onSelectWords={handleSelectWords} />
+              )}
+            </ProtectedRoute>
           }
         />
         <Route path="*" element={<Navigate to="/" replace />} />
