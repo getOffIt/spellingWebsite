@@ -4,7 +4,7 @@ import './SpellingTest.css';
 import PracticePage from './PracticePage';
 import SpellingResults from './SpellingResults';
 import CongratulationsPage from './CongratulationsPage';
-import { useProgress, WordProgress } from '../contexts/ProgressProvider';
+import { useProgress } from '../contexts/ProgressProvider';
 
 interface Word {
   word: string;

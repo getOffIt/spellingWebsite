@@ -5,7 +5,6 @@ import Login from "./pages/Login";
 import WordSelection from "./pages/WordSelection";
 import './App.css'
 import SpellingTest from './pages/SpellingTest'
-import NotFoundPage from './pages/NotFoundPage'
 import KS1_1 from './pages/KS1_1'
 import ProtectedRoute from './components/ProtectedRoute'
 import ProfilePage from './pages/ProfilePage'
