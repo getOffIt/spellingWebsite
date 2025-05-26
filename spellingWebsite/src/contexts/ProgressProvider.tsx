@@ -35,12 +35,12 @@ export function useProgress() {
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const [progress, setProgress] = useState<ProgressData>(() => {
-    const saved = localStorage.getItem('spelling-progress')
+    const saved = localStorage.getItem('spelling-progress-functional')
     return saved ? JSON.parse(saved) : {}
   })
 
   useEffect(() => {
-    localStorage.setItem('spelling-progress', JSON.stringify(progress))
+    localStorage.setItem('spelling-progress-functional', JSON.stringify(progress))
   }, [progress])
 
   // Utility to always return an array for a wordId
