@@ -30,8 +30,7 @@ const WordResult: React.FC<WordResultProps> = ({ word, answer, isCorrect, showCo
 
   return (
     <li className={isCorrect ? 'correct' : 'incorrect'}>
-      {displayedWord}
-      {!isCorrect && showCorrection && <span className="correction">Correction: {correctionWord}</span>}
+      {!isCorrect && showCorrection && <span className="correction"><strong>{correctionWord}</strong></span>}
       <span className="correction">Your answer: {answer}</span>
     </li>
   );
@@ -59,10 +58,24 @@ export default function SpellingResults({ words, answers, onPractice, onRetry, l
     answers[idx].trim().toLowerCase() !== word.toLowerCase()
   );
 
+  const allCorrect = incorrectWords.length === 0;
+
   return (
     <div className="spelling-container">
       <h2 className="spelling-title">🚀 Spelling Test Results 🚀</h2>
-      <ul className="spelling-results">
+      {allCorrect ? (
+        <div className="spelling-congrats">
+          <span className="spelling-balloons" role="img" aria-label="balloons">🎈🎉🎈</span>
+          <div className="spelling-congrats-message">Amazing! You got everything right! Great job! 🎉</div>
+          <span className="spelling-balloons" role="img" aria-label="balloons">🎈🎉🎈</span>
+        </div>
+      ) : (
+        <div className="spelling-encourage">
+          <span className="spelling-encourage-emoji" role="img" aria-label="keep trying">💪🌟</span>
+          <div className="spelling-encourage-message">Keep going! You can do it! Try again and you'll master these words!</div>
+        </div>
+      )}
+      <ul className="spelling-results spelling-results-centered">
         {words.map((item, idx) => {
           // Check correctness against the correct word for the stage
           const correct = answers[idx].trim().toLowerCase() === wordsForCorrectionCheck[idx].toLowerCase();
@@ -79,10 +92,10 @@ export default function SpellingResults({ words, answers, onPractice, onRetry, l
         })}
       </ul>
       {/* Buttons logic remains the same, based on incorrectWords from the current stage results */}
-      {incorrectWords.length === 0 && (
+      {allCorrect && (
         <button className="spelling-btn" onClick={onRetry}>Try Again</button>
       )}
-      {incorrectWords.length > 0 && (
+      {!allCorrect && (
         <button
           className="spelling-results-practice-btn"
           onClick={onPractice}
