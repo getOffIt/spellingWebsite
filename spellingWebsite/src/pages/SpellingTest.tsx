@@ -36,6 +36,17 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
   // If listType is 'less_family', generate base words
   const baseWords = listType === 'less_family' ? words.map(word => getBaseWord(word)) : [];
 
+  // Build hook maps at the top level
+  const wordHooks = words.reduce((acc, word) => {
+    acc[word] = useWord(word);
+    return acc;
+  }, {} as Record<string, ReturnType<typeof useWord>>);
+
+  const baseWordHooks = baseWords.reduce((acc, word) => {
+    acc[word] = useWord(word);
+    return acc;
+  }, {} as Record<string, ReturnType<typeof useWord>>);
+
   const [currentStage, setCurrentStage] = useState<'base' | 'full'>(listType === 'less_family' ? 'base' : 'full');
   
   // Determine the actual words for the current stage
@@ -85,8 +96,10 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
     const currentWord = wordsForCurrentStage[step];
     const userAttempt = answers[step];
     const isCorrect = userAttempt.trim().toLowerCase() === currentWord.toLowerCase();
-    // Use the useWord hook for this word
-    const { recordAttempt } = useWord(currentWord);
+    // Use the useWord hook for this word (from the top-level map)
+    const { recordAttempt } = (currentStage === 'base' && listType === 'less_family')
+      ? baseWordHooks[currentWord]
+      : wordHooks[currentWord];
     recordAttempt(isCorrect, userAttempt);
 
     // Check if it's the last word in the current stage

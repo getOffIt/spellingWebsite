@@ -28,21 +28,32 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
     []
   );
 
-  // Calculate progress for -less words using useWord
+  // Build status maps for all words (call hooks at top level, not in useMemo)
+  const lessWordsStatus = lessWords.reduce((acc, word) => {
+    acc[word.id] = useWord(word.id);
+    return acc;
+  }, {} as Record<string, ReturnType<typeof useWord>>);
+
+  const ks1WordsStatus = ks1Words.reduce((acc, word) => {
+    acc[word.id] = useWord(word.id);
+    return acc;
+  }, {} as Record<string, ReturnType<typeof useWord>>);
+
+  // Calculate progress for -less words
   const lessTotalWords = lessWords.length;
-  const lessMasteredWords = lessWords.filter(word => useWord(word.id).status === 'mastered').length;
+  const lessMasteredWords = lessWords.filter(word => lessWordsStatus[word.id].status === 'mastered').length;
   const lessOverallPercent = Math.round((lessMasteredWords / lessTotalWords) * 100);
 
-  // Calculate progress for KS1-1 words using useWord
+  // Calculate progress for KS1-1 words
   const ks1TotalWords = ks1Words.length;
-  const ks1MasteredWords = ks1Words.filter(word => useWord(word.id).status === 'mastered').length;
+  const ks1MasteredWords = ks1Words.filter(word => ks1WordsStatus[word.id].status === 'mastered').length;
   const ks1OverallPercent = Math.round((ks1MasteredWords / ks1TotalWords) * 100);
 
-  const selectNextWords = (words: typeof YEAR1_WORDS | typeof YEAR2_WORDS) => {
+  const selectNextWords = (words: typeof YEAR1_WORDS | typeof YEAR2_WORDS, wordsStatus: Record<string, ReturnType<typeof useWord>>) => {
     // Sort words by priority: in-progress > not-started > mastered
     const sortedWords = [...words].sort((a, b) => {
-      const statusA = useWord(a.id).status || 'not-started';
-      const statusB = useWord(b.id).status || 'not-started';
+      const statusA = wordsStatus[a.id].status || 'not-started';
+      const statusB = wordsStatus[b.id].status || 'not-started';
       const priority = {
         'in-progress': 0,
         'not-started': 1,
@@ -55,7 +66,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
   };
 
   const handleCategoryClick = (words: typeof YEAR1_WORDS) => {
-    const selectedWords = selectNextWords(words);
+    const selectedWords = selectNextWords(words, ks1WordsStatus);
     onSelectWords(selectedWords, 'single');
     navigate('/spellingTest', { state: { words: selectedWords } });
   };
@@ -82,7 +93,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
         <div 
           className="word-selection-category word-selection-special"
           onClick={() => {
-            const selectedWords = selectNextWords(lessWords);
+            const selectedWords = selectNextWords(lessWords, lessWordsStatus);
             onSelectWords(selectedWords, practiceAsFamily ? 'less_family' : 'single');
             navigate('/');
           }}
@@ -119,7 +130,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
 
           <div className="word-selection-words-list">
             {lessWords.map(word => {
-              const status = useWord(word.id).status || 'not-started';
+              const status = lessWordsStatus[word.id].status || 'not-started';
               return (
                 <span
                   key={word.id}
@@ -151,7 +162,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
         <div className="word-selection-categories">
           {Array.from(new Set(ks1Words.map(word => word.category))).map(category => {
             const categoryWords = ks1Words.filter(word => word.category === category);
-            const masteredWords = categoryWords.filter(word => useWord(word.id).status === 'mastered').length;
+            const masteredWords = categoryWords.filter(word => ks1WordsStatus[word.id].status === 'mastered').length;
             const percent = Math.round((masteredWords / categoryWords.length) * 100);
 
             return (
@@ -177,7 +188,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
                 </div>
                 <div className="word-selection-words-list">
                   {categoryWords.map(word => {
-                    const status = useWord(word.id).status || 'not-started';
+                    const status = ks1WordsStatus[word.id].status || 'not-started';
                     return (
                       <span
                         key={word.id}

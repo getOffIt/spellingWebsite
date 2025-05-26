@@ -19,7 +19,6 @@ export default function App() {
   const handleSelectWords = (words: string[], type: 'single' | 'less_family') => {
     setSelectedList({ words, type })
   }
-  // const handleSelectWords = () => {};
 
   const handleReset = () => {
     setSelectedList(null)
