@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { YEAR1_WORDS, YEAR2_WORDS } from '../data/words';
-import { useProgress } from '../contexts/ProgressProvider';
+import { useWord } from '../hooks/useWord';
 import './WordSelection.css';
 
 interface WordSelectionProps {
@@ -13,7 +13,6 @@ const getStatusIcon = (status: string) => {
 };
 
 const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
-  const { progress } = useProgress();
   const navigate = useNavigate();
   const [practiceAsFamily, setPracticeAsFamily] = useState(false);
 
@@ -29,33 +28,36 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
     []
   );
 
-  // Calculate progress for -less words
+  // Calculate progress for -less words using useWord
   const lessTotalWords = lessWords.length;
-  const lessMasteredWords = lessWords.filter(word => progress[word.id]?.status === 'mastered').length;
+  const lessMasteredWords = lessWords.filter(word => useWord(word.id).status === 'mastered').length;
   const lessOverallPercent = Math.round((lessMasteredWords / lessTotalWords) * 100);
 
-  // Calculate progress for KS1-1 words
+  // Calculate progress for KS1-1 words using useWord
   const ks1TotalWords = ks1Words.length;
-  const ks1MasteredWords = ks1Words.filter(word => progress[word.id]?.status === 'mastered').length;
+  const ks1MasteredWords = ks1Words.filter(word => useWord(word.id).status === 'mastered').length;
   const ks1OverallPercent = Math.round((ks1MasteredWords / ks1TotalWords) * 100);
 
   const selectNextWords = (words: typeof YEAR1_WORDS | typeof YEAR2_WORDS) => {
     // Sort words by priority: in-progress > not-started > mastered
     const sortedWords = [...words].sort((a, b) => {
-      const statusA = progress[a.id]?.status || 'not-started';
-      const statusB = progress[b.id]?.status || 'not-started';
-      
+      const statusA = useWord(a.id).status || 'not-started';
+      const statusB = useWord(b.id).status || 'not-started';
       const priority = {
         'in-progress': 0,
         'not-started': 1,
         'mastered': 2
       };
-      
       return priority[statusA] - priority[statusB];
     });
-
     // Take the first 3 words
     return sortedWords.slice(0, 3).map(w => w.text);
+  };
+
+  const handleCategoryClick = (words: typeof YEAR1_WORDS) => {
+    const selectedWords = selectNextWords(words);
+    onSelectWords(selectedWords, 'single');
+    navigate('/spellingTest', { state: { words: selectedWords } });
   };
 
   return (
@@ -117,7 +119,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
 
           <div className="word-selection-words-list">
             {lessWords.map(word => {
-              const status = progress[word.id]?.status || 'not-started';
+              const status = useWord(word.id).status || 'not-started';
               return (
                 <span
                   key={word.id}
@@ -149,18 +151,14 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
         <div className="word-selection-categories">
           {Array.from(new Set(ks1Words.map(word => word.category))).map(category => {
             const categoryWords = ks1Words.filter(word => word.category === category);
-            const masteredWords = categoryWords.filter(word => progress[word.id]?.status === 'mastered').length;
+            const masteredWords = categoryWords.filter(word => useWord(word.id).status === 'mastered').length;
             const percent = Math.round((masteredWords / categoryWords.length) * 100);
 
             return (
               <div
                 key={category}
                 className="word-selection-category"
-                onClick={() => {
-                  const selectedWords = selectNextWords(categoryWords);
-                  onSelectWords(selectedWords, 'single');
-                  navigate('/');
-                }}
+                onClick={() => handleCategoryClick(categoryWords)}
                 style={{ cursor: 'pointer' }}
               >
                 <div className="word-selection-category-header">
@@ -179,7 +177,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
                 </div>
                 <div className="word-selection-words-list">
                   {categoryWords.map(word => {
-                    const status = progress[word.id]?.status || 'not-started';
+                    const status = useWord(word.id).status || 'not-started';
                     return (
                       <span
                         key={word.id}
