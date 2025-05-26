@@ -36,17 +36,25 @@ export function useProgress() {
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const auth = useAuth();
-  const userId = auth.user?.profile?.sub || 'anonymous';
-  const storageKey = `spelling-progress-${userId}`;
+  const userId = auth.user?.profile?.sub || (auth.isLoading ? null : 'anonymous');
+  const storageKey = userId ? `spelling-progress-${userId}` : null;
 
-  const [progress, setProgress] = useState<ProgressData>(() => {
-    const saved = localStorage.getItem(storageKey)
-    return saved ? JSON.parse(saved) : {}
-  })
+  const [progress, setProgress] = useState<ProgressData | null>(null);
 
+  // Load progress from localStorage when userId is available
   useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify(progress))
-  }, [progress, storageKey])
+    if (storageKey) {
+      const saved = localStorage.getItem(storageKey);
+      setProgress(saved ? JSON.parse(saved) : {});
+    }
+  }, [storageKey]);
+
+  // Save progress to localStorage when it changes and userId is available
+  useEffect(() => {
+    if (storageKey && progress !== null) {
+      localStorage.setItem(storageKey, JSON.stringify(progress));
+    }
+  }, [progress, storageKey]);
 
   // Utility to always return an array for a wordId
   function safeAttempts(progress: ProgressData, wordId: string) {
@@ -56,9 +64,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   // Add a new attempt for a word
   const recordAttempt = (wordId: string, correct: boolean, attempt: string) => {
     setProgress(prev => ({
-      ...prev,
+      ...prev!,
       [wordId]: [
-        ...safeAttempts(prev, wordId),
+        ...safeAttempts(prev!, wordId),
         { date: new Date().toISOString(), correct, attempt }
       ]
     }))
@@ -66,7 +74,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
   // Compute stats from attempt history
   const getWordStats = (wordId: string): WordStats => {
-    const attemptsArr = safeAttempts(progress, wordId);
+    const attemptsArr = progress ? safeAttempts(progress, wordId) : [];
     let streak = 0;
     let lastSeen: string | null = null;
     // Calculate streak (consecutive correct answers from the end)
@@ -86,6 +94,10 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       streak,
       lastSeen
     };
+  }
+
+  if (!storageKey || progress === null) {
+    return <div className="loading-container"><div className="loading-spinner"></div></div>;
   }
 
   return (
