@@ -16,6 +16,7 @@ const cognitoAuthConfig = {
   onSigninCallback: () => {
 
    console.log(document.title)
+   window.history.replaceState({}, document.title, "/");
   }
 }
 
