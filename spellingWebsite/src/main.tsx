@@ -14,8 +14,6 @@ const cognitoAuthConfig = {
   scope: "openid email phone",
   automaticSilentRenew: true,
   onSigninCallback: () => {
-
-   console.log(document.title)
    window.history.replaceState({}, document.title, "/");
   }
 }
