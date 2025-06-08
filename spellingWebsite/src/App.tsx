@@ -9,6 +9,7 @@ import KS1_1 from './pages/KS1_1'
 import ProtectedRoute from './components/ProtectedRoute'
 import ProfilePage from './pages/ProfilePage'
 import Header from './components/Header'
+import ApiTest from './pages/ApiTest'
 
 
 export default function App() {
@@ -42,6 +43,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <KS1_1 onSelectWords={handleSelectWords} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/api-test"
+          element={
+            <ProtectedRoute>
+              <ApiTest />
             </ProtectedRoute>
           }
         />
