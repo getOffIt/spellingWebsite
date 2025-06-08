@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useAuth } from 'react-oidc-context';
+import { getAllProgress, putWordProgress, ProgressData as ApiProgressData } from '../hooks/useProgressApi';
 
 // Each attempt is stored with date, correctness, and the user's attempt
 export type WordAttempt = {
@@ -38,16 +39,39 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const auth = useAuth();
   const userId = auth.user?.profile?.sub || (auth.isLoading ? null : 'anonymous');
   const storageKey = userId ? `spelling-progress-${userId}` : null;
+  const token = auth.user?.access_token;
 
   const [progress, setProgress] = useState<ProgressData | null>(null);
+  const [loadingRemote, setLoadingRemote] = useState(true);
 
-  // Load progress from localStorage when userId is available
+  // Load progress from API (and fallback to localStorage) when userId/token is available
   useEffect(() => {
-    if (storageKey) {
-      const saved = localStorage.getItem(storageKey);
-      setProgress(saved ? JSON.parse(saved) : {});
-    }
-  }, [storageKey]);
+    const loadProgress = async () => {
+      if (!storageKey || !token) {
+        setProgress({});
+        setLoadingRemote(false);
+        return;
+      }
+      setLoadingRemote(true);
+      try {
+        const remote = await getAllProgress(token);
+        setProgress(remote as ProgressData);
+        localStorage.setItem(storageKey, JSON.stringify(remote));
+      } catch (err) {
+        console.error('Failed to load remote progress:', err);
+        // Fallback to localStorage if API fails
+        try {
+          const saved = localStorage.getItem(storageKey);
+          setProgress(saved ? JSON.parse(saved) : {});
+        } catch (e) {
+          setProgress({});
+        }
+      } finally {
+        setLoadingRemote(false);
+      }
+    };
+    loadProgress();
+  }, [storageKey, token]);
 
   // Save progress to localStorage when it changes and userId is available
   useEffect(() => {
@@ -61,16 +85,23 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     return Array.isArray(progress[wordId]) ? progress[wordId] : [];
   }
 
-  // Add a new attempt for a word
+  // Add a new attempt for a word and sync to API
   const recordAttempt = (wordId: string, correct: boolean, attempt: string) => {
-    setProgress(prev => ({
-      ...prev!,
-      [wordId]: [
-        ...safeAttempts(prev!, wordId),
-        { date: new Date().toISOString(), correct, attempt }
-      ]
-    }))
-  }
+    setProgress(prev => {
+      const updated = {
+        ...prev!,
+        [wordId]: [
+          ...safeAttempts(prev!, wordId),
+          { date: new Date().toISOString(), correct, attempt }
+        ]
+      };
+      // Save to API (fire and forget)
+      if (token) {
+        putWordProgress(token, wordId, updated[wordId]).catch(() => {});
+      }
+      return updated;
+    });
+  };
 
   // Compute stats from attempt history
   const getWordStats = (wordId: string): WordStats => {
@@ -94,9 +125,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       streak,
       lastSeen
     };
-  }
+  };
 
-  if (!storageKey || progress === null) {
+  if (!storageKey || progress === null || loadingRemote) {
     return <div className="loading-container"><div className="loading-spinner"></div></div>;
   }
 
