@@ -55,8 +55,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       setLoadingRemote(true);
       try {
         const remote = await getAllProgress(token);
-        setProgress(remote as ProgressData);
-        localStorage.setItem(storageKey, JSON.stringify(remote));
+        // Transform array to object keyed by wordId
+        const progressByWord: ProgressData = {};
+        (remote as any[]).forEach(item => {
+          progressByWord[item.wordId] = item.progress;
+        });
+        setProgress(progressByWord);
+        localStorage.setItem(storageKey, JSON.stringify(progressByWord));
       } catch (err) {
         console.error('Failed to load remote progress:', err);
         // Fallback to localStorage if API fails
