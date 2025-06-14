@@ -55,7 +55,6 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       }
       setLoadingRemote(true);
       try {
-        console.log('[ProgressProvider][GET] token:', token, 'userId:', userId);
         const remote = await getAllProgress(token);
         // Transform array to object keyed by wordId
         const progressByWord: ProgressData = {};
@@ -120,7 +119,6 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     );
     setPendingApiUpdates([]); // Clear the queue
     latestUpdates.forEach(({ wordId, progress }) => {
-      console.log('[ProgressProvider][PUT] token:', token, 'userId:', userId, 'wordId:', wordId);
       putWordProgress(token, wordId, progress).catch(() => {});
     });
   }, [pendingApiUpdates, token]);
