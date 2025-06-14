@@ -1,6 +1,9 @@
 // Lambda for GET and PUT /api/progress endpoints (Node.js 22, ES module syntax)
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, QueryCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocumentClient,
+   QueryCommand,
+   ScanCommand,
+   UpdateCommand } from '@aws-sdk/lib-dynamodb';
 
 const client = new DynamoDBClient();
 const dynamo = DynamoDBDocumentClient.from(client);
@@ -60,12 +63,70 @@ async function putProgress(userId, wordId, progress) {
   }
 }
 
+async function deduplicateAllUsers() {
+  const params = { TableName: "spellingProgress" };
+  let updatedCount = 0;
+
+  let lastEvaluatedKey = undefined;
+
+  do {
+    if (lastEvaluatedKey) {
+      params.ExclusiveStartKey = lastEvaluatedKey;
+    }
+
+    const result = await dynamo.send(new ScanCommand(params));
+
+    for (const item of result.Items) {
+      if (!item.progress || !Array.isArray(item.progress)) continue;
+
+      const seen = new Set();
+      const dedupedProgress = [];
+
+      for (const p of item.progress) {
+        const id = `${p.attempt}|${p.correct}|${p.date}`;
+        if (!seen.has(id)) {
+          seen.add(id);
+          dedupedProgress.push(p);
+        }
+      }
+
+      if (dedupedProgress.length < item.progress.length) {
+        await dynamo.send(
+          new UpdateCommand({
+            TableName: "spellingProgress",
+            Key: { userId: item.userId, wordId: item.wordId },
+            UpdateExpression: "SET progress = :new",
+            ExpressionAttributeValues: { ":new": dedupedProgress },
+          })
+        );
+        updatedCount++;
+        console.log(`Updated userId=${item.userId}, wordId=${item.wordId}`);
+      }
+    }
+
+    lastEvaluatedKey = result.LastEvaluatedKey;
+  } while (lastEvaluatedKey);
+
+  return {
+    statusCode: 200,
+    headers: corsHeaders,
+    body: JSON.stringify({
+      message: `Deduplication complete. Updated ${updatedCount} items.`,
+    }),
+  };
+}
+
 export const handler = async (event) => {
   // return {
   //   statusCode: 200,
   //   headers: { 'Access-Control-Allow-Origin': '*' },
   //   body: JSON.stringify(event)
   // }
+  if (event.deduplicateAll === true) {
+    console.log('Deduplicating all users');
+    console.log(event);
+    return await deduplicateAllUsers();
+  }
 
   if (event.requestContext.http.method === 'OPTIONS') {
     return {
