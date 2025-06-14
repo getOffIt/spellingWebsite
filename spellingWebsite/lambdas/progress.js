@@ -5,6 +5,8 @@ import { DynamoDBDocumentClient,
    ScanCommand,
    UpdateCommand } from '@aws-sdk/lib-dynamodb';
 
+const DEBUG = false; // Set to true to enable debug logging
+
 const client = new DynamoDBClient();
 const dynamo = DynamoDBDocumentClient.from(client);
 
@@ -20,12 +22,12 @@ async function getProgress(userId) {
     KeyConditionExpression: 'userId = :uid',
     ExpressionAttributeValues: { ':uid': userId }
   };
-  console.log('DynamoDB Query params:', params);
-  console.log('Query start', Date.now());
+  if (DEBUG) console.log('DynamoDB Query params:', params);
+  if (DEBUG) console.log('Query start', Date.now());
   try {
     const result = await dynamo.send(new QueryCommand(params));
-    console.log('Query end', Date.now());
-    console.log('DynamoDB Query result:', result);
+    if (DEBUG) console.log('Query end', Date.now());
+    if (DEBUG) console.log('DynamoDB Query result:', result);
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*' },
@@ -105,7 +107,7 @@ async function deduplicateAllUsers() {
           })
         );
         updatedCount++;
-        console.log(`Updated userId=${item.userId}, wordId=${item.wordId}`);
+        if (DEBUG) console.log(`Updated userId=${item.userId}, wordId=${item.wordId}`);
       }
     }
 
@@ -122,18 +124,18 @@ async function deduplicateAllUsers() {
 }
 
 export const handler = async (event) => {
-  console.log('--- Lambda invoked ---');
-  console.log('Event:', JSON.stringify(event));
-  console.log('RouteKey:', event.routeKey);
+  if (DEBUG) console.log('--- Lambda invoked ---');
+  if (DEBUG) console.log('Event:', JSON.stringify(event));
+  if (DEBUG) console.log('RouteKey:', event.routeKey);
 
   if (event.deduplicateAll === true) {
-    console.log('Deduplicating all users');
-    console.log(event);
+    if (DEBUG) console.log('Deduplicating all users');
+    if (DEBUG) console.log(event);
     return await deduplicateAllUsers();
   }
 
   if (event.requestContext && event.requestContext.http && event.requestContext.http.method === 'OPTIONS') {
-    console.log('OPTIONS preflight');
+    if (DEBUG) console.log('OPTIONS preflight');
     return {
       statusCode: 200,
       headers: corsHeaders,
@@ -142,7 +144,7 @@ export const handler = async (event) => {
   }
 
   const userId = event.requestContext?.authorizer?.jwt?.claims?.sub;
-  console.log('Extracted userId:', userId);
+  if (DEBUG) console.log('Extracted userId:', userId);
 
   if (!userId) {
     console.error('No Cognito sub found in event:', JSON.stringify(event));
@@ -154,10 +156,10 @@ export const handler = async (event) => {
   }
 
   if (event.routeKey === 'GET /api/progress') {
-    console.log('Handling GET /api/progress for userId:', userId);
+    if (DEBUG) console.log('Handling GET /api/progress for userId:', userId);
     try {
       const result = await getProgress(userId);
-      console.log('DynamoDB GET result:', result);
+      if (DEBUG) console.log('DynamoDB GET result:', result);
       return result;
     } catch (err) {
       console.error('Error in getProgress:', err);
@@ -187,9 +189,9 @@ export const handler = async (event) => {
         };
       }
       progress = tmpbody.progress;
-      console.log('Handling PUT /api/progress for userId:', userId, 'wordId:', wordId, 'progress:', progress);
+      if (DEBUG) console.log('Handling PUT /api/progress for userId:', userId, 'wordId:', wordId, 'progress:', progress);
       const result = await putProgress(userId, wordId, progress);
-      console.log('DynamoDB PUT result:', result);
+      if (DEBUG) console.log('DynamoDB PUT result:', result);
       return result;
     } catch (e) {
       console.error('Error in putProgress:', e);
