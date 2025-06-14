@@ -20,14 +20,19 @@ async function getProgress(userId) {
     KeyConditionExpression: 'userId = :uid',
     ExpressionAttributeValues: { ':uid': userId }
   };
+  console.log('DynamoDB Query params:', params);
+  console.log('Query start', Date.now());
   try {
     const result = await dynamo.send(new QueryCommand(params));
+    console.log('Query end', Date.now());
+    console.log('DynamoDB Query result:', result);
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*' },
       body: JSON.stringify(result.Items)
     };
   } catch (err) {
+    console.error('DynamoDB Query error:', err);
     return {
       statusCode: 500,
       headers: corsHeaders,
@@ -117,18 +122,18 @@ async function deduplicateAllUsers() {
 }
 
 export const handler = async (event) => {
-  // return {
-  //   statusCode: 200,
-  //   headers: { 'Access-Control-Allow-Origin': '*' },
-  //   body: JSON.stringify(event)
-  // }
+  console.log('--- Lambda invoked ---');
+  console.log('Event:', JSON.stringify(event));
+  console.log('RouteKey:', event.routeKey);
+
   if (event.deduplicateAll === true) {
     console.log('Deduplicating all users');
     console.log(event);
     return await deduplicateAllUsers();
   }
 
-  if (event.requestContext.http.method === 'OPTIONS') {
+  if (event.requestContext && event.requestContext.http && event.requestContext.http.method === 'OPTIONS') {
+    console.log('OPTIONS preflight');
     return {
       statusCode: 200,
       headers: corsHeaders,
@@ -136,9 +141,11 @@ export const handler = async (event) => {
     };
   }
 
-  const userId = event.requestContext.authorizer?.jwt?.claims?.sub;
+  const userId = event.requestContext?.authorizer?.jwt?.claims?.sub;
+  console.log('Extracted userId:', userId);
 
   if (!userId) {
+    console.error('No Cognito sub found in event:', JSON.stringify(event));
     return {
       statusCode: 401,
       headers: corsHeaders,
@@ -147,7 +154,15 @@ export const handler = async (event) => {
   }
 
   if (event.routeKey === 'GET /api/progress') {
-    return getProgress(userId);
+    console.log('Handling GET /api/progress for userId:', userId);
+    try {
+      const result = await getProgress(userId);
+      console.log('DynamoDB GET result:', result);
+      return result;
+    } catch (err) {
+      console.error('Error in getProgress:', err);
+      throw err;
+    }
   }
 
   if (event.routeKey === 'PUT /api/progress/{wordId}') {
@@ -155,6 +170,7 @@ export const handler = async (event) => {
     let progress;
     try {
       if (!event.body) {
+        console.error('Missing request body');
         return {
           statusCode: 400,
           headers: corsHeaders,
@@ -163,6 +179,7 @@ export const handler = async (event) => {
       }
       const tmpbody = JSON.parse(event.body);
       if (!('progress' in tmpbody)) {
+        console.error('Missing progress property in body');
         return {
           statusCode: 400,
           headers: corsHeaders,
@@ -170,18 +187,22 @@ export const handler = async (event) => {
         };
       }
       progress = tmpbody.progress;
+      console.log('Handling PUT /api/progress for userId:', userId, 'wordId:', wordId, 'progress:', progress);
+      const result = await putProgress(userId, wordId, progress);
+      console.log('DynamoDB PUT result:', result);
+      return result;
     } catch (e) {
+      console.error('Error in putProgress:', e);
       return {
         statusCode: 400,
         headers: corsHeaders,
-        body: JSON.stringify({ error: 'Invalid JSON body' })
+        body: JSON.stringify({ error: 'Invalid JSON body or DynamoDB error' })
       };
     }
-    return await putProgress(userId, wordId, progress);
-    
   }
 
   // Default: Not found
+  console.error('Route not found:', event.routeKey);
   return {
     statusCode: 404,
     headers: corsHeaders,
