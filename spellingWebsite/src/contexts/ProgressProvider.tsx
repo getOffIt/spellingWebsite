@@ -43,6 +43,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
   const [progress, setProgress] = useState<ProgressData | null>(null);
   const [loadingRemote, setLoadingRemote] = useState(true);
+  const [pendingApiUpdates, setPendingApiUpdates] = useState<{wordId: string, progress: WordAttempt[]}[]>([]);
 
   // Load progress from API (and fallback to localStorage) when userId/token is available
   useEffect(() => {
@@ -54,6 +55,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       }
       setLoadingRemote(true);
       try {
+        console.log('[ProgressProvider][GET] token:', token, 'userId:', userId);
         const remote = await getAllProgress(token);
         // Transform array to object keyed by wordId
         const progressByWord: ProgressData = {};
@@ -90,7 +92,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     return Array.isArray(progress[wordId]) ? progress[wordId] : [];
   }
 
-  // Add a new attempt for a word and sync to API
+  // Add a new attempt for a word and queue API update
   const recordAttempt = (wordId: string, correct: boolean, attempt: string) => {
     setProgress(prev => {
       const updated = {
@@ -100,13 +102,28 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
           { date: new Date().toISOString(), correct, attempt }
         ]
       };
-      // Save to API (fire and forget)
-      if (token) {
-        putWordProgress(token, wordId, updated[wordId]).catch(() => {});
-      }
+      // Queue the API update instead of calling it directly
+      setPendingApiUpdates(queue => [...queue, { wordId, progress: updated[wordId] }]);
       return updated;
     });
   };
+
+  // useEffect to process API updates
+  useEffect(() => {
+    if (!token || pendingApiUpdates.length === 0) return;
+    // Only process the latest update for each wordId
+    const latestUpdates = Object.values(
+      pendingApiUpdates.reduce((acc, { wordId, progress }) => {
+        acc[wordId] = { wordId, progress };
+        return acc;
+      }, {} as Record<string, { wordId: string, progress: WordAttempt[] }>)
+    );
+    setPendingApiUpdates([]); // Clear the queue
+    latestUpdates.forEach(({ wordId, progress }) => {
+      console.log('[ProgressProvider][PUT] token:', token, 'userId:', userId, 'wordId:', wordId);
+      putWordProgress(token, wordId, progress).catch(() => {});
+    });
+  }, [pendingApiUpdates, token]);
 
   // Compute stats from attempt history
   const getWordStats = (wordId: string): WordStats => {

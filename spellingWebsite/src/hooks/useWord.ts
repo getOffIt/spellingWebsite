@@ -8,15 +8,10 @@ export function useWord(wordId: string) {
   const stats = getWordStats(wordId);
   const attempts = progress[wordId] || [];
 
-  // Record a new attempt
-  const addAttempt = (correct: boolean, attempt: string) => {
-    recordAttempt(wordId, correct, attempt);
-  };
-
   return {
     ...word,
     ...stats,
     attempts, // array of {date, correct, attempt}
-    recordAttempt: addAttempt
+    recordAttempt // Use the ProgressProvider's recordAttempt directly
   };
 } 
