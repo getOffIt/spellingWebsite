@@ -107,7 +107,8 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
     const { recordAttempt } = (currentStage === 'base' && listType === 'less_family')
       ? baseWordHooks[currentWord]
       : wordHooks[currentWord];
-    recordAttempt(isCorrect, userAttempt);
+    console.log('Calling recordAttempt from SpellingTest', { currentWord, isCorrect, userAttempt });
+    recordAttempt(currentWord, isCorrect, userAttempt);
 
     // Check if it's the last word in the current stage
     if (step === wordsForCurrentStage.length - 1) {
