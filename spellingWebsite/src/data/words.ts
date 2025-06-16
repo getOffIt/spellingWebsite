@@ -135,6 +135,14 @@ export const YEAR2_WORDS: Word[] = [
   { id: 'thankless', text: 'thankless', year: 2, category: '-less' },
   { id: 'useless', text: 'useless', year: 2, category: '-less' },
 
+  // -ies words
+  { id: 'berries', text: 'berries', year: 2, category: '-ies' },
+  { id: 'cries', text: 'cries', year: 2, category: '-ies' },
+  { id: 'flies', text: 'flies', year: 2, category: '-ies' },
+  { id: 'ladies', text: 'ladies', year: 2, category: '-ies' },
+  { id: 'pennies', text: 'pennies', year: 2, category: '-ies' },
+  { id: 'tries', text: 'tries', year: 2, category: '-ies' },
+
   // Other Year 2 words
   { id: 'door', text: 'door', year: 2, category: 'misc' },
   { id: 'floor', text: 'floor', year: 2, category: 'misc' },

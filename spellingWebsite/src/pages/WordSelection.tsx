@@ -16,9 +16,9 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
   const navigate = useNavigate();
   const [practiceAsFamily, setPracticeAsFamily] = useState(false);
 
-  // Get all -less words
-  const lessWords = useMemo(() => 
-    YEAR2_WORDS.filter(word => word.category === '-less'),
+  // Get all -ies words
+  const iesWords = useMemo(() => 
+    YEAR2_WORDS.filter(word => word.category === '-ies'),
     []
   );
 
@@ -29,7 +29,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
   );
 
   // Build status maps for all words (call hooks at top level, not in useMemo)
-  const lessWordsStatus = lessWords.reduce((acc, word) => {
+  const iesWordsStatus = iesWords.reduce((acc, word) => {
     acc[word.id] = useWord(word.id);
     return acc;
   }, {} as Record<string, ReturnType<typeof useWord>>);
@@ -39,10 +39,10 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
     return acc;
   }, {} as Record<string, ReturnType<typeof useWord>>);
 
-  // Calculate progress for -less words
-  const lessTotalWords = lessWords.length;
-  const lessMasteredWords = lessWords.filter(word => lessWordsStatus[word.id].status === 'mastered').length;
-  const lessOverallPercent = Math.round((lessMasteredWords / lessTotalWords) * 100);
+  // Calculate progress for -ies words
+  const iesTotalWords = iesWords.length;
+  const iesMasteredWords = iesWords.filter(word => iesWordsStatus[word.id].status === 'mastered').length;
+  const iesOverallPercent = Math.round((iesMasteredWords / iesTotalWords) * 100);
 
   // Calculate progress for KS1-1 words
   const ks1TotalWords = ks1Words.length;
@@ -75,62 +75,48 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
     <div className="word-selection-container">
       <h1 className="word-selection-title">Word Selection</h1>
 
-      {/* -less Family Section */}
+      {/* -ies Family Section */}
       <div className="word-selection-section">
-        <h2 className="word-selection-section-title">-less Family Words</h2>
+        <h2 className="word-selection-section-title">-ies Family Words</h2>
         <div className="word-selection-overall-progress">
           <div className="word-selection-overall-progress-bar">
             <div
               className="word-selection-overall-progress-fill"
-              style={{ width: `${lessOverallPercent}%` }}
+              style={{ width: `${iesOverallPercent}%` }}
             />
           </div>
           <span className="word-selection-overall-progress-text">
-            {lessMasteredWords}/{lessTotalWords} mastered
+            {iesMasteredWords}/{iesTotalWords} mastered
           </span>
         </div>
 
         <div 
           className="word-selection-category word-selection-special"
           onClick={() => {
-            const selectedWords = selectNextWords(lessWords, lessWordsStatus);
+            const selectedWords = selectNextWords(iesWords, iesWordsStatus);
             onSelectWords(selectedWords, practiceAsFamily ? 'less_family' : 'single');
             navigate('/');
           }}
           style={{ cursor: 'pointer' }}
         >
           <div className="word-selection-category-header">
-            <h2 className="word-selection-category-title">Practice -less Family Together</h2>
+            <h2 className="word-selection-category-title">Practice -ies Family Together</h2>
             <div className="word-selection-category-progress">
               <div className="word-selection-progress-bar">
                 <div 
                   className="word-selection-progress-fill"
-                  style={{ width: `${lessOverallPercent}%` }}
+                  style={{ width: `${iesOverallPercent}%` }}
                 />
               </div>
               <span className="word-selection-progress-text">
-                {lessMasteredWords}/{lessTotalWords}
+                {iesMasteredWords}/{iesTotalWords}
               </span>
             </div>
           </div>
 
-          {/* Toggle switch for practice mode */}
-          <div className="word-selection-toggle" onClick={(e) => e.stopPropagation()}>
-            <span className="toggle-label">Faster</span>
-            <label className="toggle-switch">
-              <input
-                type="checkbox"
-                checked={practiceAsFamily}
-                onChange={(e) => setPracticeAsFamily(e.target.checked)}
-              />
-              <span className="toggle-slider"></span>
-            </label>
-            <span className="toggle-label">Easier</span>
-          </div>
-
           <div className="word-selection-words-list">
-            {lessWords.map(word => {
-              const status = lessWordsStatus[word.id].status || 'not-started';
+            {iesWords.map(word => {
+              const status = iesWordsStatus[word.id].status || 'not-started';
               return (
                 <span
                   key={word.id}
