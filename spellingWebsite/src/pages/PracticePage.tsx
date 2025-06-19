@@ -9,8 +9,7 @@ interface PracticePageProps {
 
 export default function PracticePage({ words, onBackToTest }: PracticePageProps) {
   const [step, setStep] = useState(0);
-  const [count, setCount] = useState(0);
-  const [input, setInput] = useState('');
+  const [inputs, setInputs] = useState(['', '', '']);
   const [done, setDone] = useState(false);
 
   useEffect(() => {
@@ -34,32 +33,53 @@ export default function PracticePage({ words, onBackToTest }: PracticePageProps)
 
   const currentWord = words[step];
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
+  const handleInputChange = (index: number, value: string) => {
+    const newInputs = [...inputs];
+    newInputs[index] = value;
+    setInputs(newInputs);
   };
 
-  const handleSubmit = () => {
-    if (input.trim().toLowerCase() === currentWord) {
-      if (count < 2) {
-        setCount(count + 1);
-        setInput('');
-      } else if (step < words.length - 1) {
+  const handlePlay = () => {
+    // Check each attempt individually
+    const results = inputs.map(input => 
+      input.trim().toLowerCase() === currentWord.toLowerCase()
+    );
+    
+    // Check if all three attempts are correct
+    const allCorrect = results.every(result => result);
+
+    if (allCorrect) {
+      if (step < words.length - 1) {
         setStep(step + 1);
-        setCount(0);
-        setInput('');
+        setInputs(['', '', '']);
       } else {
         setDone(true);
       }
     } else {
-      setInput('');
+      // Only clear incorrect attempts, keep correct ones
+      const newInputs = inputs.map((input, index) => 
+        results[index] ? input : ''
+      );
+      setInputs(newInputs);
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && input) {
-      handleSubmit();
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === 'Enter') {
+      if (index < 2) {
+        // Move to next input field
+        const nextInput = document.querySelector(`input[data-index="${index + 1}"]`) as HTMLInputElement;
+        if (nextInput) {
+          nextInput.focus();
+        }
+      } else {
+        // On last input, trigger play
+        handlePlay();
+      }
     }
   };
+
+  const canPlay = inputs.every(input => input.trim() !== '');
 
   if (done) {
     return (
@@ -74,24 +94,46 @@ export default function PracticePage({ words, onBackToTest }: PracticePageProps)
     <div className="spelling-container">
       <h2 className="spelling-title">Practice Misspelled Words</h2>
       <div className="spelling-progress">
-        Practice: <b>{currentWord}</b> ({count + 1} of 3)
+        Word {step + 1} of {words.length}: <b>{currentWord}</b>
       </div>
       <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#2563eb', margin: '16px 0 8px 0', letterSpacing: '2px' }}>{currentWord}</div>
-      <input
-        className="spelling-input"
-        type="text"
-        value={input}
-        onChange={handleInput}
-        autoFocus
-        onKeyDown={handleKeyDown}
-        autoComplete="new-password"
-        spellCheck={false}
-        inputMode='text'
-        autoCapitalize='off'
-        autoCorrect='off'
-      />
-      <button className="spelling-btn" onClick={handleSubmit} disabled={!input}>
-        Submit
+      
+      <div style={{ marginBottom: '16px' }}>
+        <p style={{ marginBottom: '8px', fontSize: '14px', color: '#666' }}>
+          Write the word three times below:
+        </p>
+        {inputs.map((input, index) => (
+          <div key={index} style={{ marginBottom: '8px' }}>
+            <input
+              className="spelling-input"
+              type="text"
+              value={input}
+              onChange={(e) => handleInputChange(index, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
+              autoFocus={index === 0}
+              autoComplete="new-password"
+              spellCheck={false}
+              inputMode='text'
+              autoCapitalize='off'
+              autoCorrect='off'
+              data-index={index}
+              placeholder={`Attempt ${index + 1}`}
+              style={{ marginBottom: '4px' }}
+            />
+          </div>
+        ))}
+      </div>
+      
+      <button 
+        className="spelling-btn" 
+        onClick={handlePlay} 
+        disabled={!canPlay}
+        style={{ 
+          backgroundColor: canPlay ? '#2563eb' : '#9ca3af',
+          cursor: canPlay ? 'pointer' : 'not-allowed'
+        }}
+      >
+        Play
       </button>
     </div>
   );
