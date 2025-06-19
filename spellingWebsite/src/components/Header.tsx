@@ -8,7 +8,16 @@ export default function Header() {
   const profile = auth.user?.profile;
   const username = profile?.['cognito:username'] || profile?.email || profile?.sub;
   return (
-    <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 1.2rem', background: '#2563eb', color: 'white', minHeight: 44 }}>
+    <header style={{ 
+      display: 'flex', 
+      justifyContent: 'space-between', 
+      alignItems: 'center', 
+      padding: '0.5rem 2rem',
+      background: '#2563eb', 
+      color: 'white', 
+      minHeight: 44,
+      width: '100%'
+    }}>
       <div
         style={{ fontWeight: 700, fontSize: '1.1rem', letterSpacing: 1, cursor: 'pointer', userSelect: 'none' }}
         onClick={() => navigate('/')}
