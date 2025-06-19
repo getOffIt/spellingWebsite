@@ -31,55 +31,57 @@ export default function App() {
   }
 
   return (
-    <>
+    <div className="app-container">
       <Header />
-      <Routes>
-        {/* Unprotected login route */}
-        <Route path="/login" element={<Login />} />
-        
-        {/* Protected routes */}
-        <Route
-          path="/ks1-1"
-          element={
-            <ProtectedRoute>
-              <KS1_1 onSelectWords={handleSelectWords} />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/api-test"
-          element={
-            <ProtectedRoute>
-              <ApiTest />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              {selectedList ? (
-                <SpellingTest 
-                  words={selectedList.words} 
-                  listType={selectedList.type} 
-                  onComplete={handleReset} 
-                />
-              ) : (
-                <WordSelection onSelectWords={handleSelectWords} />
-              )}
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </>
+      <main className="main-content">
+        <Routes>
+          {/* Unprotected login route */}
+          <Route path="/login" element={<Login />} />
+          
+          {/* Protected routes */}
+          <Route
+            path="/ks1-1"
+            element={
+              <ProtectedRoute>
+                <KS1_1 onSelectWords={handleSelectWords} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/api-test"
+            element={
+              <ProtectedRoute>
+                <ApiTest />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                {selectedList ? (
+                  <SpellingTest 
+                    words={selectedList.words} 
+                    listType={selectedList.type} 
+                    onComplete={handleReset} 
+                  />
+                ) : (
+                  <WordSelection onSelectWords={handleSelectWords} />
+                )}
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+    </div>
   );
 }
