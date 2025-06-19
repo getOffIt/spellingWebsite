@@ -30,9 +30,9 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 100vw;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
   padding: 2.5rem 1rem 1.5rem 1rem;
   box-sizing: border-box;
 }
@@ -138,13 +138,11 @@ html, body {
   list-style: none;
   padding: 0;
   margin: 24px 0 16px 0;
-  width: 90vw;
-  max-width: 500px;
+  width: 100%;
+  max-width: 600px;
   box-sizing: border-box;
-  max-width: 100vw;
-  margin-left: auto;
-  margin-right: auto;
 }
+
 .spelling-results li {
   font-size: 1.5rem;
   margin: 18px 0;
@@ -152,19 +150,22 @@ html, body {
   border-radius: 18px;
   background: #fff;
   box-shadow: 0 1px 6px #60a5fa22;
-  max-width: 100vw;
+  width: 100%;
   box-sizing: border-box;
   text-align: left;
-  word-break: break-all;
+  word-break: break-word;
 }
+
 .spelling-results .correct {
   color: #22c55e;
   border: 2px solid #22c55e;
 }
+
 .spelling-results .incorrect {
   color: #ef4444;
   border: 2px solid #ef4444;
 }
+
 .correction {
   color: #2563eb;
   font-size: 1.2rem;
@@ -189,22 +190,15 @@ html, body {
   .spelling-title {
     font-size: 1.5rem;
   }
-  .spelling-input, .spelling-results, .spelling-btn, .spelling-listen-btn {
+  .spelling-input, .spelling-btn, .spelling-listen-btn {
     font-size: 1rem;
     padding: 10px 10px;
   }
-  .spelling-test-container {
-    max-width: 100vw;
-    width: 100vw;
-    padding-left: 3vw;
-    padding-right: 3vw;
-  }
-  .spelling-results {
-    width: 98vw;
-    max-width: 100vw;
+  .spelling-container {
+    padding: 2.5rem 1rem 1.5rem 1rem;
   }
   .spelling-results li {
-    font-size: 1.1rem;
-    padding: 12px 8px;
+    font-size: 1.2rem;
+    padding: 14px 18px;
   }
 } 
