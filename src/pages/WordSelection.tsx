@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { YEAR1_WORDS, YEAR2_WORDS } from '../data/words';
 import { useWord } from '../hooks/useWord';
+import KS11Challenge from '../components/KS11Challenge';
 import './WordSelection.css';
 
 interface WordSelectionProps {
@@ -48,6 +49,12 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
   const ks1TotalWords = ks1Words.length;
   const ks1MasteredWords = ks1Words.filter(word => ks1WordsStatus[word.id].status === 'mastered').length;
   const ks1OverallPercent = Math.round((ks1MasteredWords / ks1TotalWords) * 100);
+
+  // Build wordStatuses array for KS1-1 Challenge
+  const ks1WordStatuses = ks1Words.map(word => ({
+    ...word,
+    status: ks1WordsStatus[word.id].status || 'not-started',
+  }));
 
   const selectNextWords = (words: typeof YEAR1_WORDS | typeof YEAR2_WORDS, wordsStatus: Record<string, ReturnType<typeof useWord>>) => {
     // Sort words by priority: in-progress > not-started > mastered
@@ -132,18 +139,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
 
       {/* KS1-1 Section */}
       <div className="word-selection-section">
-        <h2 className="word-selection-section-title">KS1-1 Words</h2>
-        <div className="word-selection-overall-progress">
-          <div className="word-selection-overall-progress-bar">
-            <div
-              className="word-selection-overall-progress-fill"
-              style={{ width: `${ks1OverallPercent}%` }}
-            />
-          </div>
-          <span className="word-selection-overall-progress-text">
-            {ks1MasteredWords}/{ks1TotalWords} mastered
-          </span>
-        </div>
+        <KS11Challenge wordStatuses={ks1WordStatuses} onSelectWords={onSelectWords} />
 
         <div className="word-selection-categories">
           {Array.from(new Set(ks1Words.map(word => word.category))).map(category => {
