@@ -112,7 +112,7 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
       <div className="leo-challenge">
         <div className="leo-challenge-header">
           <h2 className="leo-challenge-title">🏆 Leo's £50 Challenge! 🏆</h2>
-          <p className="leo-challenge-subtitle">Master all 83 words to earn £50!</p>
+          <p className="leo-challenge-subtitle">Master all {totalWords} words to earn £50!</p>
         </div>
         
         <div className="leo-challenge-progress">
@@ -124,10 +124,10 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
           </div>
           <div className="leo-challenge-stats">
             <span className="leo-challenge-current">
-              {masteredWords}/83 mastered
+              {masteredWords}/{totalWords} mastered
             </span>
             <span className="leo-challenge-remaining">
-              {83 - masteredWords} words to go!
+              {totalWords - masteredWords} words to go!
             </span>
           </div>
         </div>
@@ -140,7 +140,7 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
             </div>
           ) : overallPercent >= 80 ? (
             <div className="leo-challenge-close" onClick={handleMotivationClick} style={{ cursor: 'pointer' }}>
-              🔥 So close! Just {83 - masteredWords} more words! 🔥<br/>
+              🔥 So close! Just {totalWords - masteredWords} more words! 🔥<br/>
               <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>Click to practice!</span>
             </div>
           ) : overallPercent >= 60 ? (
