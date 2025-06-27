@@ -15,9 +15,14 @@ const getStatusIcon = (status: string) => {
 const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
   const navigate = useNavigate();
 
-  // Overall progress calculation using useWord
-  const totalWords = YEAR1_WORDS.length;
-  const masteredWords = YEAR1_WORDS.filter(word => useWord(word.id).status === 'mastered').length;
+  // Call useWord for each word at the top level (valid hook usage)
+  const wordStatuses = YEAR1_WORDS.map(word => ({
+    ...word,
+    status: useWord(word.id).status || 'not-started',
+  }));
+
+  const totalWords = wordStatuses.length;
+  const masteredWords = wordStatuses.filter(word => word.status === 'mastered').length;
   const overallPercent = Math.round((masteredWords / totalWords) * 100);
 
   const categories = useMemo(() => {
@@ -47,10 +52,9 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
   }, []);
 
   const getCategoryProgress = (categoryWords: typeof YEAR1_WORDS) => {
-    const total = categoryWords.length;
-    const mastered = categoryWords.filter(word => 
-      useWord(word.id).status === 'mastered'
-    ).length;
+    const wordList = wordStatuses.filter(w => categoryWords.some(ww => ww.id === w.id));
+    const total = wordList.length;
+    const mastered = wordList.filter(word => word.status === 'mastered').length;
     return {
       total,
       mastered,
@@ -59,53 +63,31 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
   };
 
   const selectNextWords = (words: typeof YEAR1_WORDS) => {
-    // Sort words by priority: in-progress > not-started > mastered
-    const sortedWords = [...words].sort((a, b) => {
-      const statusA = useWord(a.id).status || 'not-started';
-      const statusB = useWord(b.id).status || 'not-started';
+    // Use the precomputed statuses
+    const wordList = wordStatuses.filter(w => words.some(ww => ww.id === w.id));
+    const sortedWords = [...wordList].sort((a, b) => {
       const priority = {
         'in-progress': 0,
         'not-started': 1,
         'mastered': 2
       };
-      return priority[statusA] - priority[statusB];
+      return priority[a.status] - priority[b.status];
     });
-    // Take the first 3 words
     return sortedWords.slice(0, 3).map(w => w.text);
   };
 
   const selectInProgressWords = () => {
-    console.log('selectInProgressWords called');
-    
-    // Get all in-progress words across all categories
-    const inProgressWords = YEAR1_WORDS.filter(word => 
-      useWord(word.id).status === 'in-progress'
-    );
-    console.log('In-progress words found:', inProgressWords.length);
-    
-    // If we have 3 or more in-progress words, take the first 3
+    const inProgressWords = wordStatuses.filter(word => word.status === 'in-progress');
     if (inProgressWords.length >= 3) {
-      const result = inProgressWords.slice(0, 3).map(w => w.text);
-      console.log('Using 3 in-progress words:', result);
-      return result;
+      return inProgressWords.slice(0, 3).map(w => w.text);
     }
-    
-    // If we have fewer than 3 in-progress words, add some not-started words
-    const notStartedWords = YEAR1_WORDS.filter(word => 
-      useWord(word.id).status === 'not-started'
-    );
-    console.log('Not-started words found:', notStartedWords.length);
-    
+    const notStartedWords = wordStatuses.filter(word => word.status === 'not-started');
     const selectedWords = [...inProgressWords];
     const remainingNeeded = 3 - selectedWords.length;
-    
     if (remainingNeeded > 0 && notStartedWords.length > 0) {
       selectedWords.push(...notStartedWords.slice(0, remainingNeeded));
     }
-    
-    const result = selectedWords.slice(0, 3).map(w => w.text);
-    console.log('Final selected words:', result);
-    return result;
+    return selectedWords.slice(0, 3).map(w => w.text);
   };
 
   const handleMotivationClick = () => {
@@ -225,8 +207,8 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
                 </div>
               </div>
               <div className="ks1-1-words-list">
-                {words.map(word => {
-                  const status = useWord(word.id).status || 'not-started';
+                {wordStatuses.filter(w => words.some(ww => ww.id === w.id)).map(word => {
+                  const status = word.status;
                   return (
                     <span
                       key={word.id}
