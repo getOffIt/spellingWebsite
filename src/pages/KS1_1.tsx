@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { YEAR1_WORDS } from '../data/words';
 import { useWord } from '../hooks/useWord';
 import './KS1_1.css';
+import KS11Challenge from '../components/KS11Challenge';
 
 interface KS1_1Props {
   onSelectWords: (words: string[], type: 'single' | 'less_family') => void;
@@ -15,10 +16,18 @@ const getStatusIcon = (status: string) => {
 const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
   const navigate = useNavigate();
 
-  // Overall progress calculation using useWord
+  // Build status array for all words (call hooks at top level, not in map inside an object)
+  const wordStatusList = YEAR1_WORDS.map(word => useWord(word.id));
+
   const totalWords = YEAR1_WORDS.length;
-  const masteredWords = YEAR1_WORDS.filter(word => useWord(word.id).status === 'mastered').length;
+  const masteredWords = wordStatusList.filter(status => status.status === 'mastered').length;
   const overallPercent = Math.round((masteredWords / totalWords) * 100);
+
+  // Build wordStatuses array for KS1-1 Challenge
+  const wordStatuses = YEAR1_WORDS.map((word, i) => ({
+    ...word,
+    status: wordStatusList[i].status || 'not-started',
+  }));
 
   const categories = useMemo(() => {
     // Create a map of category to its first occurrence index
@@ -47,10 +56,9 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
   }, []);
 
   const getCategoryProgress = (categoryWords: typeof YEAR1_WORDS) => {
-    const total = categoryWords.length;
-    const mastered = categoryWords.filter(word => 
-      useWord(word.id).status === 'mastered'
-    ).length;
+    const wordList = wordStatuses.filter(w => categoryWords.some(ww => ww.id === w.id));
+    const total = wordList.length;
+    const mastered = wordList.filter(word => word.status === 'mastered').length;
     return {
       total,
       mastered,
@@ -59,24 +67,24 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
   };
 
   const selectNextWords = (words: typeof YEAR1_WORDS) => {
-    // Sort words by priority: in-progress > not-started > mastered
-    const sortedWords = [...words].sort((a, b) => {
-      const statusA = useWord(a.id).status || 'not-started';
-      const statusB = useWord(b.id).status || 'not-started';
+    // Use the precomputed statuses
+    const wordList = wordStatuses.filter(w => words.some(ww => ww.id === w.id));
+    const sortedWords = [...wordList].sort((a, b) => {
       const priority = {
         'in-progress': 0,
         'not-started': 1,
         'mastered': 2
       };
-      return priority[statusA] - priority[statusB];
+      return priority[a.status] - priority[b.status];
     });
-    // Take the first 3 words
     return sortedWords.slice(0, 3).map(w => w.text);
   };
 
   return (
     <div className="ks1-1-container">
       <h1 className="ks1-1-title">KS1 - 1 Spelling</h1>
+      <KS11Challenge wordStatuses={wordStatuses} onSelectWords={onSelectWords} navigate={navigate} />
+
       <div className="ks1-1-overall-progress">
         <div className="ks1-1-overall-progress-bar">
           <div
@@ -117,8 +125,8 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
                 </div>
               </div>
               <div className="ks1-1-words-list">
-                {words.map(word => {
-                  const status = useWord(word.id).status || 'not-started';
+                {wordStatuses.filter(w => words.some(ww => ww.id === w.id)).map(word => {
+                  const status = word.status;
                   return (
                     <span
                       key={word.id}
