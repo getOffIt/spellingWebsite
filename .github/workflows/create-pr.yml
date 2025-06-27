@@ -1,0 +1,42 @@
+name: Create Pull Request
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: 'feat: ${{ github.ref_name }}'
+          body: |
+            ## Changes
+            
+            This PR was automatically created from branch `${{ github.ref_name }}`.
+            
+            ### Branch
+            - **Source:** `${{ github.ref_name }}`
+            - **Target:** `main`
+            
+            ### Commit
+            - **SHA:** ${{ github.sha }}
+            - **Message:** ${{ github.event.head_commit.message }}
+            
+            ---
+            
+            *This PR was automatically created by GitHub Actions.*
+          branch: main
+          delete-branch: false
+          labels: |
+            auto-generated
+            needs-review 
