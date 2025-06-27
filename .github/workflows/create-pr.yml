@@ -39,4 +39,4 @@ jobs:
           delete-branch: false
           labels: |
             auto-generated
-            needs-review 
+            needs-review
