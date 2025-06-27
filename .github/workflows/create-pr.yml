@@ -35,7 +35,7 @@ jobs:
             ---
             
             *This PR was automatically created by GitHub Actions.*
-          branch: main
+          branch: create-pull-request/${{ github.ref_name }}
           delete-branch: false
           labels: |
             auto-generated
