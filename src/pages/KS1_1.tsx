@@ -75,20 +75,26 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
   };
 
   const selectInProgressWords = () => {
+    console.log('selectInProgressWords called');
+    
     // Get all in-progress words across all categories
     const inProgressWords = YEAR1_WORDS.filter(word => 
       useWord(word.id).status === 'in-progress'
     );
+    console.log('In-progress words found:', inProgressWords.length);
     
     // If we have 3 or more in-progress words, take the first 3
     if (inProgressWords.length >= 3) {
-      return inProgressWords.slice(0, 3).map(w => w.text);
+      const result = inProgressWords.slice(0, 3).map(w => w.text);
+      console.log('Using 3 in-progress words:', result);
+      return result;
     }
     
     // If we have fewer than 3 in-progress words, add some not-started words
     const notStartedWords = YEAR1_WORDS.filter(word => 
       useWord(word.id).status === 'not-started'
     );
+    console.log('Not-started words found:', notStartedWords.length);
     
     const selectedWords = [...inProgressWords];
     const remainingNeeded = 3 - selectedWords.length;
@@ -97,14 +103,22 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
       selectedWords.push(...notStartedWords.slice(0, remainingNeeded));
     }
     
-    return selectedWords.slice(0, 3).map(w => w.text);
+    const result = selectedWords.slice(0, 3).map(w => w.text);
+    console.log('Final selected words:', result);
+    return result;
   };
 
   const handleMotivationClick = () => {
+    console.log('Motivation clicked!');
     const selectedWords = selectInProgressWords();
+    console.log('Selected words:', selectedWords);
     if (selectedWords.length > 0) {
+      console.log('Calling onSelectWords with:', selectedWords);
       onSelectWords(selectedWords, 'single');
+      console.log('Navigating to /');
       navigate('/');
+    } else {
+      console.log('No words selected!');
     }
   };
 
