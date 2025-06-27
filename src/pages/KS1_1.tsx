@@ -16,15 +16,18 @@ const getStatusIcon = (status: string) => {
 const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
   const navigate = useNavigate();
 
-  // Call useWord for each word at the top level (valid hook usage)
-  const wordStatuses = YEAR1_WORDS.map(word => ({
-    ...word,
-    status: useWord(word.id).status || 'not-started',
-  }));
+  // Build status array for all words (call hooks at top level, not in map inside an object)
+  const wordStatusList = YEAR1_WORDS.map(word => useWord(word.id));
 
-  const totalWords = wordStatuses.length;
-  const masteredWords = wordStatuses.filter(word => word.status === 'mastered').length;
+  const totalWords = YEAR1_WORDS.length;
+  const masteredWords = wordStatusList.filter(status => status.status === 'mastered').length;
   const overallPercent = Math.round((masteredWords / totalWords) * 100);
+
+  // Build wordStatuses array for KS1-1 Challenge
+  const wordStatuses = YEAR1_WORDS.map((word, i) => ({
+    ...word,
+    status: wordStatusList[i].status || 'not-started',
+  }));
 
   const categories = useMemo(() => {
     // Create a map of category to its first occurrence index
