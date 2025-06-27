@@ -77,34 +77,6 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
     return sortedWords.slice(0, 3).map(w => w.text);
   };
 
-  const selectInProgressWords = () => {
-    const inProgressWords = wordStatuses.filter(word => word.status === 'in-progress');
-    if (inProgressWords.length >= 3) {
-      return inProgressWords.slice(0, 3).map(w => w.text);
-    }
-    const notStartedWords = wordStatuses.filter(word => word.status === 'not-started');
-    const selectedWords = [...inProgressWords];
-    const remainingNeeded = 3 - selectedWords.length;
-    if (remainingNeeded > 0 && notStartedWords.length > 0) {
-      selectedWords.push(...notStartedWords.slice(0, remainingNeeded));
-    }
-    return selectedWords.slice(0, 3).map(w => w.text);
-  };
-
-  const handleMotivationClick = () => {
-    console.log('Motivation clicked!');
-    const selectedWords = selectInProgressWords();
-    console.log('Selected words:', selectedWords);
-    if (selectedWords.length > 0) {
-      console.log('Calling onSelectWords with:', selectedWords);
-      onSelectWords(selectedWords, 'single');
-      console.log('Navigating to /');
-      navigate('/');
-    } else {
-      console.log('No words selected!');
-    }
-  };
-
   return (
     <div className="ks1-1-container">
       <h1 className="ks1-1-title">KS1 - 1 Spelling</h1>
