@@ -73,7 +73,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
 
   return (
     <div className="word-selection-container">
-      <h1 className="word-selection-title">Word Selection</h1>
+      <h1 className="word-selection-title">Hello World</h1>
 
       {/* -ies Family Section */}
       <div className="word-selection-section">
