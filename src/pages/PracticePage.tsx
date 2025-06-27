@@ -69,14 +69,16 @@ export default function PracticePage({ words, onComplete }: PracticePageProps) {
     }
   };
 
+  const canPlay = correctWords.length >= 5;
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handlePlay();
+      if (canPlay) {
+        handlePlay();
+      }
     }
   };
-
-  const canPlay = correctWords.length >= 5;
 
   // Create a visual representation of the input with correct words highlighted
   const renderInputPreview = () => {
