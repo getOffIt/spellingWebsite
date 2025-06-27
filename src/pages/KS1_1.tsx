@@ -77,6 +77,61 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
   return (
     <div className="ks1-1-container">
       <h1 className="ks1-1-title">KS1 - 1 Spelling</h1>
+      
+      {/* Leo's £50 Challenge */}
+      <div className="leo-challenge">
+        <div className="leo-challenge-header">
+          <h2 className="leo-challenge-title">🏆 Leo's £50 Challenge! 🏆</h2>
+          <p className="leo-challenge-subtitle">Master all 83 words to earn £50!</p>
+        </div>
+        
+        <div className="leo-challenge-progress">
+          <div className="leo-challenge-progress-bar">
+            <div
+              className="leo-challenge-progress-fill"
+              style={{ width: `${overallPercent}%` }}
+            />
+          </div>
+          <div className="leo-challenge-stats">
+            <span className="leo-challenge-current">
+              {masteredWords}/83 mastered
+            </span>
+            <span className="leo-challenge-remaining">
+              {83 - masteredWords} words to go!
+            </span>
+          </div>
+        </div>
+        
+        <div className="leo-challenge-motivation">
+          {overallPercent >= 100 ? (
+            <div className="leo-challenge-complete">
+              🎉 CONGRATULATIONS LEO! 🎉<br/>
+              You've earned your £50! 🤑
+            </div>
+          ) : overallPercent >= 80 ? (
+            <div className="leo-challenge-close">
+              🔥 So close! Just {83 - masteredWords} more words! 🔥
+            </div>
+          ) : overallPercent >= 60 ? (
+            <div className="leo-challenge-good">
+              💪 Great progress! Keep going Leo! 💪
+            </div>
+          ) : overallPercent >= 40 ? (
+            <div className="leo-challenge-steady">
+              🚀 Steady progress! You're doing amazing! 🚀
+            </div>
+          ) : overallPercent >= 20 ? (
+            <div className="leo-challenge-starting">
+              🌟 Off to a great start! Keep it up! 🌟
+            </div>
+          ) : (
+            <div className="leo-challenge-beginning">
+              🎯 Ready to start earning that £50? Let's go! 🎯
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="ks1-1-overall-progress">
         <div className="ks1-1-overall-progress-bar">
           <div
