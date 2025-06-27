@@ -4,10 +4,10 @@ import confetti from 'canvas-confetti';
 
 interface PracticePageProps {
   words: string[];
-  onBackToTest: () => void;
+  onComplete: () => void;
 }
 
-export default function PracticePage({ words, onBackToTest }: PracticePageProps) {
+export default function PracticePage({ words, onComplete }: PracticePageProps) {
   const [step, setStep] = useState(0);
   const [inputs, setInputs] = useState(['', '', '']);
   const [done, setDone] = useState(false);
@@ -26,7 +26,7 @@ export default function PracticePage({ words, onBackToTest }: PracticePageProps)
     return (
       <div className="spelling-container">
         <h2 className="spelling-title">No words to practice!</h2>
-        <button className="spelling-btn" onClick={onBackToTest}>Back to Test</button>
+        <button className="spelling-btn" onClick={onComplete}>Back to Home</button>
       </div>
     );
   }
@@ -85,7 +85,7 @@ export default function PracticePage({ words, onBackToTest }: PracticePageProps)
     return (
       <div className="spelling-container">
         <h2 className="spelling-title">🎉 Great job practicing! 🎉</h2>
-        <button className="spelling-btn" onClick={onBackToTest}>Back to Test</button>
+        <button className="spelling-btn" onClick={onComplete}>Back to Home</button>
       </div>
     );
   }
