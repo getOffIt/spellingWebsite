@@ -55,12 +55,10 @@ async function putProgress(userId, wordId, progress) {
     ReturnValues: 'ALL_NEW'
   };
   try {
-    const result = await dynamo.send(new UpdateCommand(params));
-    return {
-      statusCode: 200,
-      headers: corsHeaders,
-      body: JSON.stringify(result.Attributes)
-    };
+    await dynamo.send(new UpdateCommand(params));
+    
+    // Return the complete progress data for all words
+    return await getProgress(userId);
   } catch (err) {
     return {
       statusCode: 500,
