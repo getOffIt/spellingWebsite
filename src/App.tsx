@@ -83,10 +83,7 @@ export default function App() {
                     onComplete={handleReset} 
                   />
                 ) : (
-                  <>
-                    <WordSelection onSelectWords={handleSelectWords} />
-                    <KS11Challenge wordStatuses={wordStatuses} onSelectWords={handleSelectWords} />
-                  </>
+                  <WordSelection onSelectWords={handleSelectWords} />
                 )}
               </ProtectedRoute>
             }
