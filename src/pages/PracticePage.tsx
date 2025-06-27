@@ -72,7 +72,9 @@ export default function PracticePage({ words, onComplete }: PracticePageProps) {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handlePlay();
+      if (canPlay) {
+        handlePlay();
+      }
     }
   };
 
