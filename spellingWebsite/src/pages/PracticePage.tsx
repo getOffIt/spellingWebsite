@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './SpellingTest.css';
 import confetti from 'canvas-confetti';
 
@@ -9,8 +9,9 @@ interface PracticePageProps {
 
 export default function PracticePage({ words, onComplete }: PracticePageProps) {
   const [step, setStep] = useState(0);
-  const [inputs, setInputs] = useState(['', '', '']);
+  const [input, setInput] = useState('');
   const [done, setDone] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (done) {
@@ -33,53 +34,86 @@ export default function PracticePage({ words, onComplete }: PracticePageProps) {
 
   const currentWord = words[step];
 
-  const handleInputChange = (index: number, value: string) => {
-    const newInputs = [...inputs];
-    newInputs[index] = value;
-    setInputs(newInputs);
+  // Parse the input to extract individual words
+  const getWordsFromInput = (text: string): string[] => {
+    return text.split(/[\s\n]+/).filter(word => word.trim() !== '');
+  };
+
+  const inputWords = getWordsFromInput(input);
+  
+  // Check which words are correct
+  const correctWords = inputWords.filter(word => 
+    word.trim().toLowerCase() === currentWord.toLowerCase()
+  );
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
   };
 
   const handlePlay = () => {
-    // Check each attempt individually
-    const results = inputs.map(input => 
-      input.trim().toLowerCase() === currentWord.toLowerCase()
-    );
-    
-    // Check if all three attempts are correct
-    const allCorrect = results.every(result => result);
-
-    if (allCorrect) {
+    // Check if we have at least 5 correct attempts
+    if (correctWords.length >= 5) {
       if (step < words.length - 1) {
         setStep(step + 1);
-        setInputs(['', '', '']);
+        setInput('');
+        // Focus the textarea for the next word
+        setTimeout(() => {
+          textareaRef.current?.focus();
+        }, 100);
       } else {
         setDone(true);
       }
     } else {
-      // Only clear incorrect attempts, keep correct ones
-      const newInputs = inputs.map((input, index) => 
-        results[index] ? input : ''
-      );
-      setInputs(newInputs);
+      // Clear the input if not enough correct attempts
+      setInput('');
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
-    if (e.key === 'Enter') {
-      if (index < 2) {
-        // Move to next input field
-        const nextInput = document.querySelector(`input[data-index="${index + 1}"]`) as HTMLInputElement;
-        if (nextInput) {
-          nextInput.focus();
-        }
-      } else {
-        // On last input, trigger play
-        handlePlay();
-      }
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handlePlay();
     }
   };
 
-  const canPlay = inputs.every(input => input.trim() !== '');
+  const canPlay = correctWords.length >= 5;
+
+  // Create a visual representation of the input with correct words highlighted
+  const renderInputPreview = () => {
+    if (!input.trim()) return null;
+
+    const words = input.split(/[\s\n]+/);
+    return (
+      <div className="input-preview" style={{
+        border: '1px solid #e5e7eb',
+        borderRadius: '8px',
+        padding: '12px',
+        backgroundColor: '#f9fafb',
+        marginBottom: '16px',
+        minHeight: '60px',
+        whiteSpace: 'pre-wrap',
+        fontFamily: 'monospace',
+        fontSize: '16px',
+        lineHeight: '1.5'
+      }}>
+        {words.map((word, index) => {
+          const isCorrect = word.trim().toLowerCase() === currentWord.toLowerCase();
+          return (
+            <span
+              key={index}
+              style={{
+                color: isCorrect ? '#059669' : '#374151',
+                fontWeight: isCorrect ? 'bold' : 'normal',
+                marginRight: '4px'
+              }}
+            >
+              {word}
+            </span>
+          );
+        })}
+      </div>
+    );
+  };
 
   if (done) {
     return (
@@ -100,28 +134,40 @@ export default function PracticePage({ words, onComplete }: PracticePageProps) {
       
       <div style={{ marginBottom: '16px' }}>
         <p style={{ marginBottom: '8px', fontSize: '14px', color: '#666' }}>
-          Write the word three times below:
+          Write the word five times below (separate with spaces or line returns):
         </p>
-        {inputs.map((input, index) => (
-          <div key={index} style={{ marginBottom: '8px' }}>
-            <input
-              className="spelling-input"
-              type="text"
-              value={input}
-              onChange={(e) => handleInputChange(index, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(e, index)}
-              autoFocus={index === 0}
-              autoComplete="new-password"
-              spellCheck={false}
-              inputMode='text'
-              autoCapitalize='off'
-              autoCorrect='off'
-              data-index={index}
-              placeholder={`Attempt ${index + 1}`}
-              style={{ marginBottom: '4px' }}
-            />
-          </div>
-        ))}
+        
+        {renderInputPreview()}
+        
+        <textarea
+          ref={textareaRef}
+          className="spelling-input"
+          value={input}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          autoFocus
+          autoComplete="new-password"
+          spellCheck={false}
+          autoCapitalize="off"
+          autoCorrect="off"
+          placeholder="Type the word five times here..."
+          style={{
+            width: '100%',
+            minHeight: '120px',
+            resize: 'vertical',
+            fontFamily: 'monospace',
+            fontSize: '16px',
+            lineHeight: '1.5',
+            padding: '12px',
+            border: '2px solid #e5e7eb',
+            borderRadius: '8px',
+            outline: 'none'
+          }}
+        />
+        
+        <div style={{ marginTop: '8px', fontSize: '14px', color: '#666' }}>
+          Correct attempts: {correctWords.length}/5
+        </div>
       </div>
       
       <button 
@@ -133,7 +179,7 @@ export default function PracticePage({ words, onComplete }: PracticePageProps) {
           cursor: canPlay ? 'pointer' : 'not-allowed'
         }}
       >
-        Play
+        {canPlay ? 'Next Word' : 'Play'}
       </button>
     </div>
   );
