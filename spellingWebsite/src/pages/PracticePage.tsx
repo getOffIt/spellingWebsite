@@ -4,11 +4,10 @@ import confetti from 'canvas-confetti';
 
 interface PracticePageProps {
   words: string[];
-  onBackToTest: () => void;
   onComplete: () => void;
 }
 
-export default function PracticePage({ words, onBackToTest, onComplete }: PracticePageProps) {
+export default function PracticePage({ words, onComplete }: PracticePageProps) {
   const [step, setStep] = useState(0);
   const [inputs, setInputs] = useState(['', '', '']);
   const [done, setDone] = useState(false);
