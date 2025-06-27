@@ -183,12 +183,7 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
     // Pass the filtered incorrect words (which are strings) to PracticePage
     return <PracticePage 
       words={incorrectWords} 
-      onBackToTest={() => {
-        setShowPractice(false);
-        setShowResults(false);
-        setStep(0);
-        setAnswers(Array(wordsForCurrentStage.length).fill(''));
-      }} 
+      onComplete={onComplete}
     />;
   }
 
