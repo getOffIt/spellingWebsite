@@ -82,7 +82,7 @@ export default function PracticePage({ words, onComplete }: PracticePageProps) {
   const renderInputPreview = () => {
     if (!input.trim()) return null;
 
-    const words = input.split(/[\s\n]+/);
+    const words = getWordsFromInput(input);
     return (
       <div className="input-preview" style={{
         border: '1px solid #e5e7eb',
