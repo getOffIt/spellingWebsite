@@ -44,16 +44,22 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
   const ks1OverallPercent = Math.round((ks1MasteredWords / ks1TotalWords) * 100);
 
   // Build wordStatuses array for KS1-1 Challenge
-  const ks1WordStatuses = ks1Words.map((word, i) => ({
+  const ks1ChallengeWordStatuses = ks1Words.map((word, i) => ({
     ...word,
     status: ks1WordsStatusList[i].status || 'not-started',
   }));
 
   const selectNextWords = (words: typeof YEAR1_WORDS | typeof YEAR2_WORDS, wordsStatusList: ReturnType<typeof useWord>[]) => {
+    // Create a map of word IDs to their statuses for the given word list
+    const wordStatusMap = new Map();
+    words.forEach((word, index) => {
+      wordStatusMap.set(word.id, wordsStatusList[index]?.status || 'not-started');
+    });
+
     // Sort words by priority: in-progress > not-started > mastered
     const sortedWords = [...words].sort((a, b) => {
-      const statusA = wordsStatusList[words.findIndex(w => w.id === a.id)]?.status || 'not-started';
-      const statusB = wordsStatusList[words.findIndex(w => w.id === b.id)]?.status || 'not-started';
+      const statusA = wordStatusMap.get(a.id) || 'not-started';
+      const statusB = wordStatusMap.get(b.id) || 'not-started';
       const priority = {
         'in-progress': 0,
         'not-started': 1,
@@ -66,7 +72,13 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
   };
 
   const handleCategoryClick = (words: typeof YEAR1_WORDS) => {
-    const selectedWords = selectNextWords(words, ks1WordsStatusList);
+    // Create status list for the specific category words
+    const categoryWordsStatusList = words.map(word => {
+      const index = ks1Words.findIndex(w => w.id === word.id);
+      return ks1WordsStatusList[index];
+    });
+    
+    const selectedWords = selectNextWords(words, categoryWordsStatusList);
     onSelectWords(selectedWords, 'single');
     navigate('/spellingTest', { state: { words: selectedWords } });
   };
@@ -132,7 +144,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
 
       {/* KS1-1 Section */}
       <div className="word-selection-section">
-        <KS11Challenge wordStatuses={ks1WordStatuses} onSelectWords={onSelectWords} />
+        <KS11Challenge wordStatuses={ks1ChallengeWordStatuses} onSelectWords={onSelectWords} />
 
         <div className="word-selection-categories">
           {Array.from(new Set(ks1Words.map(word => word.category))).map(category => {

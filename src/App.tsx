@@ -10,9 +10,6 @@ import ProtectedRoute from './components/ProtectedRoute'
 import ProfilePage from './pages/ProfilePage'
 import Header from './components/Header'
 import ApiTest from './pages/ApiTest'
-import KS11Challenge from './components/KS11Challenge'
-import { YEAR1_WORDS } from './data/words'
-import { useWord } from './hooks/useWord'
 
 
 export default function App() {
@@ -27,12 +24,6 @@ export default function App() {
   const handleReset = () => {
     setSelectedList(null)
   }
-
-  // Build wordStatuses for KS1-1 Challenge
-  const wordStatuses = YEAR1_WORDS.map(word => ({
-    ...word,
-    status: useWord(word.id).status || 'not-started',
-  }));
 
   if (auth.isLoading) {
     // Wait for OIDC to finish loading before rendering routes
