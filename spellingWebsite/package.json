@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "deploy": "./scripts/deploy.sh"
+    "preview": "vite preview"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.3",

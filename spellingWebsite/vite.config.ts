@@ -5,7 +5,6 @@ import { fileURLToPath } from 'url'
 
 export default defineConfig({
   plugins: [react()],
-  base: process.env.NODE_ENV === 'production' ? '/spellingWebsite/' : '/',
   build: {
       rollupOptions: {
         input: {
