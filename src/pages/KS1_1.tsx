@@ -74,6 +74,40 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
     return sortedWords.slice(0, 3).map(w => w.text);
   };
 
+  const selectInProgressWords = () => {
+    // Get all in-progress words across all categories
+    const inProgressWords = YEAR1_WORDS.filter(word => 
+      useWord(word.id).status === 'in-progress'
+    );
+    
+    // If we have 3 or more in-progress words, take the first 3
+    if (inProgressWords.length >= 3) {
+      return inProgressWords.slice(0, 3).map(w => w.text);
+    }
+    
+    // If we have fewer than 3 in-progress words, add some not-started words
+    const notStartedWords = YEAR1_WORDS.filter(word => 
+      useWord(word.id).status === 'not-started'
+    );
+    
+    const selectedWords = [...inProgressWords];
+    const remainingNeeded = 3 - selectedWords.length;
+    
+    if (remainingNeeded > 0 && notStartedWords.length > 0) {
+      selectedWords.push(...notStartedWords.slice(0, remainingNeeded));
+    }
+    
+    return selectedWords.slice(0, 3).map(w => w.text);
+  };
+
+  const handleMotivationClick = () => {
+    const selectedWords = selectInProgressWords();
+    if (selectedWords.length > 0) {
+      onSelectWords(selectedWords, 'single');
+      navigate('/');
+    }
+  };
+
   return (
     <div className="ks1-1-container">
       <h1 className="ks1-1-title">KS1 - 1 Spelling</h1>
@@ -109,24 +143,29 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
               You've earned your £50! 🤑
             </div>
           ) : overallPercent >= 80 ? (
-            <div className="leo-challenge-close">
-              🔥 So close! Just {83 - masteredWords} more words! 🔥
+            <div className="leo-challenge-close" onClick={handleMotivationClick} style={{ cursor: 'pointer' }}>
+              🔥 So close! Just {83 - masteredWords} more words! 🔥<br/>
+              <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>Click to practice!</span>
             </div>
           ) : overallPercent >= 60 ? (
-            <div className="leo-challenge-good">
-              💪 Great progress! Keep going Leo! 💪
+            <div className="leo-challenge-good" onClick={handleMotivationClick} style={{ cursor: 'pointer' }}>
+              💪 Great progress! Keep going Leo! 💪<br/>
+              <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>Click to practice!</span>
             </div>
           ) : overallPercent >= 40 ? (
-            <div className="leo-challenge-steady">
-              🚀 Steady progress! You're doing amazing! 🚀
+            <div className="leo-challenge-steady" onClick={handleMotivationClick} style={{ cursor: 'pointer' }}>
+              🚀 Steady progress! You're doing amazing! 🚀<br/>
+              <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>Click to practice!</span>
             </div>
           ) : overallPercent >= 20 ? (
-            <div className="leo-challenge-starting">
-              🌟 Off to a great start! Keep it up! 🌟
+            <div className="leo-challenge-starting" onClick={handleMotivationClick} style={{ cursor: 'pointer' }}>
+              🌟 Off to a great start! Keep it up! 🌟<br/>
+              <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>Click to practice!</span>
             </div>
           ) : (
-            <div className="leo-challenge-beginning">
-              🎯 Ready to start earning that £50? Let's go! 🎯
+            <div className="leo-challenge-beginning" onClick={handleMotivationClick} style={{ cursor: 'pointer' }}>
+              🎯 Ready to start earning that £50? Let's go! 🎯<br/>
+              <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>Click to practice!</span>
             </div>
           )}
         </div>
