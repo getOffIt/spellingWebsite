@@ -127,8 +127,8 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
           </div>
 
           <div className="word-selection-words-list">
-            {thisWeekWords.map(word => {
-              const status = thisWeekWordsStatusList[thisWeekWords.findIndex(w => w.id === word.id)]?.status || 'not-started';
+            {thisWeekWords.map((word, index) => {
+              const status = thisWeekWordsStatusList[index]?.status || 'not-started';
               return (
                 <span
                   key={word.id}
