@@ -143,6 +143,17 @@ export const YEAR2_WORDS: Word[] = [
   { id: 'pennies', text: 'pennies', year: 2, category: '-ies' },
   { id: 'tries', text: 'tries', year: 2, category: '-ies' },
 
+  // This week's spelling words
+  { id: 'copied', text: 'copied', year: 2, category: 'this-week' },
+  { id: 'cried', text: 'cried', year: 2, category: 'this-week' },
+  { id: 'dried', text: 'dried', year: 2, category: 'this-week' },
+  { id: 'emptied', text: 'emptied', year: 2, category: 'this-week' },
+  { id: 'fried', text: 'fried', year: 2, category: 'this-week' },
+  { id: 'studied', text: 'studied', year: 2, category: 'this-week' },
+  { id: 'supplied', text: 'supplied', year: 2, category: 'this-week' },
+  { id: 'tried', text: 'tried', year: 2, category: 'this-week' },
+  { id: 'worried', text: 'worried', year: 2, category: 'this-week' },
+
   // Other Year 2 words
   { id: 'door', text: 'door', year: 2, category: 'misc' },
   { id: 'floor', text: 'floor', year: 2, category: 'misc' },
