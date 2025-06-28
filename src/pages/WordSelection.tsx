@@ -17,9 +17,9 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
   const navigate = useNavigate();
   const [practiceAsFamily, setPracticeAsFamily] = useState(false);
 
-  // Get all -ies words
-  const iesWords = useMemo(() => 
-    YEAR2_WORDS.filter(word => word.category === '-ies'),
+  // Get all this-week words
+  const thisWeekWords = useMemo(() => 
+    YEAR2_WORDS.filter(word => word.category === 'this-week'),
     []
   );
 
@@ -30,13 +30,13 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
   );
 
   // Build status arrays for all words (call hooks at top level, not in useMemo or reduce)
-  const iesWordsStatusList = iesWords.map(word => useWord(word.id));
+  const thisWeekWordsStatusList = thisWeekWords.map(word => useWord(word.id));
   const ks1WordsStatusList = ks1Words.map(word => useWord(word.id));
 
-  // Calculate progress for -ies words
-  const iesTotalWords = iesWords.length;
-  const iesMasteredWords = iesWordsStatusList.filter(status => status.status === 'mastered').length;
-  const iesOverallPercent = Math.round((iesMasteredWords / iesTotalWords) * 100);
+  // Calculate progress for this-week words
+  const thisWeekTotalWords = thisWeekWords.length;
+  const thisWeekMasteredWords = thisWeekWordsStatusList.filter(status => status.status === 'mastered').length;
+  const thisWeekOverallPercent = Math.round((thisWeekMasteredWords / thisWeekTotalWords) * 100);
 
   // Calculate progress for KS1-1 words
   const ks1TotalWords = ks1Words.length;
@@ -87,48 +87,48 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
     <div className="word-selection-container">
       <h1 className="word-selection-title">Word Selection</h1>
 
-      {/* -ies Family Section */}
+      {/* This Week's Spelling Words Section */}
       <div className="word-selection-section">
-        <h2 className="word-selection-section-title">-ies Family Words</h2>
+        <h2 className="word-selection-section-title">This Week's Spelling Words</h2>
         <div className="word-selection-overall-progress">
           <div className="word-selection-overall-progress-bar">
             <div
               className="word-selection-overall-progress-fill"
-              style={{ width: `${iesOverallPercent}%` }}
+              style={{ width: `${thisWeekOverallPercent}%` }}
             />
           </div>
           <span className="word-selection-overall-progress-text">
-            {iesMasteredWords}/{iesTotalWords} mastered
+            {thisWeekMasteredWords}/{thisWeekTotalWords} mastered
           </span>
         </div>
 
         <div 
           className="word-selection-category word-selection-special"
           onClick={() => {
-            const selectedWords = selectNextWords(iesWords, iesWordsStatusList);
+            const selectedWords = selectNextWords(thisWeekWords, thisWeekWordsStatusList);
             onSelectWords(selectedWords, practiceAsFamily ? 'less_family' : 'single');
             navigate('/');
           }}
           style={{ cursor: 'pointer' }}
         >
           <div className="word-selection-category-header">
-            <h2 className="word-selection-category-title">Practice -ies Family Together</h2>
+            <h2 className="word-selection-category-title">Practice This Week's Words Together</h2>
             <div className="word-selection-category-progress">
               <div className="word-selection-progress-bar">
                 <div 
                   className="word-selection-progress-fill"
-                  style={{ width: `${iesOverallPercent}%` }}
+                  style={{ width: `${thisWeekOverallPercent}%` }}
                 />
               </div>
               <span className="word-selection-progress-text">
-                {iesMasteredWords}/{iesTotalWords}
+                {thisWeekMasteredWords}/{thisWeekTotalWords}
               </span>
             </div>
           </div>
 
           <div className="word-selection-words-list">
-            {iesWords.map(word => {
-              const status = iesWordsStatusList[iesWords.findIndex(w => w.id === word.id)]?.status || 'not-started';
+            {thisWeekWords.map((word, index) => {
+              const status = thisWeekWordsStatusList[index]?.status || 'not-started';
               return (
                 <span
                   key={word.id}
