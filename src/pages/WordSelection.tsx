@@ -93,24 +93,25 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
         
         {/* Educational content about -er and -est */}
         <div className="word-selection-rule-explanation">
-          <h3 className="word-selection-rule-title">📚 Spelling Rule: -er and -est Suffixes</h3>
+          <h3 className="word-selection-rule-title">🎯 This Week's Spelling Rule!</h3>
           <div className="word-selection-rule-content">
             <p>
-              <strong>This week we're learning about comparative and superlative adjectives!</strong>
+              <strong>We're learning about words that compare things!</strong> 🌟
             </p>
             <p>
-              • <strong>-er</strong> means "more" (comparative): dirtier = more dirty<br/>
-              • <strong>-est</strong> means "most" (superlative): dirtiest = most dirty
+              <strong>-er</strong> means "more" - like "dirtier" means "more dirty"<br/>
+              <strong>-est</strong> means "most" - like "dirtiest" means "most dirty"
             </p>
             <p>
-              <strong>Pattern:</strong> Base word + -er = comparative, Base word + -est = superlative
+              <strong>Think of it like this:</strong><br/>
+              • A little dirty → <strong>dirtier</strong> → <strong>dirtiest</strong><br/>
+              • A little dry → <strong>drier</strong> → <strong>driest</strong><br/>
+              • A little funny → <strong>funnier</strong> → <strong>funniest</strong><br/>
+              • A little happy → <strong>happier</strong> → <strong>happiest</strong>
             </p>
             <div className="word-selection-examples">
-              <strong>Examples:</strong><br/>
-              dirty → dirtier → dirtiest<br/>
-              dry → drier → driest<br/>
-              funny → funnier → funniest<br/>
-              happy → happier → happiest
+              <strong>🎮 Let's practice!</strong><br/>
+              Can you spot the pattern? Each word gets "more" with -er and "most" with -est!
             </div>
           </div>
         </div>
