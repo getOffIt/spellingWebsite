@@ -90,6 +90,31 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
       {/* This Week's Spelling Words Section */}
       <div className="word-selection-section">
         <h2 className="word-selection-section-title">This Week's Spelling Words</h2>
+        
+        {/* Educational content about -er and -est */}
+        <div className="word-selection-rule-explanation">
+          <h3 className="word-selection-rule-title">📚 Spelling Rule: -er and -est Suffixes</h3>
+          <div className="word-selection-rule-content">
+            <p>
+              <strong>This week we're learning about comparative and superlative adjectives!</strong>
+            </p>
+            <p>
+              • <strong>-er</strong> means "more" (comparative): dirtier = more dirty<br/>
+              • <strong>-est</strong> means "most" (superlative): dirtiest = most dirty
+            </p>
+            <p>
+              <strong>Pattern:</strong> Base word + -er = comparative, Base word + -est = superlative
+            </p>
+            <div className="word-selection-examples">
+              <strong>Examples:</strong><br/>
+              dirty → dirtier → dirtiest<br/>
+              dry → drier → driest<br/>
+              funny → funnier → funniest<br/>
+              happy → happier → happiest
+            </div>
+          </div>
+        </div>
+
         <div className="word-selection-overall-progress">
           <div className="word-selection-overall-progress-bar">
             <div
