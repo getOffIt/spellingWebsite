@@ -144,15 +144,14 @@ export const YEAR2_WORDS: Word[] = [
   { id: 'tries', text: 'tries', year: 2, category: '-ies' },
 
   // This week's spelling words
-  { id: 'copied', text: 'copied', year: 2, category: 'this-week' },
-  { id: 'cried', text: 'cried', year: 2, category: 'this-week' },
-  { id: 'dried', text: 'dried', year: 2, category: 'this-week' },
-  { id: 'emptied', text: 'emptied', year: 2, category: 'this-week' },
-  { id: 'fried', text: 'fried', year: 2, category: 'this-week' },
-  { id: 'studied', text: 'studied', year: 2, category: 'this-week' },
-  { id: 'supplied', text: 'supplied', year: 2, category: 'this-week' },
-  { id: 'tried', text: 'tried', year: 2, category: 'this-week' },
-  { id: 'worried', text: 'worried', year: 2, category: 'this-week' },
+  { id: 'dirtier', text: 'dirtier', year: 2, category: 'this-week' },
+  { id: 'dirtiest', text: 'dirtiest', year: 2, category: 'this-week' },
+  { id: 'drier', text: 'drier', year: 2, category: 'this-week' },
+  { id: 'driest', text: 'driest', year: 2, category: 'this-week' },
+  { id: 'funnier', text: 'funnier', year: 2, category: 'this-week' },
+  { id: 'funniest', text: 'funniest', year: 2, category: 'this-week' },
+  { id: 'happier', text: 'happier', year: 2, category: 'this-week' },
+  { id: 'happiest', text: 'happiest', year: 2, category: 'this-week' },
 
   // Other Year 2 words
   { id: 'door', text: 'door', year: 2, category: 'misc' },
