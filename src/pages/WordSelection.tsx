@@ -90,6 +90,34 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
       {/* This Week's Spelling Words Section */}
       <div className="word-selection-section">
         <h2 className="word-selection-section-title">This Week's Spelling Words</h2>
+        
+        {/* Educational content about -er and -est */}
+        <div className="word-selection-rule-explanation">
+          <h3 className="word-selection-rule-title">🎯 This Week's Spelling Rule!</h3>
+          <div className="word-selection-rule-content">
+            <p>
+              <strong>We're learning about words that compare things!</strong> 🌟
+            </p>
+            <p>
+              <strong>-er</strong> means "more" - like "dirtier" means "more dirty"<br/>
+              <strong>-est</strong> means "most" - like "dirtiest" means "most dirty"
+            </p>
+            <div>
+              <strong>Think of it like this:</strong>
+              <ul>
+                <li>A little dirty → <strong>dirtier</strong> → <strong>dirtiest</strong></li>
+                <li>A little dry → <strong>drier</strong> → <strong>driest</strong></li>
+                <li>A little funny → <strong>funnier</strong> → <strong>funniest</strong></li>
+                <li>A little happy → <strong>happier</strong> → <strong>happiest</strong></li>
+              </ul>
+            </div>
+            <div className="word-selection-examples">
+              <strong>🎮 Let's practice!</strong><br/>
+              Can you spot the pattern? Each word gets "more" with -er and "most" with -est!
+            </div>
+          </div>
+        </div>
+
         <div className="word-selection-overall-progress">
           <div className="word-selection-overall-progress-bar">
             <div
