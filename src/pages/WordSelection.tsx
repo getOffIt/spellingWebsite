@@ -102,13 +102,15 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
               <strong>-er</strong> means "more" - like "dirtier" means "more dirty"<br/>
               <strong>-est</strong> means "most" - like "dirtiest" means "most dirty"
             </p>
-            <p>
-              <strong>Think of it like this:</strong><br/>
-              • A little dirty → <strong>dirtier</strong> → <strong>dirtiest</strong><br/>
-              • A little dry → <strong>drier</strong> → <strong>driest</strong><br/>
-              • A little funny → <strong>funnier</strong> → <strong>funniest</strong><br/>
-              • A little happy → <strong>happier</strong> → <strong>happiest</strong>
-            </p>
+            <div>
+              <strong>Think of it like this:</strong>
+              <ul>
+                <li>A little dirty → <strong>dirtier</strong> → <strong>dirtiest</strong></li>
+                <li>A little dry → <strong>drier</strong> → <strong>driest</strong></li>
+                <li>A little funny → <strong>funnier</strong> → <strong>funniest</strong></li>
+                <li>A little happy → <strong>happier</strong> → <strong>happiest</strong></li>
+              </ul>
+            </div>
             <div className="word-selection-examples">
               <strong>🎮 Let's practice!</strong><br/>
               Can you spot the pattern? Each word gets "more" with -er and "most" with -est!
