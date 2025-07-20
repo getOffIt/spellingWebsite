@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { YEAR1_WORDS, YEAR2_WORDS } from '../data/words';
 import { useWord } from '../hooks/useWord';
@@ -15,13 +15,6 @@ const getStatusIcon = (status: string) => {
 
 const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
   const navigate = useNavigate();
-  const [practiceAsFamily, setPracticeAsFamily] = useState(false);
-
-  // Get all this-week words
-  const thisWeekWords = useMemo(() => 
-    YEAR2_WORDS.filter(word => word.category === 'this-week'),
-    []
-  );
 
   // Get all KS1-1 words, excluding categories that start with "adding"
   const ks1Words = useMemo(() => 
@@ -30,13 +23,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
   );
 
   // Build status arrays for all words (call hooks at top level, not in useMemo or reduce)
-  const thisWeekWordsStatusList = thisWeekWords.map(word => useWord(word.id));
   const ks1WordsStatusList = ks1Words.map(word => useWord(word.id));
-
-  // Calculate progress for this-week words
-  const thisWeekTotalWords = thisWeekWords.length;
-  const thisWeekMasteredWords = thisWeekWordsStatusList.filter(status => status.status === 'mastered').length;
-  const thisWeekOverallPercent = Math.round((thisWeekMasteredWords / thisWeekTotalWords) * 100);
 
   // Calculate progress for KS1-1 words
   const ks1TotalWords = ks1Words.length;
