@@ -86,9 +86,6 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
   return (
     <div className="word-selection-container">
       <h1 className="word-selection-title">Word Selection</h1>
-
-
-
       {/* KS1-1 Section */}
       <div className="word-selection-section">
         <KS11Challenge wordStatuses={ks1ChallengeWordStatuses} onSelectWords={onSelectWords} />
