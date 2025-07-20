@@ -88,9 +88,7 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
         return prev;
       });
     }
-    // Only run when step or showResults changes
-    // eslint-disable-next-line
-  }, [step, showResults]);
+  }, [step, showResults, wordsForCurrentStage]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newAnswers = [...answers];
