@@ -55,7 +55,7 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
 
   const [step, setStep] = useState(0);
   // Initialize answers based on the words for the initial stage
-  const [answers, setAnswers] = useState<string[]>(Array(wordsForCurrentStage.length).fill(''));
+  const [answers, setAnswers] = useState<string[]>(() => Array(wordsForCurrentStage.length).fill(''));
   const [showResults, setShowResults] = useState(false);
   const [showPractice, setShowPractice] = useState(false);
   // New state to control speaking
@@ -64,6 +64,13 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
 
   const inputRef = useRef<HTMLInputElement>(null);
   const inputContainerRef = useRef<HTMLDivElement>(null);
+
+  // Sync answers array length when wordsForCurrentStage changes
+  useEffect(() => {
+    if (answers.length !== wordsForCurrentStage.length) {
+      setAnswers(Array(wordsForCurrentStage.length).fill(''));
+    }
+  }, [wordsForCurrentStage.length, answers.length]);
 
   // Check if the words for the current stage are all correct
   const areCurrentStageWordsCorrect = answers.every((ans, idx) => 
