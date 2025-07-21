@@ -21,8 +21,8 @@ const cognitoAuthConfig = {
   onSigninCallback: () => {
    window.history.replaceState({}, document.title, "/");
   },
-  onSilentRenewError: (error: any) => {
-    console.error('Silent renew error:', error);
+  onSilentRenewError: (error: ErrorResponse) => {
+    console.error('Silent renew error:', error?.error, error?.error_description);
   },
   monitorSession: true,
   loadUserInfo: true,
