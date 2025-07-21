@@ -17,6 +17,16 @@ export default function App() {
  
   const [selectedList, setSelectedList] = useState<{ words: string[]; type: 'single' | 'less_family' } | null>(null)
 
+  // Debug authentication state
+  React.useEffect(() => {
+    console.log('Auth state:', {
+      isLoading: auth.isLoading,
+      isAuthenticated: auth.isAuthenticated,
+      user: auth.user,
+      error: auth.error
+    });
+  }, [auth.isLoading, auth.isAuthenticated, auth.user, auth.error]);
+
   const handleSelectWords = (words: string[], type: 'single' | 'less_family') => {
     setSelectedList({ words, type })
   }
@@ -27,7 +37,12 @@ export default function App() {
 
   if (auth.isLoading) {
     // Wait for OIDC to finish loading before rendering routes
-    return <div>Loading...</div>;
+    return <div>Checking authentication...</div>;
+  }
+
+  // If there's an authentication error, show it
+  if (auth.error) {
+    console.error('Authentication error:', auth.error);
   }
 
   return (
