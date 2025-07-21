@@ -27,7 +27,7 @@ export default function App() {
 
   if (auth.isLoading) {
     // Wait for OIDC to finish loading before rendering routes
-    return <div>Loading...</div>;
+    return <div>Checking authentication...</div>;
   }
 
   return (
