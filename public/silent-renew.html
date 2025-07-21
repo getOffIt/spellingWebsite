@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Silent Renew</title>
+</head>
+<body>
+    <script>
+        // This page is used for silent token renewal with refresh tokens
+        // The OIDC library will handle the renewal process
+        console.log('Silent renew page loaded');
+        
+        // Handle any errors during silent renew
+        window.addEventListener('error', function(e) {
+            console.error('Silent renew error:', e.error);
+        });
+    </script>
+</body>
+</html> 

@@ -17,8 +17,9 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // If already authenticated, redirect to main app
     if (auth.isAuthenticated) {
-      navigate('/profile');
+      navigate('/');
     }
   }, [auth.isAuthenticated, navigate]);
 
