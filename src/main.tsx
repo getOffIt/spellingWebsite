@@ -16,7 +16,7 @@ const cognitoAuthConfig = {
   redirect_uri: window.location.origin + "/",
   silent_redirect_uri: window.location.origin + "/silent-renew.html",
   response_type: "code",
-  scope: "openid",
+  scope: "openid email phone",
   automaticSilentRenew: true,
   onSigninCallback: () => {
    window.history.replaceState({}, document.title, "/");
