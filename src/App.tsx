@@ -25,7 +25,28 @@ export default function App() {
       user: auth.user,
       error: auth.error
     });
+    
+    // Debug localStorage contents
+    console.log('localStorage contents:', {
+      keys: Object.keys(localStorage),
+      oidcKeys: Object.keys(localStorage).filter(key => key.includes('oidc') || key.includes('user'))
+    });
   }, [auth.isLoading, auth.isAuthenticated, auth.user, auth.error]);
+
+  // Manual session check on app load
+  React.useEffect(() => {
+    if (!auth.isLoading && !auth.isAuthenticated) {
+      console.log('App loaded, checking for existing session...');
+      // Try to get user from localStorage manually
+      const userKeys = Object.keys(localStorage).filter(key => key.includes('user'));
+      console.log('Found user keys in localStorage:', userKeys);
+      
+      if (userKeys.length > 0) {
+        console.log('Potential user data found, attempting silent sign-in...');
+        // The OIDC library should handle this automatically, but let's log what we find
+      }
+    }
+  }, [auth.isLoading, auth.isAuthenticated]);
 
   const handleSelectWords = (words: string[], type: 'single' | 'less_family') => {
     setSelectedList({ words, type })

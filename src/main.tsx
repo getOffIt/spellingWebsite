@@ -4,6 +4,7 @@ import App from './App'
 import { AuthProvider } from 'react-oidc-context'
 import { BrowserRouter } from 'react-router-dom'
 import { ProgressProvider } from './contexts/ProgressProvider'
+import { WebStorageStateStore } from 'oidc-client-ts'
 import './index.css'
 
 // Debug: Check what storage is available
@@ -11,6 +12,9 @@ console.log('Available storage:', {
   localStorage: typeof localStorage !== 'undefined',
   sessionStorage: typeof sessionStorage !== 'undefined'
 });
+
+// Create proper localStorage stores using WebStorageStateStore
+const localStorageStore = new WebStorageStateStore({ store: localStorage });
 
 const cognitoAuthConfig = {
   authority: "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_XeQbQOSjJ",
@@ -35,7 +39,8 @@ const cognitoAuthConfig = {
   },
   monitorSession: true,
   loadUserInfo: true,
-  storage: localStorage,
+  stateStore: localStorageStore,
+  userStore: localStorageStore,
   // Add refresh token settings
   accessTokenExpiringNotificationTime: 60,
   checkSessionInterval: 60,
@@ -43,6 +48,13 @@ const cognitoAuthConfig = {
   // Add error handling
   onSigninError: (error: any) => {
     console.error('Sign-in error:', error);
+  },
+  // Add session monitoring
+  onUserLoaded: (user: any) => {
+    console.log('User loaded:', user);
+  },
+  onUserUnloaded: () => {
+    console.log('User unloaded');
   }
 }
 
