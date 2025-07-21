@@ -7,12 +7,6 @@ import { ProgressProvider } from './contexts/ProgressProvider'
 import { WebStorageStateStore } from 'oidc-client-ts'
 import './index.css'
 
-// Debug: Check what storage is available
-console.log('Available storage:', {
-  localStorage: typeof localStorage !== 'undefined',
-  sessionStorage: typeof sessionStorage !== 'undefined'
-});
-
 // Create proper localStorage stores using WebStorageStateStore
 const localStorageStore = new WebStorageStateStore({ store: localStorage });
 
@@ -25,37 +19,18 @@ const cognitoAuthConfig = {
   scope: "openid",
   automaticSilentRenew: true,
   onSigninCallback: () => {
-   console.log('Sign-in callback triggered');
    window.history.replaceState({}, document.title, "/");
   },
   onSilentRenewError: (error: any) => {
     console.error('Silent renew error:', error);
   },
-  onSigninSilent: () => {
-    console.log('Silent sign-in completed');
-  },
-  onSignoutSilent: () => {
-    console.log('Silent sign-out completed');
-  },
   monitorSession: true,
   loadUserInfo: true,
   stateStore: localStorageStore,
   userStore: localStorageStore,
-  // Add refresh token settings
   accessTokenExpiringNotificationTime: 60,
   checkSessionInterval: 60,
-  revokeAccessTokenOnSignout: true,
-  // Add error handling
-  onSigninError: (error: any) => {
-    console.error('Sign-in error:', error);
-  },
-  // Add session monitoring
-  onUserLoaded: (user: any) => {
-    console.log('User loaded:', user);
-  },
-  onUserUnloaded: () => {
-    console.log('User unloaded');
-  }
+  revokeAccessTokenOnSignout: true
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
