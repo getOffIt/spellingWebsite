@@ -181,8 +181,7 @@ const ActivityCalendar = ({ dailyMasteredWords, progress }: {
         {last7Days.map((date, index) => {
           const dateStr = date.toISOString().split('T')[0];
           const wordsData = getWordsForDate(dateStr);
-          const netChange = wordsData.mastered.length - wordsData.unmastered.length;
-          // Note: remastered words don't contribute to net change since they're net 0 (unmastered then re-mastered)
+          // Note: remastered words are processed separately and excluded from both mastered and unmastered arrays, so they do not contribute to the net change calculation.
           const hasChanges = wordsData.mastered.length > 0 || wordsData.unmastered.length > 0 || wordsData.remastered.length > 0;
           const isToday = date.toDateString() === today.toDateString();
           
