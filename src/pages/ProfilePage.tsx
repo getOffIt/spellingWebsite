@@ -149,7 +149,7 @@ const DailyActivityCalendar = ({ dailyActivity, progress }: {
 };
 
 const ActivityCalendar = ({ dailyMasteredWords, progress }: { 
-  dailyMasteredWords: { [key: string]: string[] },
+  dailyMasteredWords: { [key: string]: { mastered: string[], unmastered: string[] } },
   progress: Record<string, any[]>
 }) => {
   const today = new Date();
@@ -163,9 +163,9 @@ const ActivityCalendar = ({ dailyMasteredWords, progress }: {
     return date;
   }).reverse();
 
-  // Get mastered words for a specific date
-  const getMasteredWordsForDate = (dateStr: string) => {
-    return dailyMasteredWords[dateStr] || [];
+  // Get mastered and unmastered words for a specific date
+  const getWordsForDate = (dateStr: string) => {
+    return dailyMasteredWords[dateStr] || { mastered: [], unmastered: [] };
   };
 
   return (
@@ -176,12 +176,13 @@ const ActivityCalendar = ({ dailyMasteredWords, progress }: {
       boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
       marginTop: '1rem'
     }}>
-      <h3 style={{ color: '#4B5563', marginBottom: '1rem' }}>Words Mastered Today</h3>
+      <h3 style={{ color: '#4B5563', marginBottom: '1rem' }}>Daily Word Status Changes</h3>
       <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'space-between' }}>
         {last7Days.map((date, index) => {
           const dateStr = date.toISOString().split('T')[0];
-          const masteredWords = getMasteredWordsForDate(dateStr);
-          const masteredCount = masteredWords.length;
+          const wordsData = getWordsForDate(dateStr);
+          const netChange = wordsData.mastered.length - wordsData.unmastered.length;
+          const hasChanges = wordsData.mastered.length > 0 || wordsData.unmastered.length > 0;
           const isToday = date.toDateString() === today.toDateString();
           
           return (
@@ -200,17 +201,17 @@ const ActivityCalendar = ({ dailyMasteredWords, progress }: {
                 width: '40px',
                 height: '40px',
                 borderRadius: '8px',
-                background: masteredCount > 0 ? '#059669' : '#E5E7EB',
+                background: !hasChanges ? '#E5E7EB' : (netChange > 0 ? '#059669' : (netChange < 0 ? '#DC2626' : '#6B7280')),
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: masteredCount > 0 ? 'white' : '#6B7280',
+                color: hasChanges ? 'white' : '#6B7280',
                 fontWeight: 'bold',
                 border: isToday ? '2px solid #2563eb' : 'none',
                 transition: 'transform 0.2s',
                 transform: selectedDate === dateStr ? 'scale(1.1)' : 'scale(1)'
               }}>
-                {masteredCount}
+                {hasChanges ? (netChange > 0 ? `+${netChange}` : netChange) : 0}
               </div>
               <div style={{ fontSize: '0.75rem', color: '#6B7280' }}>
                 {days[date.getDay()]}
@@ -228,29 +229,70 @@ const ActivityCalendar = ({ dailyMasteredWords, progress }: {
           borderRadius: '8px'
         }}>
           <h4 style={{ color: '#4B5563', marginBottom: '1rem' }}>
-            Words Mastered on {new Date(selectedDate).toLocaleDateString()}
+            Word Changes on {new Date(selectedDate).toLocaleDateString()}
           </h4>
           <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-            {getMasteredWordsForDate(selectedDate).length > 0 ? (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                {getMasteredWordsForDate(selectedDate).map((wordId, index) => (
-                  <div key={index} style={{ 
-                    background: '#059669',
-                    color: 'white',
-                    padding: '0.5rem 1rem',
-                    borderRadius: '6px',
-                    fontWeight: 'bold',
-                    fontSize: '0.875rem'
-                  }}>
-                    {wordId}
+            {(() => {
+              const wordsData = getWordsForDate(selectedDate);
+              const hasMastered = wordsData.mastered.length > 0;
+              const hasUnmastered = wordsData.unmastered.length > 0;
+              
+              if (!hasMastered && !hasUnmastered) {
+                return (
+                  <div style={{ color: '#6B7280', fontStyle: 'italic' }}>
+                    No word status changes on this date
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div style={{ color: '#6B7280', fontStyle: 'italic' }}>
-                No words mastered on this date
-              </div>
-            )}
+                );
+              }
+              
+              return (
+                <div>
+                  {hasMastered && (
+                    <div style={{ marginBottom: '1rem' }}>
+                      <h5 style={{ color: '#059669', marginBottom: '0.5rem', fontSize: '0.875rem' }}>
+                        ✓ Words Mastered ({wordsData.mastered.length})
+                      </h5>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        {wordsData.mastered.map((wordId, index) => (
+                          <div key={index} style={{ 
+                            background: '#059669',
+                            color: 'white',
+                            padding: '0.5rem 1rem',
+                            borderRadius: '6px',
+                            fontWeight: 'bold',
+                            fontSize: '0.875rem'
+                          }}>
+                            {wordId}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {hasUnmastered && (
+                    <div>
+                      <h5 style={{ color: '#DC2626', marginBottom: '0.5rem', fontSize: '0.875rem' }}>
+                        ✗ Words Unmastered ({wordsData.unmastered.length})
+                      </h5>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        {wordsData.unmastered.map((wordId, index) => (
+                          <div key={index} style={{ 
+                            background: '#DC2626',
+                            color: 'white',
+                            padding: '0.5rem 1rem',
+                            borderRadius: '6px',
+                            fontWeight: 'bold',
+                            fontSize: '0.875rem'
+                          }}>
+                            {wordId}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         </div>
       )}
@@ -294,40 +336,66 @@ export default function ProfilePage() {
     });
   });
 
-  // Calculate daily mastered words
-  const dailyMasteredWords: { [key: string]: string[] } = {};
+  // Calculate daily mastered and unmastered words
+  const dailyMasteredWords: { [key: string]: { mastered: string[], unmastered: string[] } } = {};
+  
   wordIds.forEach(wordId => {
     const attempts = progress[wordId] || [];
     if (attempts.length === 0) return;
     
-    // Only count words that are currently mastered (using same logic as main page)
     const wordStats = getWordStats(wordId);
-    if (wordStats.status !== 'mastered') return;
     
-    // Find when this word became mastered by finding the date of the 3rd consecutive correct answer from the end
-    let consecutiveCorrect = 0;
-    let masteryDate: string | null = null;
-    
-    // Count backwards from the end to find the current streak
-    for (let i = attempts.length - 1; i >= 0; i--) {
-      if (attempts[i].correct) {
-        consecutiveCorrect++;
-        if (consecutiveCorrect === 3) {
-          // This is when the word became mastered (3rd consecutive correct from the end)
-          masteryDate = attempts[i].date.split('T')[0];
+    // Track when words became mastered (currently mastered words only)
+    if (wordStats.status === 'mastered') {
+      let consecutiveCorrect = 0;
+      let masteryDate: string | null = null;
+      
+      // Count backwards from the end to find when current streak began
+      for (let i = attempts.length - 1; i >= 0; i--) {
+        if (attempts[i].correct) {
+          consecutiveCorrect++;
+          if (consecutiveCorrect === 3) {
+            masteryDate = attempts[i].date.split('T')[0];
+            break;
+          }
+        } else {
           break;
         }
-      } else {
-        break; // Stop if we hit an incorrect answer
+      }
+      
+      if (masteryDate) {
+        if (!dailyMasteredWords[masteryDate]) {
+          dailyMasteredWords[masteryDate] = { mastered: [], unmastered: [] };
+        }
+        dailyMasteredWords[masteryDate].mastered.push(wordId);
       }
     }
     
-    // Only add to daily mastered words if we found a mastery date
-    if (masteryDate) {
-      if (!dailyMasteredWords[masteryDate]) {
-        dailyMasteredWords[masteryDate] = [];
+    // Track when words became unmastered (find dates where streaks were broken)
+    let consecutiveCorrect = 0;
+    let hadMastery = false;
+    
+    for (let i = 0; i < attempts.length; i++) {
+      if (attempts[i].correct) {
+        consecutiveCorrect++;
+        if (consecutiveCorrect >= 3) {
+          hadMastery = true;
+        }
+      } else {
+        // If we had mastery and now got an incorrect answer, this word became unmastered
+        if (hadMastery && consecutiveCorrect >= 3) {
+          const unmasteryDate = attempts[i].date.split('T')[0];
+          if (!dailyMasteredWords[unmasteryDate]) {
+            dailyMasteredWords[unmasteryDate] = { mastered: [], unmastered: [] };
+          }
+          // Only add if not already in the unmastered list for this date
+          if (!dailyMasteredWords[unmasteryDate].unmastered.includes(wordId)) {
+            dailyMasteredWords[unmasteryDate].unmastered.push(wordId);
+          }
+        }
+        consecutiveCorrect = 0;
+        hadMastery = false;
       }
-      dailyMasteredWords[masteryDate].push(wordId);
     }
   });
 
