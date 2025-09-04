@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { YEAR1_WORDS } from '../data/words';
 import { useWord } from '../hooks/useWord';
+import { selectNextWords } from '../utils/wordSelection';
 import './KS1_1.css';
 import KS11Challenge from '../components/KS11Challenge';
 
@@ -66,18 +67,10 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
     };
   };
 
-  const selectNextWords = (words: typeof YEAR1_WORDS) => {
+  const selectNextWordsForCategory = (words: typeof YEAR1_WORDS) => {
     // Use the precomputed statuses
     const wordList = wordStatuses.filter(w => words.some(ww => ww.id === w.id));
-    const sortedWords = [...wordList].sort((a, b) => {
-      const priority = {
-        'in-progress': 0,
-        'not-started': 1,
-        'mastered': 2
-      };
-      return priority[a.status] - priority[b.status];
-    });
-    return sortedWords.slice(0, 3).map(w => w.text);
+    return selectNextWords(wordList, 3);
   };
 
   return (
@@ -104,7 +97,7 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
               key={category}
               className="ks1-1-category"
               onClick={() => {
-                const selectedWords = selectNextWords(words);
+                const selectedWords = selectNextWordsForCategory(words);
                 onSelectWords(selectedWords, 'single');
                 navigate('/');
               }}

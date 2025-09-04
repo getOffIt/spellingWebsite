@@ -326,6 +326,10 @@
 .ks1-1-word.mastered {
   font-weight: 600;
 }
+.ks1-1-word.unmastered {
+  font-weight: 600;
+  color: #dc2626;
+}
 .ks1-1-word.in-progress {
   /* Remove color change */
 }
@@ -349,4 +353,7 @@
 }
 .ks1-1-word-status.not-started {
   color: #64748b;
+}
+.ks1-1-word-status.unmastered {
+  color: #dc2626;
 } 

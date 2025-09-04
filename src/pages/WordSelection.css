@@ -188,6 +188,10 @@
 .word-selection-word.mastered {
   font-weight: 600;
 }
+.word-selection-word.unmastered {
+  font-weight: 600;
+  color: #dc2626;
+}
 
 .word-selection-status {
   margin-right: 0.25em;
@@ -205,6 +209,9 @@
 }
 .word-selection-status.not-started {
   color: #64748b;
+}
+.word-selection-status.unmastered {
+  color: #dc2626;
 }
 
 .word-selection-special {

@@ -36,4 +36,9 @@
 .word-chip-mastered {
   background-color: #dcfce7;
   color: #166534;
+}
+
+.word-chip-unmastered {
+  background-color: #fecaca;
+  color: #991b1b;
 } 
