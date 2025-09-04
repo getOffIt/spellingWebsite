@@ -26,6 +26,128 @@ const StatCard = ({ title, value, color }: { title: string; value: string | numb
   </div>
 );
 
+const DailyActivityCalendar = ({ dailyActivity, progress }: { 
+  dailyActivity: { [key: string]: number },
+  progress: Record<string, any[]>
+}) => {
+  const today = new Date();
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  
+  // Get the last 7 days
+  const last7Days = Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    return date;
+  }).reverse();
+
+  // Get attempts for a specific date
+  const getAttemptsForDate = (dateStr: string) => {
+    const attempts: { wordId: string; attempts: any[] }[] = [];
+    Object.entries(progress).forEach(([wordId, wordAttempts]) => {
+      const dateAttempts = wordAttempts.filter(attempt => 
+        attempt.date.split('T')[0] === dateStr
+      );
+      if (dateAttempts.length > 0) {
+        attempts.push({ wordId, attempts: dateAttempts });
+      }
+    });
+    return attempts;
+  };
+
+  return (
+    <div style={{
+      background: 'white',
+      padding: '1.5rem',
+      borderRadius: '8px',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+      marginTop: '1rem'
+    }}>
+      <h3 style={{ color: '#4B5563', marginBottom: '1rem' }}>Daily Activity</h3>
+      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'space-between' }}>
+        {last7Days.map((date, index) => {
+          const dateStr = date.toISOString().split('T')[0];
+          const activity = dailyActivity[dateStr] || 0;
+          const isToday = date.toDateString() === today.toDateString();
+          
+          return (
+            <div 
+              key={dateStr} 
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '0.5rem',
+                cursor: 'pointer'
+              }}
+              onClick={() => setSelectedDate(selectedDate === dateStr ? null : dateStr)}
+            >
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '8px',
+                background: activity > 0 ? '#059669' : '#E5E7EB',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: activity > 0 ? 'white' : '#6B7280',
+                fontWeight: 'bold',
+                border: isToday ? '2px solid #2563eb' : 'none',
+                transition: 'transform 0.2s',
+                transform: selectedDate === dateStr ? 'scale(1.1)' : 'scale(1)'
+              }}>
+                {activity}
+              </div>
+              <div style={{ fontSize: '0.75rem', color: '#6B7280' }}>
+                {days[date.getDay()]}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {selectedDate && (
+        <div style={{ 
+          marginTop: '1rem', 
+          padding: '1rem', 
+          background: '#F9FAFB',
+          borderRadius: '8px'
+        }}>
+          <h4 style={{ color: '#4B5563', marginBottom: '1rem' }}>
+            Attempts for {new Date(selectedDate).toLocaleDateString()}
+          </h4>
+          <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+            {getAttemptsForDate(selectedDate).map(({ wordId, attempts }) => (
+              <div key={wordId} style={{ marginBottom: '1rem' }}>
+                <div style={{ 
+                  fontWeight: 'bold', 
+                  color: '#2563eb',
+                  marginBottom: '0.5rem'
+                }}>
+                  Word: {wordId}
+                </div>
+                <div style={{ marginLeft: '1rem' }}>
+                  {attempts.map((attempt, index) => (
+                    <div key={index} style={{ 
+                      marginBottom: '0.25rem',
+                      color: attempt.correct ? '#059669' : '#DC2626'
+                    }}>
+                      Attempt: {attempt.attempt} - {attempt.correct ? 'Correct' : 'Incorrect'}
+                      <span style={{ color: '#6B7280', marginLeft: '0.5rem' }}>
+                        ({new Date(attempt.date).toLocaleTimeString()})
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const ActivityCalendar = ({ dailyMasteredWords, progress }: { 
   dailyMasteredWords: { [key: string]: string[] },
   progress: Record<string, any[]>
@@ -285,6 +407,11 @@ export default function ProfilePage() {
           />
         </div>
 
+        <DailyActivityCalendar 
+          dailyActivity={dailyActivity}
+          progress={progress}
+        />
+        
         <ActivityCalendar 
           dailyMasteredWords={dailyMasteredWords} 
           progress={progress}
