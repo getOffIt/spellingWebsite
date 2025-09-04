@@ -371,74 +371,38 @@ export default function ProfilePage() {
     const attempts = progress[wordId] || [];
     if (attempts.length === 0) return;
     
-    const wordStats = getWordStats(wordId);
-    
-    // Track when words became mastered
-    if (wordStats.status === 'mastered') {
-      const todayStr = today.toISOString().split('T')[0];
-      
-      // Check if there was a correct attempt today
-      const hadCorrectAttemptToday = attempts.some(attempt => 
-        attempt.correct && attempt.date.split('T')[0] === todayStr
-      );
-      
-      if (hadCorrectAttemptToday) {
-        // Count the current streak from the end
-        let consecutiveCorrect = 0;
-        
-        for (let i = attempts.length - 1; i >= 0; i--) {
-          if (attempts[i].correct) {
-            consecutiveCorrect++;
-          } else {
-            break;
-          }
-        }
-        
-        // If current streak is at least 3, count as mastered
-        if (consecutiveCorrect >= 3) {
-          let masteryDate: string;
-          
-          if (consecutiveCorrect > 3) {
-            // Use the date of the 3rd correct answer in this streak
-            const thirdCorrectIndex = attempts.length - consecutiveCorrect + 2; // +2 because we want the 3rd (index 2)
-            masteryDate = attempts[thirdCorrectIndex].date.split('T')[0];
-          } else {
-            // If exactly 3, use today as the mastery date
-            masteryDate = todayStr;
-          }
-          
-          if (!dailyMasteredWords[masteryDate]) {
-            dailyMasteredWords[masteryDate] = { mastered: [], unmastered: [], remastered: [] };
-          }
-          dailyMasteredWords[masteryDate].mastered.push(wordId);
-        }
-      }
-    }
-    
-    // Track when words became unmastered (find dates where streaks were broken)
+    // Track mastery and unmastery events chronologically
     let consecutiveCorrect = 0;
-    let hadMastery = false;
+    let wasMastered = false;
     
     for (let i = 0; i < attempts.length; i++) {
-      if (attempts[i].correct) {
+      const attempt = attempts[i];
+      const attemptDate = attempt.date.split('T')[0];
+      
+      if (attempt.correct) {
         consecutiveCorrect++;
-        if (consecutiveCorrect >= 3) {
-          hadMastery = true;
+        
+        // Check if this attempt achieves mastery (3rd consecutive correct)
+        if (consecutiveCorrect === 3 && !wasMastered) {
+          if (!dailyMasteredWords[attemptDate]) {
+            dailyMasteredWords[attemptDate] = { mastered: [], unmastered: [], remastered: [] };
+          }
+          dailyMasteredWords[attemptDate].mastered.push(wordId);
+          wasMastered = true;
         }
       } else {
-        // If we had mastery and now got an incorrect answer, this word became unmastered
-        if (hadMastery && consecutiveCorrect >= 3) {
-          const unmasteryDate = attempts[i].date.split('T')[0];
-          if (!dailyMasteredWords[unmasteryDate]) {
-            dailyMasteredWords[unmasteryDate] = { mastered: [], unmastered: [], remastered: [] };
+        // Incorrect attempt - check if this breaks mastery
+        if (wasMastered && consecutiveCorrect >= 3) {
+          if (!dailyMasteredWords[attemptDate]) {
+            dailyMasteredWords[attemptDate] = { mastered: [], unmastered: [], remastered: [] };
           }
           // Only add if not already in the unmastered list for this date
-          if (!dailyMasteredWords[unmasteryDate].unmastered.includes(wordId)) {
-            dailyMasteredWords[unmasteryDate].unmastered.push(wordId);
+          if (!dailyMasteredWords[attemptDate].unmastered.includes(wordId)) {
+            dailyMasteredWords[attemptDate].unmastered.push(wordId);
           }
+          wasMastered = false;
         }
         consecutiveCorrect = 0;
-        hadMastery = false;
       }
     }
   });
