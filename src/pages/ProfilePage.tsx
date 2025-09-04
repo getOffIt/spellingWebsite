@@ -181,7 +181,8 @@ const ActivityCalendar = ({ dailyMasteredWords, progress }: {
         {last7Days.map((date, index) => {
           const dateStr = date.toISOString().split('T')[0];
           const wordsData = getWordsForDate(dateStr);
-          // Note: remastered words are processed separately and excluded from both mastered and unmastered arrays, so they do not contribute to the net change calculation.
+          const netChange = wordsData.mastered.length - wordsData.unmastered.length;
+          // Note: remastered words don't contribute to net change since they're net 0 (unmastered then re-mastered)
           const hasChanges = wordsData.mastered.length > 0 || wordsData.unmastered.length > 0 || wordsData.remastered.length > 0;
           const isToday = date.toDateString() === today.toDateString();
           
@@ -331,17 +332,7 @@ export default function ProfilePage() {
   const auth = useAuth();
   const { progress, getWordStats } = useProgress();
   
-  console.log('ProfilePage render - auth:', { 
-    isAuthenticated: auth.isAuthenticated, 
-    hasUser: !!auth.user,
-    isLoading: auth.isLoading,
-    progressKeys: Object.keys(progress)
-  });
-  
-  if (!auth.isAuthenticated || !auth.user) {
-    console.log('ProfilePage: User not authenticated, returning null');
-    return <div>Not authenticated or no user data</div>;
-  }
+  if (!auth.isAuthenticated || !auth.user) return null;
   
   const profile = auth.user.profile;
   const username = profile['cognito:username'] || profile.email || profile.sub;
