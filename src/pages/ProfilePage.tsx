@@ -178,23 +178,34 @@ export default function ProfilePage() {
     const attempts = progress[wordId] || [];
     if (attempts.length === 0) return;
     
-    // Find when this word became mastered (3 consecutive correct answers)
+    // Only count words that are currently mastered (using same logic as main page)
+    const wordStats = getWordStats(wordId);
+    if (wordStats.status !== 'mastered') return;
+    
+    // Find when this word became mastered by finding the date of the 3rd consecutive correct answer from the end
     let consecutiveCorrect = 0;
-    for (let i = 0; i < attempts.length; i++) {
+    let masteryDate: string | null = null;
+    
+    // Count backwards from the end to find the current streak
+    for (let i = attempts.length - 1; i >= 0; i--) {
       if (attempts[i].correct) {
         consecutiveCorrect++;
         if (consecutiveCorrect === 3) {
-          // Word became mastered on this date
-          const masteryDate = attempts[i].date.split('T')[0];
-          if (!dailyMasteredWords[masteryDate]) {
-            dailyMasteredWords[masteryDate] = [];
-          }
-          dailyMasteredWords[masteryDate].push(wordId);
-          break; // Only count the first time it became mastered
+          // This is when the word became mastered (3rd consecutive correct from the end)
+          masteryDate = attempts[i].date.split('T')[0];
+          break;
         }
       } else {
-        consecutiveCorrect = 0; // Reset if incorrect
+        break; // Stop if we hit an incorrect answer
       }
+    }
+    
+    // Only add to daily mastered words if we found a mastery date
+    if (masteryDate) {
+      if (!dailyMasteredWords[masteryDate]) {
+        dailyMasteredWords[masteryDate] = [];
+      }
+      dailyMasteredWords[masteryDate].push(wordId);
     }
   });
 
