@@ -15,6 +15,8 @@ const WordChip: React.FC<WordChipProps> = ({ word, onClick }) => {
     switch (status) {
       case 'mastered':
         return '✔︎'
+      case 'unmastered':
+        return '✗'
       case 'in-progress':
         return '🔄'
       default:
@@ -26,6 +28,8 @@ const WordChip: React.FC<WordChipProps> = ({ word, onClick }) => {
     switch (status) {
       case 'mastered':
         return 'word-chip-mastered'
+      case 'unmastered':
+        return 'word-chip-unmastered'
       case 'in-progress':
         return 'word-chip-progress'
       default:

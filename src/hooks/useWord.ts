@@ -15,9 +15,40 @@ export function useWord(wordId: string) {
   const stats = getWordStats(wordId);
   const attempts = progress[wordId] || [];
 
+  // Check if this word was previously mastered but is no longer mastered
+  const wasUnmastered = useMemo(() => {
+    if (stats.status === 'mastered' || attempts.length === 0) return false;
+    
+    // Look through attempt history to see if word was ever mastered
+    let consecutiveCorrect = 0;
+    let hadMastery = false;
+    
+    for (let i = 0; i < attempts.length; i++) {
+      if (attempts[i].correct) {
+        consecutiveCorrect++;
+        if (consecutiveCorrect >= 3) {
+          hadMastery = true;
+        }
+      } else {
+        // If we had mastery and now got an incorrect answer, this word was unmastered
+        if (hadMastery && consecutiveCorrect >= 3) {
+          return true;
+        }
+        consecutiveCorrect = 0;
+        hadMastery = false;
+      }
+    }
+    
+    return false;
+  }, [attempts, stats.status]);
+
+  // Override status if word was unmastered
+  const enhancedStatus = wasUnmastered ? 'unmastered' : stats.status;
+
   return {
     ...word,
     ...stats,
+    status: enhancedStatus,
     attempts, // array of {date, correct, attempt}
     recordAttempt // Use the ProgressProvider's recordAttempt directly
   };

@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { YEAR1_WORDS, YEAR2_WORDS } from '../data/words';
 import { useWord } from '../hooks/useWord';
+import { selectNextWords } from '../utils/wordSelection';
 import KS11Challenge from '../components/KS11Challenge';
 import './WordSelection.css';
 
@@ -36,26 +37,14 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
     status: ks1WordsStatusList[i].status || 'not-started',
   }));
 
-  const selectNextWords = (words: typeof YEAR1_WORDS | typeof YEAR2_WORDS, wordsStatusList: ReturnType<typeof useWord>[]) => {
-    // Create a map of word IDs to their statuses for the given word list
-    const wordStatusMap = new Map();
-    words.forEach((word, index) => {
-      wordStatusMap.set(word.id, wordsStatusList[index]?.status || 'not-started');
-    });
+  const selectNextWordsForCategory = (words: typeof YEAR1_WORDS | typeof YEAR2_WORDS, wordsStatusList: ReturnType<typeof useWord>[]) => {
+    // Create words with status for the utility function
+    const wordsWithStatus = words.map((word, index) => ({
+      ...word,
+      status: wordsStatusList[index]?.status || 'not-started'
+    }));
 
-    // Sort words by priority: in-progress > not-started > mastered
-    const sortedWords = [...words].sort((a, b) => {
-      const statusA = wordStatusMap.get(a.id) || 'not-started';
-      const statusB = wordStatusMap.get(b.id) || 'not-started';
-      const priority = {
-        'in-progress': 0,
-        'not-started': 1,
-        'mastered': 2
-      };
-      return priority[statusA] - priority[statusB];
-    });
-    // Take the first 3 words
-    return sortedWords.slice(0, 3).map(w => w.text);
+    return selectNextWords(wordsWithStatus, 3);
   };
 
   const handleCategoryClick = (words: typeof YEAR1_WORDS) => {
@@ -65,7 +54,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
       return ks1WordsStatusList[index];
     });
     
-    const selectedWords = selectNextWords(words, categoryWordsStatusList);
+    const selectedWords = selectNextWordsForCategory(words, categoryWordsStatusList);
     onSelectWords(selectedWords, 'single');
     navigate('/spellingTest', { state: { words: selectedWords } });
   };
