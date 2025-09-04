@@ -149,7 +149,7 @@ const DailyActivityCalendar = ({ dailyActivity, progress }: {
 };
 
 const ActivityCalendar = ({ dailyMasteredWords, progress }: { 
-  dailyMasteredWords: { [key: string]: { mastered: string[], unmastered: string[] } },
+  dailyMasteredWords: { [key: string]: { mastered: string[], unmastered: string[], remastered: string[] } },
   progress: Record<string, any[]>
 }) => {
   const today = new Date();
@@ -163,9 +163,9 @@ const ActivityCalendar = ({ dailyMasteredWords, progress }: {
     return date;
   }).reverse();
 
-  // Get mastered and unmastered words for a specific date
+  // Get mastered, unmastered, and remastered words for a specific date
   const getWordsForDate = (dateStr: string) => {
-    return dailyMasteredWords[dateStr] || { mastered: [], unmastered: [] };
+    return dailyMasteredWords[dateStr] || { mastered: [], unmastered: [], remastered: [] };
   };
 
   return (
@@ -182,7 +182,8 @@ const ActivityCalendar = ({ dailyMasteredWords, progress }: {
           const dateStr = date.toISOString().split('T')[0];
           const wordsData = getWordsForDate(dateStr);
           const netChange = wordsData.mastered.length - wordsData.unmastered.length;
-          const hasChanges = wordsData.mastered.length > 0 || wordsData.unmastered.length > 0;
+          // Note: remastered words don't contribute to net change since they're net 0 (unmastered then re-mastered)
+          const hasChanges = wordsData.mastered.length > 0 || wordsData.unmastered.length > 0 || wordsData.remastered.length > 0;
           const isToday = date.toDateString() === today.toDateString();
           
           return (
@@ -236,8 +237,9 @@ const ActivityCalendar = ({ dailyMasteredWords, progress }: {
               const wordsData = getWordsForDate(selectedDate);
               const hasMastered = wordsData.mastered.length > 0;
               const hasUnmastered = wordsData.unmastered.length > 0;
+              const hasRemastered = wordsData.remastered.length > 0;
               
-              if (!hasMastered && !hasUnmastered) {
+              if (!hasMastered && !hasUnmastered && !hasRemastered) {
                 return (
                   <div style={{ color: '#6B7280', fontStyle: 'italic' }}>
                     No word status changes on this date
@@ -265,6 +267,32 @@ const ActivityCalendar = ({ dailyMasteredWords, progress }: {
                             {wordId}
                           </div>
                         ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {hasRemastered && (
+                    <div style={{ marginBottom: '1rem' }}>
+                      <h5 style={{ color: '#7C2D12', marginBottom: '0.5rem', fontSize: '0.875rem' }}>
+                        🔄 Words Re-mastered ({wordsData.remastered.length})
+                      </h5>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        {wordsData.remastered.map((wordId, index) => (
+                          <div key={index} style={{ 
+                            background: 'linear-gradient(45deg, #DC2626 0%, #059669 100%)',
+                            color: 'white',
+                            padding: '0.5rem 1rem',
+                            borderRadius: '6px',
+                            fontWeight: 'bold',
+                            fontSize: '0.875rem',
+                            border: '2px solid #F59E0B'
+                          }}>
+                            {wordId}
+                          </div>
+                        ))}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: '#6B7280', fontStyle: 'italic', marginTop: '0.25rem' }}>
+                        These words were unmastered and re-mastered on the same day
                       </div>
                     </div>
                   )}
@@ -337,7 +365,7 @@ export default function ProfilePage() {
   });
 
   // Calculate daily mastered and unmastered words
-  const dailyMasteredWords: { [key: string]: { mastered: string[], unmastered: string[] } } = {};
+  const dailyMasteredWords: { [key: string]: { mastered: string[], unmastered: string[], remastered: string[] } } = {};
   
   wordIds.forEach(wordId => {
     const attempts = progress[wordId] || [];
@@ -345,29 +373,45 @@ export default function ProfilePage() {
     
     const wordStats = getWordStats(wordId);
     
-    // Track when words became mastered (currently mastered words only)
+    // Track when words became mastered
     if (wordStats.status === 'mastered') {
-      let consecutiveCorrect = 0;
-      let masteryDate: string | null = null;
+      const todayStr = today.toISOString().split('T')[0];
       
-      // Count backwards from the end to find when current streak began
-      for (let i = attempts.length - 1; i >= 0; i--) {
-        if (attempts[i].correct) {
-          consecutiveCorrect++;
-          if (consecutiveCorrect === 3) {
-            masteryDate = attempts[i].date.split('T')[0];
+      // Check if there was a correct attempt today
+      const hadCorrectAttemptToday = attempts.some(attempt => 
+        attempt.correct && attempt.date.split('T')[0] === todayStr
+      );
+      
+      if (hadCorrectAttemptToday) {
+        // Count the current streak from the end
+        let consecutiveCorrect = 0;
+        
+        for (let i = attempts.length - 1; i >= 0; i--) {
+          if (attempts[i].correct) {
+            consecutiveCorrect++;
+          } else {
             break;
           }
-        } else {
-          break;
         }
-      }
-      
-      if (masteryDate) {
-        if (!dailyMasteredWords[masteryDate]) {
-          dailyMasteredWords[masteryDate] = { mastered: [], unmastered: [] };
+        
+        // If current streak is at least 3, count as mastered
+        if (consecutiveCorrect >= 3) {
+          let masteryDate: string;
+          
+          if (consecutiveCorrect > 3) {
+            // Use the date of the 3rd correct answer in this streak
+            const thirdCorrectIndex = attempts.length - consecutiveCorrect + 2; // +2 because we want the 3rd (index 2)
+            masteryDate = attempts[thirdCorrectIndex].date.split('T')[0];
+          } else {
+            // If exactly 3, use today as the mastery date
+            masteryDate = todayStr;
+          }
+          
+          if (!dailyMasteredWords[masteryDate]) {
+            dailyMasteredWords[masteryDate] = { mastered: [], unmastered: [], remastered: [] };
+          }
+          dailyMasteredWords[masteryDate].mastered.push(wordId);
         }
-        dailyMasteredWords[masteryDate].mastered.push(wordId);
       }
     }
     
@@ -386,7 +430,7 @@ export default function ProfilePage() {
         if (hadMastery && consecutiveCorrect >= 3) {
           const unmasteryDate = attempts[i].date.split('T')[0];
           if (!dailyMasteredWords[unmasteryDate]) {
-            dailyMasteredWords[unmasteryDate] = { mastered: [], unmastered: [] };
+            dailyMasteredWords[unmasteryDate] = { mastered: [], unmastered: [], remastered: [] };
           }
           // Only add if not already in the unmastered list for this date
           if (!dailyMasteredWords[unmasteryDate].unmastered.includes(wordId)) {
@@ -396,6 +440,25 @@ export default function ProfilePage() {
         consecutiveCorrect = 0;
         hadMastery = false;
       }
+    }
+  });
+
+  // Post-process to handle same-day re-masteries
+  Object.keys(dailyMasteredWords).forEach(date => {
+    const dayData = dailyMasteredWords[date];
+    
+    // Find words that appear in both mastered and unmastered lists for the same day
+    const remastered = dayData.mastered.filter(wordId => 
+      dayData.unmastered.includes(wordId)
+    );
+    
+    if (remastered.length > 0) {
+      // Move these words to the remastered list
+      dayData.remastered = remastered;
+      
+      // Remove them from both mastered and unmastered lists to avoid double counting
+      dayData.mastered = dayData.mastered.filter(wordId => !remastered.includes(wordId));
+      dayData.unmastered = dayData.unmastered.filter(wordId => !remastered.includes(wordId));
     }
   });
 
