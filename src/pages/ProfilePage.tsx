@@ -26,7 +26,7 @@ const StatCard = ({ title, value, color }: { title: string; value: string | numb
   </div>
 );
 
-const ActivityCalendar = ({ dailyActivity, progress }: { 
+const DailyActivityCalendar = ({ dailyActivity, progress }: { 
   dailyActivity: { [key: string]: number },
   progress: Record<string, any[]>
 }) => {
@@ -108,8 +108,8 @@ const ActivityCalendar = ({ dailyActivity, progress }: {
 
       {selectedDate && (
         <div style={{ 
-          marginTop: '1.5rem', 
-          padding: '1rem',
+          marginTop: '1rem', 
+          padding: '1rem', 
           background: '#F9FAFB',
           borderRadius: '8px'
         }}>
@@ -141,6 +141,186 @@ const ActivityCalendar = ({ dailyActivity, progress }: {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const ActivityCalendar = ({ dailyMasteredWords, progress }: { 
+  dailyMasteredWords: { [key: string]: { mastered: string[], unmastered: string[], remastered: string[] } },
+  progress: Record<string, any[]>
+}) => {
+  const today = new Date();
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  
+  // Get the last 7 days
+  const last7Days = Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    return date;
+  }).reverse();
+
+  // Get mastered, unmastered, and remastered words for a specific date
+  const getWordsForDate = (dateStr: string) => {
+    return dailyMasteredWords[dateStr] || { mastered: [], unmastered: [], remastered: [] };
+  };
+
+  return (
+    <div style={{
+      background: 'white',
+      padding: '1.5rem',
+      borderRadius: '8px',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+      marginTop: '1rem'
+    }}>
+      <h3 style={{ color: '#4B5563', marginBottom: '1rem' }}>Daily Word Status Changes</h3>
+      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'space-between' }}>
+        {last7Days.map((date, index) => {
+          const dateStr = date.toISOString().split('T')[0];
+          const wordsData = getWordsForDate(dateStr);
+          const netChange = wordsData.mastered.length - wordsData.unmastered.length;
+          // Note: remastered words don't contribute to net change since they're net 0 (unmastered then re-mastered)
+          const hasChanges = wordsData.mastered.length > 0 || wordsData.unmastered.length > 0 || wordsData.remastered.length > 0;
+          const isToday = date.toDateString() === today.toDateString();
+          
+          return (
+            <div 
+              key={dateStr} 
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '0.5rem',
+                cursor: 'pointer'
+              }}
+              onClick={() => setSelectedDate(selectedDate === dateStr ? null : dateStr)}
+            >
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '8px',
+                background: !hasChanges ? '#E5E7EB' : (netChange > 0 ? '#059669' : (netChange < 0 ? '#DC2626' : '#6B7280')),
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: hasChanges ? 'white' : '#6B7280',
+                fontWeight: 'bold',
+                border: isToday ? '2px solid #2563eb' : 'none',
+                transition: 'transform 0.2s',
+                transform: selectedDate === dateStr ? 'scale(1.1)' : 'scale(1)'
+              }}>
+                {hasChanges ? (netChange > 0 ? `+${netChange}` : netChange) : 0}
+              </div>
+              <div style={{ fontSize: '0.75rem', color: '#6B7280' }}>
+                {days[date.getDay()]}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {selectedDate && (
+        <div style={{ 
+          marginTop: '1.5rem', 
+          padding: '1rem',
+          background: '#F9FAFB',
+          borderRadius: '8px'
+        }}>
+          <h4 style={{ color: '#4B5563', marginBottom: '1rem' }}>
+            Word Changes on {new Date(selectedDate).toLocaleDateString()}
+          </h4>
+          <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+            {(() => {
+              const wordsData = getWordsForDate(selectedDate);
+              const hasMastered = wordsData.mastered.length > 0;
+              const hasUnmastered = wordsData.unmastered.length > 0;
+              const hasRemastered = wordsData.remastered.length > 0;
+              
+              if (!hasMastered && !hasUnmastered && !hasRemastered) {
+                return (
+                  <div style={{ color: '#6B7280', fontStyle: 'italic' }}>
+                    No word status changes on this date
+                  </div>
+                );
+              }
+              
+              return (
+                <div>
+                  {hasMastered && (
+                    <div style={{ marginBottom: '1rem' }}>
+                      <h5 style={{ color: '#059669', marginBottom: '0.5rem', fontSize: '0.875rem' }}>
+                        ✓ Words Mastered ({wordsData.mastered.length})
+                      </h5>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        {wordsData.mastered.map((wordId, index) => (
+                          <div key={index} style={{ 
+                            background: '#059669',
+                            color: 'white',
+                            padding: '0.5rem 1rem',
+                            borderRadius: '6px',
+                            fontWeight: 'bold',
+                            fontSize: '0.875rem'
+                          }}>
+                            {wordId}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {hasRemastered && (
+                    <div style={{ marginBottom: '1rem' }}>
+                      <h5 style={{ color: '#7C2D12', marginBottom: '0.5rem', fontSize: '0.875rem' }}>
+                        🔄 Words Re-mastered ({wordsData.remastered.length})
+                      </h5>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        {wordsData.remastered.map((wordId, index) => (
+                          <div key={index} style={{ 
+                            background: 'linear-gradient(45deg, #DC2626 0%, #059669 100%)',
+                            color: 'white',
+                            padding: '0.5rem 1rem',
+                            borderRadius: '6px',
+                            fontWeight: 'bold',
+                            fontSize: '0.875rem',
+                            border: '2px solid #F59E0B'
+                          }}>
+                            {wordId}
+                          </div>
+                        ))}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: '#6B7280', fontStyle: 'italic', marginTop: '0.25rem' }}>
+                        These words were unmastered and re-mastered on the same day
+                      </div>
+                    </div>
+                  )}
+                  
+                  {hasUnmastered && (
+                    <div>
+                      <h5 style={{ color: '#DC2626', marginBottom: '0.5rem', fontSize: '0.875rem' }}>
+                        ✗ Words Unmastered ({wordsData.unmastered.length})
+                      </h5>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        {wordsData.unmastered.map((wordId, index) => (
+                          <div key={index} style={{ 
+                            background: '#DC2626',
+                            color: 'white',
+                            padding: '0.5rem 1rem',
+                            borderRadius: '6px',
+                            fontWeight: 'bold',
+                            fontSize: '0.875rem'
+                          }}>
+                            {wordId}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         </div>
       )}
@@ -182,6 +362,68 @@ export default function ProfilePage() {
       const date = attempt.date.split('T')[0];
       dailyActivity[date] = (dailyActivity[date] || 0) + 1;
     });
+  });
+
+  // Calculate daily mastered and unmastered words
+  const dailyMasteredWords: { [key: string]: { mastered: string[], unmastered: string[], remastered: string[] } } = {};
+  
+  wordIds.forEach(wordId => {
+    const attempts = progress[wordId] || [];
+    if (attempts.length === 0) return;
+    
+    // Track mastery and unmastery events chronologically
+    let consecutiveCorrect = 0;
+    let wasMastered = false;
+    
+    for (let i = 0; i < attempts.length; i++) {
+      const attempt = attempts[i];
+      const attemptDate = attempt.date.split('T')[0];
+      
+      if (attempt.correct) {
+        consecutiveCorrect++;
+        
+        // Check if this attempt achieves mastery (3rd consecutive correct)
+        if (consecutiveCorrect === 3 && !wasMastered) {
+          if (!dailyMasteredWords[attemptDate]) {
+            dailyMasteredWords[attemptDate] = { mastered: [], unmastered: [], remastered: [] };
+          }
+          dailyMasteredWords[attemptDate].mastered.push(wordId);
+          wasMastered = true;
+        }
+      } else {
+        // Incorrect attempt - check if this breaks mastery
+        if (wasMastered && consecutiveCorrect >= 3) {
+          if (!dailyMasteredWords[attemptDate]) {
+            dailyMasteredWords[attemptDate] = { mastered: [], unmastered: [], remastered: [] };
+          }
+          // Only add if not already in the unmastered list for this date
+          if (!dailyMasteredWords[attemptDate].unmastered.includes(wordId)) {
+            dailyMasteredWords[attemptDate].unmastered.push(wordId);
+          }
+          wasMastered = false;
+        }
+        consecutiveCorrect = 0;
+      }
+    }
+  });
+
+  // Post-process to handle same-day re-masteries
+  Object.keys(dailyMasteredWords).forEach(date => {
+    const dayData = dailyMasteredWords[date];
+    
+    // Find words that appear in both mastered and unmastered lists for the same day
+    const remastered = dayData.mastered.filter(wordId => 
+      dayData.unmastered.includes(wordId)
+    );
+    
+    if (remastered.length > 0) {
+      // Move these words to the remastered list
+      dayData.remastered = remastered;
+      
+      // Remove them from both mastered and unmastered lists to avoid double counting
+      dayData.mastered = dayData.mastered.filter(wordId => !remastered.includes(wordId));
+      dayData.unmastered = dayData.unmastered.filter(wordId => !remastered.includes(wordId));
+    }
   });
 
   // Calculate current streak
@@ -260,8 +502,13 @@ export default function ProfilePage() {
           />
         </div>
 
+        <DailyActivityCalendar 
+          dailyActivity={dailyActivity}
+          progress={progress}
+        />
+        
         <ActivityCalendar 
-          dailyActivity={dailyActivity} 
+          dailyMasteredWords={dailyMasteredWords} 
           progress={progress}
         />
       </div>
