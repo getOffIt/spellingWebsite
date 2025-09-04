@@ -332,7 +332,17 @@ export default function ProfilePage() {
   const auth = useAuth();
   const { progress, getWordStats } = useProgress();
   
-  if (!auth.isAuthenticated || !auth.user) return null;
+  console.log('ProfilePage render - auth:', { 
+    isAuthenticated: auth.isAuthenticated, 
+    hasUser: !!auth.user,
+    isLoading: auth.isLoading,
+    progressKeys: Object.keys(progress)
+  });
+  
+  if (!auth.isAuthenticated || !auth.user) {
+    console.log('ProfilePage: User not authenticated, returning null');
+    return <div>Not authenticated or no user data</div>;
+  }
   
   const profile = auth.user.profile;
   const username = profile['cognito:username'] || profile.email || profile.sub;
