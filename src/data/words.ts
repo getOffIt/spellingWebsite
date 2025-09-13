@@ -46,7 +46,6 @@ export const YEAR1_WORDS: Word[] = [
   { id: 'lick', text: 'lick', year: 1, category: 'ck' },
   { id: 'snack', text: 'snack', year: 1, category: 'ck' },
   { id: 'pick', text: 'pick', year: 1, category: 'ck' },
-  { id: 'link', text: 'link', year: 1, category: 'ck' },
   { id: 'stick', text: 'stick', year: 1, category: 'ck' },
 
   // nk
