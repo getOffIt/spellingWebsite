@@ -4,6 +4,7 @@ import { useAuth } from "react-oidc-context";
 import Login from "./pages/Login";
 import ChallengesPage from "./pages/ChallengesPage";
 import WordSelection from "./pages/WordSelection";
+import CommonWordsSelection from "./pages/CommonWordsSelection";
 import './App.css'
 import SpellingTest from './pages/SpellingTest'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -60,6 +61,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <WordSelection onSelectWords={handleSelectWords} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/common-words-selection"
+            element={
+              <ProtectedRoute>
+                <CommonWordsSelection onSelectWords={handleSelectWords} />
               </ProtectedRoute>
             }
           />

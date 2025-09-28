@@ -121,7 +121,7 @@ export const YEAR1_WORDS: Word[] = [
   { id: 'sunset', text: 'sunset', year: 1, category: 'two syllable words' },
 ];
 
-export const TRICKY_WORDS: Word[] = [
+export const COMMON_WORDS: Word[] = [
   // Common words 1 (first 6)
   { id: 'i', text: 'I', year: 1, category: 'common words 1' },
   { id: 'the', text: 'the', year: 1, category: 'common words 1' },
@@ -306,4 +306,4 @@ export const YEAR2_WORDS: Word[] = [
   { id: 'christmas', text: 'Christmas', year: 2, category: 'misc' }
 ];
 
-export const ALL_WORDS = [...YEAR1_WORDS, ...TRICKY_WORDS, ...YEAR2_WORDS] 
+export const ALL_WORDS = [...YEAR1_WORDS, ...COMMON_WORDS, ...YEAR2_WORDS] 

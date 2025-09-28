@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { YEAR1_WORDS } from '../data/words';
+import { YEAR1_WORDS, TRICKY_WORDS as COMMON_WORDS } from '../data/words';
 import { useWord } from '../hooks/useWord';
 import './ChallengesPage.css';
 
@@ -14,6 +14,12 @@ const ChallengesPage: React.FC = () => {
   const ks1TotalWords = ks1Words.length;
   const ks1Progress = Math.round((ks1MasteredWords / ks1TotalWords) * 100);
 
+  // Calculate Common Words progress
+  const commonWordsStatusList = COMMON_WORDS.map(word => useWord(word.id));
+  const commonWordsMastered = commonWordsStatusList.filter(status => status.status === 'mastered').length;
+  const commonWordsTotalWords = COMMON_WORDS.length;
+  const commonWordsProgress = Math.round((commonWordsMastered / commonWordsTotalWords) * 100);
+
   const challenges = [
     {
       id: 'leo-ks1-challenge',
@@ -26,8 +32,19 @@ const ChallengesPage: React.FC = () => {
       route: '/word-selection',
       bgColor: 'linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%)',
       borderColor: '#ffb347'
+    },
+    {
+      id: 'common-words-challenge',
+      title: "Common Words Challenge",
+      description: "Master essential common words used in everyday reading and writing!",
+      progress: commonWordsProgress,
+      masteredWords: commonWordsMastered,
+      totalWords: commonWordsTotalWords,
+      status: commonWordsProgress === 100 ? 'completed' : commonWordsProgress > 75 ? 'close' : commonWordsProgress > 50 ? 'good' : commonWordsProgress > 25 ? 'steady' : commonWordsProgress > 0 ? 'starting' : 'beginning',
+      route: '/common-words-selection',
+      bgColor: 'linear-gradient(135deg, #a855f7 0%, #c084fc 50%, #a855f7 100%)',
+      borderColor: '#9333ea'
     }
-    // More challenges will be added here
   ];
 
   const getStatusMessage = (status: string, progress: number) => {
