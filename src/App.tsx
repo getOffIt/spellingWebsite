@@ -5,7 +5,6 @@ import Login from "./pages/Login";
 import WordSelection from "./pages/WordSelection";
 import './App.css'
 import SpellingTest from './pages/SpellingTest'
-import KS1_1 from './pages/KS1_1'
 import ProtectedRoute from './components/ProtectedRoute'
 import ProfilePage from './pages/ProfilePage'
 import Header from './components/Header'
@@ -39,14 +38,6 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           
           {/* Protected routes */}
-          <Route
-            path="/ks1-1"
-            element={
-              <ProtectedRoute>
-                <KS1_1 onSelectWords={handleSelectWords} />
-              </ProtectedRoute>
-            }
-          />
           <Route
             path="/api-test"
             element={

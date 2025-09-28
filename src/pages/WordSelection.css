@@ -10,6 +10,182 @@
   font-family: 'Comic Sans MS', 'Comic Sans', 'Arial Rounded MT Bold', 'Arial', sans-serif;
 }
 
+/* Leo's £50 Challenge Styles */
+.leo-challenge {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 2rem auto;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
+  border: 3px solid #ffb347;
+  position: relative;
+  overflow: hidden;
+}
+
+.leo-challenge::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: sparkle 3s infinite linear;
+}
+
+@keyframes sparkle {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.leo-challenge-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.leo-challenge-title {
+  color: #d97706;
+  font-size: 2.2rem;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.leo-challenge-subtitle {
+  color: #92400e;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.leo-challenge-progress {
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.leo-challenge-progress-bar {
+  width: 100%;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.5rem;
+}
+
+.leo-challenge-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 50%, #047857 100%);
+  transition: width 0.5s ease;
+  position: relative;
+}
+
+.leo-challenge-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.leo-challenge-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.leo-challenge-current {
+  color: #047857;
+  font-size: 1.1rem;
+}
+
+.leo-challenge-remaining {
+  color: #d97706;
+  font-size: 1rem;
+}
+
+.leo-challenge-motivation {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.leo-challenge-motivation > div {
+  padding: 0.8rem;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  animation: bounce 2s infinite;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.leo-challenge-motivation > div:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.leo-challenge-motivation > div:active {
+  transform: scale(0.98);
+}
+
+.leo-challenge-complete {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+}
+
+.leo-challenge-close {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
+}
+
+.leo-challenge-good {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+}
+
+.leo-challenge-steady {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+}
+
+.leo-challenge-starting {
+  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4);
+}
+
+.leo-challenge-beginning {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgba(107, 114, 128, 0.4);
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-5px); }
+  60% { transform: translateY(-3px); }
+}
+
 .word-selection-title {
   color: #2563eb;
   font-size: 2rem;
