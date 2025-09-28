@@ -35,15 +35,15 @@ const ChallengesPage: React.FC = () => {
     },
     {
       id: 'common-words-challenge',
-      title: "Common Words Challenge",
-      description: "Master essential common words used in everyday reading and writing!",
+      title: "🎃 Spooky Common Words Challenge 👻",
+      description: "Enter the haunted library and master spooky common words... if you dare! 🦇",
       progress: commonWordsProgress,
       masteredWords: commonWordsMastered,
       totalWords: commonWordsTotalWords,
       status: commonWordsProgress === 100 ? 'completed' : commonWordsProgress > 75 ? 'close' : commonWordsProgress > 50 ? 'good' : commonWordsProgress > 25 ? 'steady' : commonWordsProgress > 0 ? 'starting' : 'beginning',
       route: '/common-words-selection',
-      bgColor: 'linear-gradient(135deg, #a855f7 0%, #c084fc 50%, #a855f7 100%)',
-      borderColor: '#9333ea'
+      bgColor: 'linear-gradient(135deg, #1a0d2e 0%, #ff8c00 50%, #1a0d2e 100%)',
+      borderColor: '#ff4500'
     }
   ];
 

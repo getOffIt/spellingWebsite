@@ -80,7 +80,7 @@ const CommonWordsSelection: React.FC<CommonWordsSelectionProps> = ({ onSelectWor
 
   return (
     <div className="word-selection-container common-words-page">
-      <h1 className="word-selection-title">Common Words Challenge</h1>
+      <h1 className="word-selection-title">🎃 Spooky Common Words Challenge 👻</h1>
       
       <div className="word-selection-overall-progress">
         <div className="word-selection-overall-progress-bar">
