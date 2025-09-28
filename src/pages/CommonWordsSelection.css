@@ -1,0 +1,115 @@
+/* Common Words Challenge - Halloween theme override */
+.common-words-page .word-selection-container {
+  background: linear-gradient(135deg, #1a0d2e 0%, #0f0a19 50%, #1a0d2e 100%);
+  position: relative;
+}
+
+/* Spooky animated background */
+.common-words-page .word-selection-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(255, 140, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(139, 69, 19, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 60% 40%, rgba(255, 69, 0, 0.1) 0%, transparent 50%);
+  animation: spookyGlow 3s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: -10;
+}
+
+@keyframes spookyGlow {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.7; }
+}
+
+.common-words-page .word-selection-title {
+  color: #ff8c00;
+  text-shadow: 
+    2px 4px 8px rgba(255, 140, 0, 0.5), 
+    0 0 20px rgba(255, 69, 0, 0.3),
+    0 0 40px rgba(255, 140, 0, 0.2);
+  animation: flickerGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes flickerGlow {
+  0% { 
+    text-shadow: 
+      2px 4px 8px rgba(255, 140, 0, 0.5), 
+      0 0 20px rgba(255, 69, 0, 0.3),
+      0 0 40px rgba(255, 140, 0, 0.2);
+  }
+  100% { 
+    text-shadow: 
+      2px 4px 8px rgba(255, 140, 0, 0.8), 
+      0 0 30px rgba(255, 69, 0, 0.6),
+      0 0 60px rgba(255, 140, 0, 0.4);
+  }
+}
+
+.common-words-page .word-selection-overall-progress-text {
+  color: #ffa500;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  font-weight: bold;
+}
+
+.common-words-page .word-selection-overall-progress-bar {
+  background: rgba(139, 69, 19, 0.6);
+  border: 2px solid #8b4513;
+  box-shadow: 0 0 10px rgba(255, 140, 0, 0.3);
+}
+
+.common-words-page .word-selection-overall-progress-fill {
+  background: linear-gradient(90deg, #ff4500 0%, #ff8c00 50%, #ffa500 100%);
+  box-shadow: 0 0 15px rgba(255, 140, 0, 0.5);
+}
+
+.common-words-page .word-selection-category {
+  background: rgba(40, 20, 60, 0.9) !important;
+  border: 2px solid #8b4513 !important;
+  box-shadow: 
+    0 4px 15px rgba(255, 140, 0, 0.2),
+    inset 0 0 20px rgba(139, 69, 19, 0.3) !important;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.common-words-page .word-selection-category:hover {
+  border-color: #ff8c00 !important;
+  box-shadow: 
+    0 6px 20px rgba(255, 140, 0, 0.5),
+    inset 0 0 25px rgba(139, 69, 19, 0.4) !important;
+}
+
+.common-words-page .word-selection-category-title {
+  color: #ff8c00 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  font-weight: bold !important;
+}
+
+.common-words-page .word-selection-progress-fill {
+  background: linear-gradient(90deg, #ff4500 0%, #ff8c00 100%) !important;
+  box-shadow: 0 0 10px rgba(255, 140, 0, 0.4) !important;
+}
+
+.common-words-page .word-selection-word {
+  color: #ffa500 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+.common-words-page .word-selection-progress-text {
+  color: #ff8c00 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  font-weight: bold !important;
+}
+
+/* Keep original status colors for consistency:
+   mastered: #10b981 (green)
+   in-progress: #f59e42 (amber)  
+   not-started: #64748b (grey)
+   unmastered: #dc2626 (red)
+*/

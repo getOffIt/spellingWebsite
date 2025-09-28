@@ -1,54 +1,54 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { YEAR1_WORDS } from '../data/words';
+import { COMMON_WORDS } from '../data/words';
 import { useWord } from '../hooks/useWord';
 import { selectNextWords } from '../utils/wordSelection';
-import './KS1_1.css';
-import KS11Challenge from '../components/KS11Challenge';
+import './WordSelection.css';
+import './CommonWordsSelection.css';
 
-interface KS1_1Props {
+interface CommonWordsSelectionProps {
   onSelectWords: (words: string[], type: 'single' | 'less_family') => void;
 }
 
 const getStatusIcon = (status: string) => {
-  return <span className={`ks1-1-word-status ${status}`}>•</span>;
+  return <span className={`word-selection-status ${status}`}>•</span>;
 };
 
-const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
+const CommonWordsSelection: React.FC<CommonWordsSelectionProps> = ({ onSelectWords }) => {
   const navigate = useNavigate();
 
-  // Build status array for all words (call hooks at top level, not in map inside an object)
-  const wordStatusList = YEAR1_WORDS.map(word => useWord(word.id));
+  // Build status arrays for all common words
+  const commonWordsStatusList = COMMON_WORDS.map(word => useWord(word.id));
 
-  const totalWords = YEAR1_WORDS.length;
-  const masteredWords = wordStatusList.filter(status => status.status === 'mastered').length;
+  // Calculate overall progress
+  const totalWords = COMMON_WORDS.length;
+  const masteredWords = commonWordsStatusList.filter(status => status.status === 'mastered').length;
   const overallPercent = Math.round((masteredWords / totalWords) * 100);
 
-  // Build wordStatuses array for KS1-1 Challenge
-  const wordStatuses = YEAR1_WORDS.map((word, i) => ({
+  // Build wordStatuses array
+  const wordStatuses = COMMON_WORDS.map((word, i) => ({
     ...word,
-    status: wordStatusList[i].status || 'not-started',
+    status: commonWordsStatusList[i].status || 'not-started',
   }));
 
   const categories = useMemo(() => {
-    // Create a map of category to its first occurrence index
+    // Group words by category and maintain order
     const categoryOrder = new Map<string, number>();
-    YEAR1_WORDS.forEach((word, index) => {
+    COMMON_WORDS.forEach((word, index) => {
       if (!categoryOrder.has(word.category)) {
         categoryOrder.set(word.category, index);
       }
     });
 
-    const grouped = YEAR1_WORDS.reduce((acc, word) => {
+    const grouped = COMMON_WORDS.reduce((acc, word) => {
       if (!acc[word.category]) {
         acc[word.category] = [];
       }
       acc[word.category].push(word);
       return acc;
-    }, {} as Record<string, typeof YEAR1_WORDS>);
+    }, {} as Record<string, typeof COMMON_WORDS>);
 
     return Object.entries(grouped)
-      .filter(([cat]) => !cat.toLowerCase().startsWith('adding'))
       .sort(([a], [b]) => {
         const orderA = categoryOrder.get(a) ?? Infinity;
         const orderB = categoryOrder.get(b) ?? Infinity;
@@ -56,7 +56,7 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
       });
   }, []);
 
-  const getCategoryProgress = (categoryWords: typeof YEAR1_WORDS) => {
+  const getCategoryProgress = (categoryWords: typeof COMMON_WORDS) => {
     const wordList = wordStatuses.filter(w => categoryWords.some(ww => ww.id === w.id));
     const total = wordList.length;
     const mastered = wordList.filter(word => word.status === 'mastered').length;
@@ -67,63 +67,64 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
     };
   };
 
-  const selectNextWordsForCategory = (words: typeof YEAR1_WORDS) => {
-    // Use the precomputed statuses
+  const selectNextWordsForCategory = (words: typeof COMMON_WORDS) => {
     const wordList = wordStatuses.filter(w => words.some(ww => ww.id === w.id));
     return selectNextWords(wordList, 3);
   };
 
-  return (
-    <div className="ks1-1-container">
-      <h1 className="ks1-1-title">KS1 - 1 Spelling</h1>
-      <KS11Challenge wordStatuses={wordStatuses} onSelectWords={onSelectWords} navigate={navigate} />
+  const handleCategoryClick = (words: typeof COMMON_WORDS) => {
+    const selectedWords = selectNextWordsForCategory(words);
+    onSelectWords(selectedWords, 'single');
+    navigate('/spelling-test');
+  };
 
-      <div className="ks1-1-overall-progress">
-        <div className="ks1-1-overall-progress-bar">
+  return (
+    <div className="word-selection-container common-words-page">
+      <h1 className="word-selection-title">🎃 Spooky Common Words Challenge 👻</h1>
+      
+      <div className="word-selection-overall-progress">
+        <div className="word-selection-overall-progress-bar">
           <div
-            className="ks1-1-overall-progress-fill"
+            className="word-selection-overall-progress-fill"
             style={{ width: `${overallPercent}%` }}
           />
         </div>
-        <span className="ks1-1-overall-progress-text">
+        <span className="word-selection-overall-progress-text">
           {masteredWords}/{totalWords} mastered
         </span>
       </div>
-      <div className="ks1-1-categories">
+
+      <div className="word-selection-categories">
         {categories.map(([category, words]) => {
           const catProgress = getCategoryProgress(words);
           return (
             <div
               key={category}
-              className="ks1-1-category"
-              onClick={() => {
-                const selectedWords = selectNextWordsForCategory(words);
-                onSelectWords(selectedWords, 'single');
-                navigate('/');
-              }}
+              className="word-selection-category"
+              onClick={() => handleCategoryClick(words)}
               style={{ cursor: 'pointer' }}
             >
-              <div className="ks1-1-category-header">
-                <h2 className="ks1-1-category-title">{category}</h2>
-                <div className="ks1-1-category-progress">
-                  <div className="ks1-1-progress-bar">
+              <div className="word-selection-category-header">
+                <h2 className="word-selection-category-title">{category}</h2>
+                <div className="word-selection-category-progress">
+                  <div className="word-selection-progress-bar">
                     <div 
-                      className="ks1-1-progress-fill"
+                      className="word-selection-progress-fill"
                       style={{ width: `${catProgress.percentage}%` }}
                     />
                   </div>
-                  <span className="ks1-1-progress-text">
+                  <span className="word-selection-progress-text">
                     {catProgress.mastered}/{catProgress.total}
                   </span>
                 </div>
               </div>
-              <div className="ks1-1-words-list">
+              <div className="word-selection-words-list">
                 {wordStatuses.filter(w => words.some(ww => ww.id === w.id)).map(word => {
                   const status = word.status;
                   return (
                     <span
                       key={word.id}
-                      className={`ks1-1-word ${status}`}
+                      className={`word-selection-word ${status}`}
                     >
                       {getStatusIcon(status)} {word.text}
                     </span>
@@ -138,4 +139,4 @@ const KS1_1: React.FC<KS1_1Props> = ({ onSelectWords }) => {
   );
 };
 
-export default KS1_1; 
+export default CommonWordsSelection;

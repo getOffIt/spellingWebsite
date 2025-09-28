@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import Login from "./pages/Login";
+import ChallengesPage from "./pages/ChallengesPage";
 import WordSelection from "./pages/WordSelection";
+import CommonWordsSelection from "./pages/CommonWordsSelection";
 import './App.css'
 import SpellingTest from './pages/SpellingTest'
-import KS1_1 from './pages/KS1_1'
 import ProtectedRoute from './components/ProtectedRoute'
 import ProfilePage from './pages/ProfilePage'
 import Header from './components/Header'
@@ -40,14 +41,6 @@ export default function App() {
           
           {/* Protected routes */}
           <Route
-            path="/ks1-1"
-            element={
-              <ProtectedRoute>
-                <KS1_1 onSelectWords={handleSelectWords} />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/api-test"
             element={
               <ProtectedRoute>
@@ -64,7 +57,23 @@ export default function App() {
             }
           />
           <Route
-            path="/"
+            path="/word-selection"
+            element={
+              <ProtectedRoute>
+                <WordSelection onSelectWords={handleSelectWords} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/common-words-selection"
+            element={
+              <ProtectedRoute>
+                <CommonWordsSelection onSelectWords={handleSelectWords} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/spelling-test"
             element={
               <ProtectedRoute>
                 {selectedList ? (
@@ -74,8 +83,16 @@ export default function App() {
                     onComplete={handleReset} 
                   />
                 ) : (
-                  <WordSelection onSelectWords={handleSelectWords} />
+                  <Navigate to="/" replace />
                 )}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <ChallengesPage />
               </ProtectedRoute>
             }
           />

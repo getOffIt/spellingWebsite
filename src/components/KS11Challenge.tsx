@@ -37,7 +37,7 @@ const KS11Challenge: React.FC<KS11ChallengeProps> = ({ wordStatuses, onSelectWor
     const selectedWords = selectInProgressWords();
     if (selectedWords.length > 0) {
       onSelectWords(selectedWords, 'single');
-      if (navigate) navigate('/');
+      if (navigate) navigate('/spelling-test');
     }
   };
 
