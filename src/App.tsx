@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import Login from "./pages/Login";
+import ChallengesPage from "./pages/ChallengesPage";
 import WordSelection from "./pages/WordSelection";
 import './App.css'
 import SpellingTest from './pages/SpellingTest'
@@ -55,7 +56,15 @@ export default function App() {
             }
           />
           <Route
-            path="/"
+            path="/word-selection"
+            element={
+              <ProtectedRoute>
+                <WordSelection onSelectWords={handleSelectWords} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/spelling-test"
             element={
               <ProtectedRoute>
                 {selectedList ? (
@@ -65,8 +74,16 @@ export default function App() {
                     onComplete={handleReset} 
                   />
                 ) : (
-                  <WordSelection onSelectWords={handleSelectWords} />
+                  <Navigate to="/" replace />
                 )}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <ChallengesPage />
               </ProtectedRoute>
             }
           />

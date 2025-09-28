@@ -56,7 +56,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
     
     const selectedWords = selectNextWordsForCategory(words, categoryWordsStatusList);
     onSelectWords(selectedWords, 'single');
-    navigate('/spellingTest', { state: { words: selectedWords } });
+    navigate('/spelling-test');
   };
 
   return (
@@ -64,7 +64,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
       <h1 className="word-selection-title">Word Selection</h1>
       {/* KS1-1 Section */}
       <div className="word-selection-section">
-        <KS11Challenge wordStatuses={ks1ChallengeWordStatuses} onSelectWords={onSelectWords} />
+        <KS11Challenge wordStatuses={ks1ChallengeWordStatuses} onSelectWords={onSelectWords} navigate={navigate} />
 
         <div className="word-selection-categories">
           {Array.from(new Set(ks1Words.map(word => word.category))).map(category => {

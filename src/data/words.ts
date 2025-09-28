@@ -121,6 +121,93 @@ export const YEAR1_WORDS: Word[] = [
   { id: 'sunset', text: 'sunset', year: 1, category: 'two syllable words' },
 ];
 
+export const TRICKY_WORDS: Word[] = [
+  // Common words 1 (first 6)
+  { id: 'i', text: 'I', year: 1, category: 'common words 1' },
+  { id: 'the', text: 'the', year: 1, category: 'common words 1' },
+  { id: 'no', text: 'no', year: 1, category: 'common words 1' },
+  { id: 'put', text: 'put', year: 1, category: 'common words 1' },
+  { id: 'of', text: 'of', year: 1, category: 'common words 1' },
+  { id: 'is', text: 'is', year: 1, category: 'common words 1' },
+  
+  // Common words 2 (next 6)
+  { id: 'to', text: 'to', year: 1, category: 'common words 2' },
+  { id: 'go', text: 'go', year: 1, category: 'common words 2' },
+  { id: 'into', text: 'into', year: 1, category: 'common words 2' },
+  { id: 'pull', text: 'pull', year: 1, category: 'common words 2' },
+  { id: 'as', text: 'as', year: 1, category: 'common words 2' },
+  { id: 'his', text: 'his', year: 1, category: 'common words 2' },
+
+  
+  // Common words 3 (6 words)
+  { id: 'he', text: 'he', year: 1, category: 'common words 3' },
+  { id: 'she', text: 'she', year: 1, category: 'common words 3' },
+  { id: 'buses', text: 'buses', year: 1, category: 'common words 3' },
+  { id: 'we', text: 'we', year: 1, category: 'common words 3' },
+  { id: 'me', text: 'me', year: 1, category: 'common words 3' },
+  { id: 'be', text: 'be', year: 1, category: 'common words 3' },
+  
+  // Common words 4 (6 words)
+  { id: 'push', text: 'push', year: 1, category: 'common words 4' },
+  { id: 'was', text: 'was', year: 1, category: 'common words 4' },
+  { id: 'her', text: 'her', year: 1, category: 'common words 4' },
+  { id: 'my', text: 'my', year: 1, category: 'common words 4' },
+  { id: 'you', text: 'you', year: 1, category: 'common words 4' },
+  { id: 'they', text: 'they', year: 1, category: 'common words 4' },
+  
+  // Common words 5 (6 words)
+  { id: 'all', text: 'all', year: 1, category: 'common words 5' },
+  { id: 'are', text: 'are', year: 1, category: 'common words 5' },
+  { id: 'ball', text: 'ball', year: 1, category: 'common words 5' },
+  { id: 'tall', text: 'tall', year: 1, category: 'common words 5' },
+  { id: 'when', text: 'when', year: 1, category: 'common words 5' },
+  { id: 'what', text: 'what', year: 1, category: 'common words 5' },
+  
+  // Common words 6 (6 words)
+  { id: 'said', text: 'said', year: 1, category: 'common words 6' },
+  { id: 'so', text: 'so', year: 1, category: 'common words 6' },
+  { id: 'have', text: 'have', year: 1, category: 'common words 6' },
+  { id: 'were', text: 'were', year: 1, category: 'common words 6' },
+  { id: 'out', text: 'out', year: 1, category: 'common words 6' },
+  { id: 'like', text: 'like', year: 1, category: 'common words 6' },
+  
+  // Common words 7 (6 words)
+  { id: 'some', text: 'some', year: 1, category: 'common words 7' },
+  { id: 'come', text: 'come', year: 1, category: 'common words 7' },
+  { id: 'there', text: 'there', year: 1, category: 'common words 7' },
+  { id: 'little', text: 'little', year: 1, category: 'common words 7' },
+  { id: 'one', text: 'one', year: 1, category: 'common words 7' },
+  { id: 'do', text: 'do', year: 1, category: 'common words 7' },
+  
+  // Common words 8 (4 words)
+  { id: 'children', text: 'children', year: 1, category: 'common words 8' },
+  { id: 'oh', text: 'oh', year: 1, category: 'common words 8' },
+  { id: 'their', text: 'their', year: 1, category: 'common words 8' },
+  { id: 'a', text: 'a', year: 1, category: 'common words 8' },
+
+  // Common words 9 (5 words)
+  { id: 'people', text: 'people', year: 1, category: 'common words 9' },
+  { id: 'mr', text: 'Mr', year: 1, category: 'common words 9' },
+  { id: 'mrs', text: 'Mrs', year: 1, category: 'common words 9' },
+  { id: 'your', text: 'your', year: 1, category: 'common words 9' },
+  { id: 'ask', text: 'ask', year: 1, category: 'common words 9' },
+
+  // Common words 10 (2 words)
+  { id: 'should', text: 'should', year: 1, category: 'common words 10' },
+  { id: 'would', text: 'would', year: 1, category: 'common words 10' },
+
+  // Common words 11 (4 words)
+  { id: 'could', text: 'could', year: 1, category: 'common words 11' },
+  { id: 'asked', text: 'asked', year: 1, category: 'common words 11' },
+  { id: 'house', text: 'house', year: 1, category: 'common words 11' },
+  { id: 'mouse', text: 'mouse', year: 1, category: 'common words 11' },
+
+  // Common words 12 (3 words)
+  { id: 'water', text: 'water', year: 1, category: 'common words 12' },
+  { id: 'want', text: 'want', year: 1, category: 'common words 12' },
+  { id: 'very', text: 'very', year: 1, category: 'common words 12' },
+];
+
 export const YEAR2_WORDS: Word[] = [
   // -less words
   { id: 'careless', text: 'careless', year: 2, category: '-less' },
@@ -219,4 +306,4 @@ export const YEAR2_WORDS: Word[] = [
   { id: 'christmas', text: 'Christmas', year: 2, category: 'misc' }
 ];
 
-export const ALL_WORDS = [...YEAR1_WORDS, ...YEAR2_WORDS] 
+export const ALL_WORDS = [...YEAR1_WORDS, ...TRICKY_WORDS, ...YEAR2_WORDS] 
