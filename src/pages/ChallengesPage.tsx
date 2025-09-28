@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { YEAR1_WORDS, TRICKY_WORDS as COMMON_WORDS } from '../data/words';
+import { YEAR1_WORDS, COMMON_WORDS } from '../data/words';
 import { useWord } from '../hooks/useWord';
 import './ChallengesPage.css';
 

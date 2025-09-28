@@ -1,31 +1,31 @@
 /* Common Words Challenge - Purple theme override */
-.word-selection-container {
+.common-words-page .word-selection-container {
   background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%);
 }
 
-.word-selection-title {
+.common-words-page .word-selection-title {
   color: #f3e8ff;
   text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3), 0 2px 0 #7c3aed;
 }
 
-.word-selection-overall-progress-text {
+.common-words-page .word-selection-overall-progress-text {
   color: #f3e8ff;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
-.word-selection-overall-progress-bar {
+.common-words-page .word-selection-overall-progress-bar {
   background: rgba(255, 255, 255, 0.3);
 }
 
-.word-selection-overall-progress-fill {
+.common-words-page .word-selection-overall-progress-fill {
   background: linear-gradient(90deg, #f3e8ff 0%, #a855f7 100%);
 }
 
-.word-selection-category-title {
+.common-words-page .word-selection-category-title {
   color: #7c3aed;
 }
 
-.word-selection-progress-fill {
+.common-words-page .word-selection-progress-fill {
   background: #a855f7;
 }
 

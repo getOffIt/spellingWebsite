@@ -8,6 +8,7 @@
   padding: 2rem 1rem;
   min-height: 100vh;
   font-family: 'Comic Sans MS', 'Comic Sans', 'Arial Rounded MT Bold', 'Arial', sans-serif;
+  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
 }
 
 /* Leo's £50 Challenge Styles */

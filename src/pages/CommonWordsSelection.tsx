@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TRICKY_WORDS as COMMON_WORDS } from '../data/words';
+import { COMMON_WORDS } from '../data/words';
 import { useWord } from '../hooks/useWord';
 import { selectNextWords } from '../utils/wordSelection';
 import './WordSelection.css';
@@ -79,7 +79,7 @@ const CommonWordsSelection: React.FC<CommonWordsSelectionProps> = ({ onSelectWor
   };
 
   return (
-    <div className="word-selection-container">
+    <div className="word-selection-container common-words-page">
       <h1 className="word-selection-title">Common Words Challenge</h1>
       
       <div className="word-selection-overall-progress">
