@@ -30,24 +30,36 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
 }) => {
   const navigate = useNavigate();
 
+  // Call hooks for ALL words first (must be consistent number of hook calls)
+  // This ensures we always call the same number of hooks regardless of filtering
+  const allWordsStatusList = words.map(word => useWord(word.id));
+
+  // Create a map of word id to status for efficient lookup
+  const statusMap = useMemo(() => {
+    const map = new Map<string, ReturnType<typeof useWord>>();
+    words.forEach((word, index) => {
+      map.set(word.id, allWordsStatusList[index]);
+    });
+    return map;
+  }, [words, allWordsStatusList]);
+
   // Apply word filter if provided
   const filteredWords = useMemo(() => {
     return wordFilter ? words.filter(wordFilter) : words;
   }, [words, wordFilter]);
 
-  // Build status arrays for all words (call hooks at top level, not in useMemo or reduce)
-  const wordsStatusList = filteredWords.map(word => useWord(word.id));
+  // Build wordStatuses array for filtered words using the status map
+  const wordStatuses = useMemo(() => {
+    return filteredWords.map(word => ({
+      ...word,
+      status: statusMap.get(word.id)?.status || 'not-started',
+    }));
+  }, [filteredWords, statusMap]);
 
   // Calculate overall progress
   const totalWords = filteredWords.length;
-  const masteredWords = wordsStatusList.filter(status => status.status === 'mastered').length;
+  const masteredWords = wordStatuses.filter(word => word.status === 'mastered').length;
   const overallPercent = Math.round((masteredWords / totalWords) * 100);
-
-  // Build wordStatuses array
-  const wordStatuses = filteredWords.map((word, i) => ({
-    ...word,
-    status: wordsStatusList[i].status || 'not-started',
-  }));
 
   // Group words by category and maintain order (from CommonWordsSelection logic)
   const categories = useMemo(() => {

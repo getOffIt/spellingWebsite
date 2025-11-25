@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { YEAR1_WORDS } from '../data/words';
+import { YEAR1_WORDS, Word } from '../data/words';
 import { useWord } from '../hooks/useWord';
 import BaseWordSelection from '../components/BaseWordSelection';
 import KS11Challenge from '../components/KS11Challenge';
@@ -28,6 +28,11 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
     status: ks1WordsStatusList[i].status || 'not-started',
   }));
 
+  // Memoize the wordFilter function to prevent unnecessary recalculations
+  const wordFilter = useCallback((word: Word) => {
+    return !word.category.startsWith('adding');
+  }, []);
+
   const challengeComponent = (
     <KS11Challenge 
       wordStatuses={ks1ChallengeWordStatuses} 
@@ -40,7 +45,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
     <BaseWordSelection
       words={YEAR1_WORDS}
       title="Word Selection"
-      wordFilter={(word) => !word.category.startsWith('adding')}
+      wordFilter={wordFilter}
       showOverallProgress={false}
       challengeComponent={challengeComponent}
       onSelectWords={onSelectWords}
