@@ -69,7 +69,7 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
   // Calculate overall progress
   const totalWords = filteredWords.length;
   const masteredWords = wordStatuses.filter(word => word.status === 'mastered').length;
-  const overallPercent = Math.round((masteredWords / totalWords) * 100);
+  const overallPercent = totalWords > 0 ? Math.round((masteredWords / totalWords) * 100) : 0;
 
   // Group words by category and maintain order (from CommonWordsSelection logic)
   const categories = useMemo(() => {
