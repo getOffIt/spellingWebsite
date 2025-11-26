@@ -160,12 +160,12 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
 
       <div className="word-selection-categories">
         {categories.map(([category, categoryWords]) => {
-          const catProgress = getCategoryProgress(categoryWords);
+          const catProgress = getCategoryProgress(category);
           return (
             <div
               key={category}
               className="word-selection-category"
-              onClick={() => handleCategoryClick(categoryWords)}
+              onClick={() => handleCategoryClick(category)}
               style={{ cursor: 'pointer' }}
             >
               <div className="word-selection-category-header">
