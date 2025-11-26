@@ -76,7 +76,7 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
       }
       acc[word.category].push(word);
       return acc;
-    }, {} as Record<string, typeof filteredWords>);
+    }, {} as Record<string, Word[]>);
 
     return Object.entries(grouped)
       .sort(([a], [b]) => {
