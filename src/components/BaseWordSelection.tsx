@@ -86,24 +86,36 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
       });
   }, [filteredWords]);
 
-  const getCategoryProgress = (categoryWords: Word[]) => {
-    const wordList = wordStatuses.filter(w => categoryWords.some(ww => ww.id === w.id));
+  // Build a map from category to wordStatuses for efficient lookup
+  const categoryToWordStatuses = useMemo(() => {
+    const map: Record<string, typeof wordStatuses> = {};
+    wordStatuses.forEach(word => {
+      if (!map[word.category]) {
+        map[word.category] = [];
+      }
+      map[word.category].push(word);
+    });
+    return map;
+  }, [wordStatuses]);
+
+  const getCategoryProgress = (category: string) => {
+    const wordList = categoryToWordStatuses[category] || [];
     const total = wordList.length;
     const mastered = wordList.filter(word => word.status === 'mastered').length;
     return {
       total,
       mastered,
-      percentage: Math.round((mastered / total) * 100)
+      percentage: total > 0 ? Math.round((mastered / total) * 100) : 0
     };
   };
 
-  const selectNextWordsForCategory = (categoryWords: Word[]) => {
-    const wordList = wordStatuses.filter(w => categoryWords.some(ww => ww.id === w.id));
+  const selectNextWordsForCategory = (category: string) => {
+    const wordList = categoryToWordStatuses[category] || [];
     return selectNextWords(wordList, 3);
   };
 
-  const handleCategoryClick = (categoryWords: Word[]) => {
-    const selectedWords = selectNextWordsForCategory(categoryWords);
+  const handleCategoryClick = (category: string) => {
+    const selectedWords = selectNextWordsForCategory(category);
     onSelectWords(selectedWords, 'single');
     navigate('/spelling-test');
   };
