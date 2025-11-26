@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Word } from '../data/words';
 import { useWord } from '../hooks/useWord';
@@ -34,14 +34,24 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
   // This ensures we always call the same number of hooks regardless of filtering
   const allWordsStatusList = words.map(word => useWord(word.id));
 
-  // Create a map of word id to status for efficient lookup
-  const statusMap = useMemo(() => {
+  // Track previous statuses to detect actual changes (not just array reference changes)
+  const prevStatusesRef = useRef<string>('');
+  const statusMapRef = useRef<Map<string, ReturnType<typeof useWord>>>(new Map());
+
+  // Build current statuses string for comparison
+  const currentStatusesString = allWordsStatusList.map(s => s?.status || 'not-started').join(',');
+
+  // Only recreate statusMap when statuses actually change
+  if (prevStatusesRef.current !== currentStatusesString || words.length !== statusMapRef.current.size) {
     const map = new Map<string, ReturnType<typeof useWord>>();
     words.forEach((word, index) => {
       map.set(word.id, allWordsStatusList[index]);
     });
-    return map;
-  }, [words, allWordsStatusList]);
+    statusMapRef.current = map;
+    prevStatusesRef.current = currentStatusesString;
+  }
+
+  const statusMap = statusMapRef.current;
 
   // Apply word filter if provided
   const filteredWords = useMemo(() => {
