@@ -33,7 +33,6 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
       words={YEAR1_WORDS}
       title="Word Selection"
       wordFilter={wordFilter}
-      showOverallProgress={false}
       challengeConfig={challengeConfig}
       onSelectWords={onSelectWords}
     />

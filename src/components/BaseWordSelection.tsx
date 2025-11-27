@@ -11,7 +11,6 @@ interface BaseWordSelectionProps {
   title: string;
   themeClass?: string;
   wordFilter?: (word: Word) => boolean;
-  showOverallProgress?: boolean;
   challengeConfig?: ChallengeConfig;
   onSelectWords: (words: string[], type: 'single' | 'less_family') => void;
 }
@@ -25,7 +24,6 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
   title,
   themeClass,
   wordFilter,
-  showOverallProgress = false,
   challengeConfig,
   onSelectWords,
 }) => {
@@ -137,20 +135,21 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
 
   return (
     <div className={containerClass}>
-      {!challengeConfig && <h1 className="word-selection-title">{title}</h1>}
-      
-      {showOverallProgress && !challengeConfig && (
-        <div className="word-selection-overall-progress">
-          <div className="word-selection-overall-progress-bar">
-            <div
-              className="word-selection-overall-progress-fill"
-              style={{ width: `${overallPercent}%` }}
-            />
+      {!challengeConfig && (
+        <>
+          <h1 className="word-selection-title">{title}</h1>
+          <div className="word-selection-overall-progress">
+            <div className="word-selection-overall-progress-bar">
+              <div
+                className="word-selection-overall-progress-fill"
+                style={{ width: `${overallPercent}%` }}
+              />
+            </div>
+            <span className="word-selection-overall-progress-text">
+              {masteredWords}/{totalWords} mastered
+            </span>
           </div>
-          <span className="word-selection-overall-progress-text">
-            {masteredWords}/{totalWords} mastered
-          </span>
-        </div>
+        </>
       )}
 
       {challengeConfig && (

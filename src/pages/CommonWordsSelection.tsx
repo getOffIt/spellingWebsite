@@ -30,7 +30,6 @@ const CommonWordsSelection: React.FC<CommonWordsSelectionProps> = ({ onSelectWor
       words={COMMON_WORDS}
       title="🎃 Spooky Common Words Challenge 👻"
       themeClass="common-words-page"
-      showOverallProgress={true}
       challengeConfig={challengeConfig}
       onSelectWords={onSelectWords}
     />
