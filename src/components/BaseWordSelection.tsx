@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Word } from '../data/words';
 import { useWord } from '../hooks/useWord';
 import { selectNextWords } from '../utils/wordSelection';
+import Challenge, { ChallengeConfig } from './Challenge';
 import '../pages/WordSelection.css';
 
 interface BaseWordSelectionProps {
@@ -11,7 +12,7 @@ interface BaseWordSelectionProps {
   themeClass?: string;
   wordFilter?: (word: Word) => boolean;
   showOverallProgress?: boolean;
-  challengeComponent?: React.ReactNode;
+  challengeConfig?: ChallengeConfig;
   onSelectWords: (words: string[], type: 'single' | 'less_family') => void;
 }
 
@@ -25,7 +26,7 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
   themeClass,
   wordFilter,
   showOverallProgress = false,
-  challengeComponent,
+  challengeConfig,
   onSelectWords,
 }) => {
   const navigate = useNavigate();
@@ -152,9 +153,14 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
         </div>
       )}
 
-      {challengeComponent && (
+      {challengeConfig && (
         <div className="word-selection-section">
-          {challengeComponent}
+          <Challenge
+            wordStatuses={wordStatuses}
+            config={challengeConfig}
+            onSelectWords={onSelectWords}
+            navigate={navigate}
+          />
         </div>
       )}
 

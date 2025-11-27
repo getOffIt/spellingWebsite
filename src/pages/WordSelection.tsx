@@ -1,9 +1,7 @@
-import React, { useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useCallback } from 'react';
 import { YEAR1_WORDS, Word } from '../data/words';
-import { useWord } from '../hooks/useWord';
 import BaseWordSelection from '../components/BaseWordSelection';
-import KS11Challenge from '../components/KS11Challenge';
+import { ChallengeConfig } from '../components/Challenge';
 import './WordSelection.css';
 
 interface WordSelectionProps {
@@ -11,35 +9,24 @@ interface WordSelectionProps {
 }
 
 const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
-  const navigate = useNavigate();
-
-  // Get all KS1-1 words, excluding categories that start with "adding"
-  const ks1Words = useMemo(() => 
-    YEAR1_WORDS.filter(word => !word.category.startsWith('adding')),
-    []
-  );
-
-  // Build status arrays for all words (call hooks at top level, not in useMemo or reduce)
-  const ks1WordsStatusList = ks1Words.map(word => useWord(word.id));
-
-  // Build wordStatuses array for KS1-1 Challenge
-  const ks1ChallengeWordStatuses = ks1Words.map((word, i) => ({
-    ...word,
-    status: ks1WordsStatusList[i].status || 'not-started',
-  }));
-
   // Memoize the wordFilter function to prevent unnecessary recalculations
   const wordFilter = useCallback((word: Word) => {
     return !word.category.startsWith('adding');
   }, []);
 
-  const challengeComponent = (
-    <KS11Challenge 
-      wordStatuses={ks1ChallengeWordStatuses} 
-      onSelectWords={onSelectWords} 
-      navigate={navigate} 
-    />
-  );
+  const challengeConfig: ChallengeConfig = {
+    title: '🏆 KS1-1 Challenge! 🏆',
+    description: 'Master all {total} words to earn £50!',
+    rewardText: '',
+    motivationMessages: {
+      complete: '🎉 CONGRATULATIONS! 🎉\nYou\'ve earned your £50! 🤑',
+      close: '🔥 So close! Just {remaining} more words! 🔥',
+      good: '💪 Great progress! Keep going! 💪',
+      steady: '🚀 Steady progress! You\'re doing amazing! 🚀',
+      starting: '🌟 Off to a great start! Keep it up! 🌟',
+      beginning: '🎯 Ready to start earning that £50? Let\'s go! 🎯',
+    },
+  };
 
   return (
     <BaseWordSelection
@@ -47,7 +34,7 @@ const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {
       title="Word Selection"
       wordFilter={wordFilter}
       showOverallProgress={false}
-      challengeComponent={challengeComponent}
+      challengeConfig={challengeConfig}
       onSelectWords={onSelectWords}
     />
   );
