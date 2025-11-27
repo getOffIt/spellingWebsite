@@ -1,6 +1,6 @@
 import React from 'react';
-import { COMMON_WORDS } from '../data/words';
 import BaseWordSelection from '../components/BaseWordSelection';
+import { wordSelectionConfigs } from '../config/wordSelectionConfigs';
 import './WordSelection.css';
 import './CommonWordsSelection.css';
 
@@ -9,12 +9,14 @@ interface CommonWordsSelectionProps {
 }
 
 const CommonWordsSelection: React.FC<CommonWordsSelectionProps> = ({ onSelectWords }) => {
+  const config = wordSelectionConfigs.common;
+
   return (
     <BaseWordSelection
-      words={COMMON_WORDS}
-      title="🎃 Spooky Common Words Challenge 👻"
-      themeClass="common-words-page"
-      showOverallProgress={true}
+      words={config.words}
+      title={config.title}
+      themeClass={config.themeClass}
+      challengeConfig={config.challengeConfig}
       onSelectWords={onSelectWords}
     />
   );

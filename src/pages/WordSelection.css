@@ -23,6 +23,7 @@
   border: 3px solid #ffb347;
   position: relative;
   overflow: hidden;
+  z-index: 1;
 }
 
 .leo-challenge::before {
@@ -200,6 +201,10 @@
   max-width: 1600px;
   column-count: 8;
   column-gap: 0.7rem;
+  position: relative;
+  z-index: 0;
+  margin-top: 0;
+  clear: both;
 }
 @media (max-width: 1400px) {
   .word-selection-categories { column-count: 6; }
@@ -482,6 +487,9 @@ input:checked + .toggle-slider:before {
   flex-direction: column;
   align-items: center;
   margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+  clear: both;
 }
 
 .word-selection-section-title {
