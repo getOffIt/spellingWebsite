@@ -9,11 +9,25 @@ interface WordStatus {
   status: string;
 }
 
+/**
+ * Configuration for the Challenge component.
+ * 
+ * Template variables can be used in `description`, `rewardText`, and `motivationMessages` fields:
+ * - `{remaining}` - Number of words not yet mastered (total - mastered)
+ * - `{total}` - Total number of words in the challenge
+ * - `{mastered}` - Number of words already mastered
+ */
 export interface ChallengeConfig {
   title: string;
+  /** Supports template variables: {remaining}, {total}, {mastered} */
   description: string;
+  /** Supports template variables: {remaining}, {total}, {mastered} */
   rewardText?: string;
   themeClass?: string;
+  /**
+   * Messages displayed based on progress percentage.
+   * All messages support template variables: {remaining}, {total}, {mastered}
+   */
   motivationMessages: {
     complete?: string;
     close?: string; // >= 80%
