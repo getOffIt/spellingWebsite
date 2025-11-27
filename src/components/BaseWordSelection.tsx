@@ -137,9 +137,9 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
 
   return (
     <div className={containerClass}>
-      <h1 className="word-selection-title">{title}</h1>
+      {!challengeConfig && <h1 className="word-selection-title">{title}</h1>}
       
-      {showOverallProgress && (
+      {showOverallProgress && !challengeConfig && (
         <div className="word-selection-overall-progress">
           <div className="word-selection-overall-progress-bar">
             <div
