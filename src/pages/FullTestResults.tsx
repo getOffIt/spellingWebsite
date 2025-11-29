@@ -51,7 +51,7 @@ export default function FullTestResults({
       index: idx,
     }))
     .filter(({ word, answer }) =>
-      answer.trim().toLowerCase() !== word.toLowerCase()
+      (answer?.trim().toLowerCase() ?? "") !== word.toLowerCase()
     );
 
   // Get encouraging message based on performance
