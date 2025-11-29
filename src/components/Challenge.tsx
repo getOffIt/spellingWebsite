@@ -93,7 +93,10 @@ const Challenge: React.FC<ChallengeProps> = ({
     if (allWords.length === 0) {
       return;
     }
-    onSelectWords(allWords, 'single', 'full_test', passThreshold);
+    // Detect if any words end with 'less' to determine the list type
+    const hasLessWords = allWords.some(word => word.toLowerCase().endsWith('less'));
+    const listType = hasLessWords ? 'less_family' : 'single';
+    onSelectWords(allWords, listType, 'full_test', passThreshold);
     if (navigate) navigate('/spelling-test');
   };
 
@@ -209,7 +212,7 @@ const Challenge: React.FC<ChallengeProps> = ({
           )}
         </div>
       )}
-      {/* Add Full Test button */}
+      {/* Full Test button */}
       <div className="challenge-full-test-action">
         <button 
           className="challenge-full-test-button"

@@ -1,5 +1,6 @@
 import React from 'react';
 import { DEFAULT_PASS_THRESHOLD } from '../components/Challenge';
+import './FullTestResults.css';
 
 interface Word {
   word: string;
@@ -41,7 +42,7 @@ export default function FullTestResults({
   const totalWords = words.length;
   const correctAnswers = wordsForCorrectionCheck.filter((word, idx) => {
     const answer = answers[idx];
-    return answer && answer.trim().toLowerCase() === word.toLowerCase();
+    return answer?.trim().toLowerCase() === word.toLowerCase();
   }).length;
   const incorrectAnswers = totalWords - correctAnswers;
   const percentage = totalWords > 0 ? Math.round((correctAnswers / totalWords) * 100) : 0;
@@ -55,7 +56,7 @@ export default function FullTestResults({
       index: idx,
     }))
     .filter(({ word, answer }) =>
-      !answer || answer.trim().toLowerCase() !== word.toLowerCase()
+      (answer?.trim().toLowerCase() ?? '') !== word.toLowerCase()
     );
 
   // Get encouraging message based on performance
@@ -84,75 +85,60 @@ export default function FullTestResults({
       <h2 className="spelling-title">📊 Your Challenge Results 📊</h2>
       
       {/* Pass/Fail Banner */}
-      <div
-        style={{
-          padding: '20px',
-          marginBottom: '24px',
-          borderRadius: '12px',
-          backgroundColor: passed ? '#d1fae5' : '#fef3c7',
-          border: `2px solid ${passed ? '#10b981' : '#f59e0b'}`,
-          textAlign: 'center',
-        }}
-      >
-        <div style={{ fontSize: '2rem', marginBottom: '12px' }}>
+      <div className={`full-test-results-banner ${passed ? 'passed' : 'failed'}`}>
+        <div className="full-test-results-banner-title">
           {passed ? '🎉 Amazing Work!' : '💪 Great Effort!'}
         </div>
-        <div style={{ fontSize: '1.1rem', marginBottom: '12px', lineHeight: '1.6' }}>
+        <div className="full-test-results-banner-message">
           {getEncouragingMessage()}
         </div>
-        <div style={{ fontSize: '1.2rem', fontWeight: 'bold', marginTop: '8px' }}>
+        <div className="full-test-results-banner-score">
           Your Score: {percentage}% {passed ? '✅' : `(Need ${passThreshold}% to pass)`}
         </div>
       </div>
 
       {/* Statistics */}
-      <div style={{ marginBottom: '24px' }}>
-        <h3 style={{ fontSize: '1.3rem', marginBottom: '16px', textAlign: 'center', color: '#1f2937' }}>
+      <div className="full-test-results-stats">
+        <h3 className="full-test-results-stats-title">
           Here's How You Did:
         </h3>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-            gap: '16px',
-          }}
-        >
-          <div style={{ textAlign: 'center', padding: '16px', backgroundColor: '#f3f4f6', borderRadius: '8px' }}>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#2563eb' }}>
+        <div className="full-test-results-stats-grid">
+          <div className="full-test-results-stat-card total">
+            <div className="full-test-results-stat-value total">
               {totalWords}
             </div>
-            <div style={{ fontSize: '0.9rem', color: '#666' }}>Words You Tested</div>
+            <div className="full-test-results-stat-label">Words You Tested</div>
           </div>
-          <div style={{ textAlign: 'center', padding: '16px', backgroundColor: '#d1fae5', borderRadius: '8px' }}>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>
+          <div className="full-test-results-stat-card correct">
+            <div className="full-test-results-stat-value correct">
               {correctAnswers}
             </div>
-            <div style={{ fontSize: '0.9rem', color: '#666' }}>Words You Got Right! 🎉</div>
+            <div className="full-test-results-stat-label">Words You Got Right! 🎉</div>
           </div>
           {incorrectAnswers > 0 && (
-            <div style={{ textAlign: 'center', padding: '16px', backgroundColor: '#fef3c7', borderRadius: '8px' }}>
-              <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#f59e0b' }}>
+            <div className="full-test-results-stat-card incorrect">
+              <div className="full-test-results-stat-value incorrect">
                 {incorrectAnswers}
               </div>
-              <div style={{ fontSize: '0.9rem', color: '#666' }}>Words to Practice</div>
+              <div className="full-test-results-stat-label">Words to Practice</div>
             </div>
           )}
-          <div style={{ textAlign: 'center', padding: '16px', backgroundColor: '#e0e7ff', borderRadius: '8px' }}>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#6366f1' }}>
+          <div className="full-test-results-stat-card percentage">
+            <div className="full-test-results-stat-value percentage">
               {percentage}%
             </div>
-            <div style={{ fontSize: '0.9rem', color: '#666' }}>Your Score</div>
+            <div className="full-test-results-stat-label">Your Score</div>
           </div>
         </div>
       </div>
 
       {/* Incorrect Words List */}
       {incorrectWords.length > 0 && (
-        <div style={{ marginBottom: '24px' }}>
-          <h3 style={{ fontSize: '1.2rem', marginBottom: '12px', color: '#1f2937', textAlign: 'center' }}>
+        <div className="full-test-results-incorrect-words">
+          <h3 className="full-test-results-incorrect-words-title">
             💡 Words to Practice ({incorrectWords.length})
           </h3>
-          <p style={{ fontSize: '0.95rem', color: '#6b7280', textAlign: 'center', marginBottom: '16px', fontStyle: 'italic' }}>
+          <p className="full-test-results-incorrect-words-description">
             Don't worry - these are great opportunities to learn! Practice makes perfect! 🌟
           </p>
           <ul className="spelling-results spelling-results-centered">
@@ -171,21 +157,20 @@ export default function FullTestResults({
       )}
 
       {/* Action Buttons */}
-      <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '24px' }}>
+      <div className="full-test-results-actions">
         {!passed && (
-          <button className="spelling-btn" onClick={onRetry} style={{ backgroundColor: '#2563eb' }}>
+          <button className={`full-test-results-btn retry`} onClick={onRetry}>
             Try Again! 💪
           </button>
         )}
         {passed && (
-          <button className="spelling-btn" onClick={onRetry} style={{ backgroundColor: '#10b981' }}>
+          <button className={`full-test-results-btn retry passed`} onClick={onRetry}>
             Take Test Again! 🎉
           </button>
         )}
         <button 
-          className="spelling-btn" 
+          className="full-test-results-btn back" 
           onClick={onComplete}
-          style={{ backgroundColor: '#6b7280' }}
         >
           Back to Challenges
         </button>

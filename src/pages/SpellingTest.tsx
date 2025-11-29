@@ -117,13 +117,17 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
       // If it's the base word stage for a less_family list
       if (currentStage === 'base' && listType === 'less_family') {
         // In full_test mode, always continue to full word stage to test all words
-        // In practice mode, only continue if base words are correct
-        if (testMode === 'full_test' || areCurrentStageWordsCorrect) {
-          // Transition to the full word stage
+        if (testMode === 'full_test') {
+          // Always transition to the full word stage in full_test mode
           setCurrentStage('full');
           setStep(0); // Reset step for the new stage
           setAnswers(Array(words.length).fill('')); // Initialize answers for full words
           // The useEffect triggered by currentStage/step change will set the next word to utter
+        } else if (areCurrentStageWordsCorrect) {
+          // In practice mode, only continue if base words are correct
+          setCurrentStage('full');
+          setStep(0);
+          setAnswers(Array(words.length).fill(''));
         } else {
           // In practice mode, if base words were incorrect, show results for base words
           setShowResults(true);
