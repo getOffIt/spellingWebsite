@@ -36,9 +36,10 @@ export default function FullTestResults({
 
   // Calculate statistics
   const totalWords = words.length;
-  const correctAnswers = wordsForCorrectionCheck.filter((word, idx) =>
-    answers[idx].trim().toLowerCase() === word.toLowerCase()
-  ).length;
+  const correctAnswers = wordsForCorrectionCheck.filter((word, idx) => {
+    const answer = answers[idx];
+    return answer && answer.trim().toLowerCase() === word.toLowerCase();
+  }).length;
   const incorrectAnswers = totalWords - correctAnswers;
   const percentage = Math.round((correctAnswers / totalWords) * 100);
   const passed = percentage >= 85;
@@ -47,11 +48,11 @@ export default function FullTestResults({
   const incorrectWords = wordsForCorrectionCheck
     .map((word, idx) => ({
       word,
-      answer: answers[idx],
+      answer: answers[idx] || '',
       index: idx,
     }))
     .filter(({ word, answer }) =>
-      answer.trim().toLowerCase() !== word.toLowerCase()
+      !answer || answer.trim().toLowerCase() !== word.toLowerCase()
     );
 
   // Get encouraging message based on performance
