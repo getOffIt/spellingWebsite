@@ -202,7 +202,7 @@ const Challenge: React.FC<ChallengeProps> = ({
         </div>
       )}
       {/* Add Full Test button */}
-      <div className="leo-challenge-action" style={{ marginTop: '20px', textAlign: 'center', position: 'relative', zIndex: 2 }}>
+      <div className="challenge-full-test-action">
         <button 
           className="challenge-start-button"
           onClick={(e) => {
@@ -210,24 +210,10 @@ const Challenge: React.FC<ChallengeProps> = ({
             e.stopPropagation();
             handleFullTest();
           }}
-          style={{ 
-            fontSize: '1.1rem',
-            padding: '12px 24px',
-            backgroundColor: '#2563eb',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            width: '100%',
-            maxWidth: '400px',
-            position: 'relative',
-            zIndex: 10
-          }}
         >
           📝 Take Full Challenge Test
         </button>
-        <p style={{ marginTop: '8px', fontSize: '0.9rem', color: '#666', opacity: 0.9 }}>
+        <p className="challenge-full-test-description">
           Test all {totalWords} words. 85% required to pass.
         </p>
       </div>

@@ -188,6 +188,40 @@
   60% { transform: translateY(-3px); }
 }
 
+.challenge-full-test-action {
+  margin-top: 20px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.challenge-start-button {
+  font-size: 1.1rem;
+  padding: 12px 24px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  z-index: 10;
+}
+
+.challenge-start-button:hover {
+  background-color: #1d4ed8;
+}
+
+.challenge-full-test-description {
+  margin-top: 8px;
+  font-size: 1rem;
+  color: #1f2937;
+  font-weight: 500;
+  opacity: 1;
+}
+
 .word-selection-title {
   color: #2563eb;
   font-size: 2rem;
