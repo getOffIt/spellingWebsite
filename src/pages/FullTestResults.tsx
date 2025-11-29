@@ -62,7 +62,7 @@ export default function FullTestResults({
       } else if (percentage >= 95) {
         return "🎉 Fantastic work! You did brilliantly! You're so close to perfect! 🌟";
       } else {
-        return "🎉 Well done! You passed the challenge! Great job, Leo! 🌟";
+        return "🎉 Well done! You passed the challenge! Great job! 🌟";
       }
     } else {
       if (percentage >= 80) {
