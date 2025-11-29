@@ -44,7 +44,7 @@ export default function FullTestResults({
     return answer && answer.trim().toLowerCase() === word.toLowerCase();
   }).length;
   const incorrectAnswers = totalWords - correctAnswers;
-  const percentage = Math.round((correctAnswers / totalWords) * 100);
+  const percentage = totalWords > 0 ? Math.round((correctAnswers / totalWords) * 100) : 0;
   const passed = percentage >= passThreshold;
 
   // Get incorrect words for display
@@ -66,7 +66,7 @@ export default function FullTestResults({
       } else if (percentage >= 95) {
         return "🎉 Fantastic work! You did brilliantly! You're so close to perfect! 🌟";
       } else {
-        return "🎉 Well done! You passed the challenge! Great job, Leo! 🌟";
+        return "🎉 Well done! You passed the challenge! Great job! 🌟";
       }
     } else {
       if (percentage >= 80) {
@@ -157,7 +157,6 @@ export default function FullTestResults({
           </p>
           <ul className="spelling-results spelling-results-centered">
             {incorrectWords.map(({ word, answer, index }) => {
-              const wordObj = words[index];
               return (
                 <li key={index} className="incorrect">
                   <span className="correction">
