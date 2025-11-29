@@ -1,6 +1,9 @@
 import React from 'react';
 import '../pages/WordSelection.css';
 
+// Default pass threshold for full challenge tests
+export const DEFAULT_PASS_THRESHOLD = 85;
+
 interface WordStatus {
   id: string;
   text: string;
@@ -28,12 +31,18 @@ export interface ChallengeConfig {
     steady?: number; // default 40
     starting?: number; // default 20
   };
+  passThreshold?: number; // default 85 - percentage required to pass full test
 }
 
 interface ChallengeProps {
   wordStatuses: WordStatus[];
   config: ChallengeConfig;
-  onSelectWords: (words: string[], type: 'single' | 'less_family') => void;
+  onSelectWords: (
+    words: string[], 
+    type: 'single' | 'less_family',
+    testMode?: 'practice' | 'full_test',
+    passThreshold?: number
+  ) => void;
   navigate?: (path: string) => void;
 }
 
@@ -54,6 +63,9 @@ const Challenge: React.FC<ChallengeProps> = ({
     starting: config.thresholds?.starting ?? 20,
   };
 
+  // Compute pass threshold once with default value
+  const passThreshold = config.passThreshold ?? DEFAULT_PASS_THRESHOLD;
+
   const selectInProgressWords = () => {
     const inProgressWords = wordStatuses.filter(word => word.status === 'in-progress');
     if (inProgressWords.length >= 3) {
@@ -71,9 +83,21 @@ const Challenge: React.FC<ChallengeProps> = ({
   const handleMotivationClick = () => {
     const selectedWords = selectInProgressWords();
     if (selectedWords.length > 0) {
-      onSelectWords(selectedWords, 'single');
+      onSelectWords(selectedWords, 'single', 'practice');
       if (navigate) navigate('/spelling-test');
     }
+  };
+
+  const handleFullTest = () => {
+    const allWords = wordStatuses.map(w => w.text);
+    if (allWords.length === 0) {
+      return;
+    }
+    // Detect if any words end with 'less' to determine the list type
+    const hasLessWords = allWords.some(word => word.toLowerCase().endsWith('less'));
+    const listType = hasLessWords ? 'less_family' : 'single';
+    onSelectWords(allWords, listType, 'full_test', passThreshold);
+    if (navigate) navigate('/spelling-test');
   };
 
   const getMotivationMessage = () => {
@@ -188,6 +212,22 @@ const Challenge: React.FC<ChallengeProps> = ({
           )}
         </div>
       )}
+      {/* Full Test button */}
+      <div className="challenge-full-test-action">
+        <button 
+          className="challenge-full-test-button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleFullTest();
+          }}
+        >
+          📝 Take Full Challenge Test
+        </button>
+        <p className="challenge-full-test-description">
+          Test all {totalWords} words. {passThreshold}% required to pass.
+        </p>
+      </div>
     </div>
   );
 };

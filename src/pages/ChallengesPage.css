@@ -306,3 +306,42 @@
   border-color: #6b7280;
   box-shadow: 0 8px 32px rgba(107, 114, 128, 0.2);
 }
+
+/* Full test button styles */
+.challenge-full-test-action {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.challenge-full-test-button {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+  font-family: inherit;
+}
+
+.challenge-full-test-button:hover {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.challenge-full-test-button:active {
+  transform: translateY(0);
+}
+
+.challenge-full-test-description {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+  font-weight: 600;
+}

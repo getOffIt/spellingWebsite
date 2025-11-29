@@ -188,6 +188,49 @@
   60% { transform: translateY(-3px); }
 }
 
+.challenge-full-test-action {
+  margin-top: 20px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.challenge-full-test-button {
+  font-size: 1.1rem;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+  font-family: inherit;
+}
+
+.challenge-full-test-button:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.challenge-full-test-button:active {
+  transform: translateY(0);
+}
+
+.challenge-full-test-description {
+  margin-top: 8px;
+  font-size: 1rem;
+  color: #1f2937;
+  font-weight: 500;
+  opacity: 1;
+}
+
 .word-selection-title {
   color: #2563eb;
   font-size: 2rem;

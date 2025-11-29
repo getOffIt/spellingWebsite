@@ -1,0 +1,161 @@
+/* FullTestResults styles */
+
+.full-test-results-banner {
+  padding: 20px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.full-test-results-banner.passed {
+  background-color: #d1fae5;
+  border: 2px solid #10b981;
+}
+
+.full-test-results-banner.failed {
+  background-color: #fef3c7;
+  border: 2px solid #f59e0b;
+}
+
+.full-test-results-banner-title {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.full-test-results-banner-message {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.full-test-results-banner-score {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.full-test-results-stats {
+  margin-bottom: 24px;
+}
+
+.full-test-results-stats-title {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  text-align: center;
+  color: #1f2937;
+}
+
+.full-test-results-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.full-test-results-stat-card {
+  text-align: center;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.full-test-results-stat-card.total {
+  background-color: #f3f4f6;
+}
+
+.full-test-results-stat-card.correct {
+  background-color: #d1fae5;
+}
+
+.full-test-results-stat-card.incorrect {
+  background-color: #fef3c7;
+}
+
+.full-test-results-stat-card.percentage {
+  background-color: #e0e7ff;
+}
+
+.full-test-results-stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.full-test-results-stat-value.total {
+  color: #2563eb;
+}
+
+.full-test-results-stat-value.correct {
+  color: #10b981;
+}
+
+.full-test-results-stat-value.incorrect {
+  color: #f59e0b;
+}
+
+.full-test-results-stat-value.percentage {
+  color: #6366f1;
+}
+
+.full-test-results-stat-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.full-test-results-incorrect-words {
+  margin-bottom: 24px;
+}
+
+.full-test-results-incorrect-words-title {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  color: #1f2937;
+  text-align: center;
+}
+
+.full-test-results-incorrect-words-description {
+  font-size: 0.95rem;
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.full-test-results-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.full-test-results-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.full-test-results-btn.retry {
+  background-color: #2563eb;
+  color: white;
+}
+
+.full-test-results-btn.retry.passed {
+  background-color: #10b981;
+}
+
+.full-test-results-btn.back {
+  background-color: #6b7280;
+  color: white;
+}
+
+.full-test-results-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.full-test-results-btn:active {
+  transform: translateY(0);
+}
