@@ -40,7 +40,7 @@ export default function FullTestResults({
     answers[idx].trim().toLowerCase() === word.toLowerCase()
   ).length;
   const incorrectAnswers = totalWords - correctAnswers;
-  const percentage = Math.round((correctAnswers / totalWords) * 100);
+  const percentage = totalWords > 0 ? Math.round((correctAnswers / totalWords) * 100) : 0;
   const passed = percentage >= 85;
 
   // Get incorrect words for display
