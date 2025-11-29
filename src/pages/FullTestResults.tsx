@@ -153,7 +153,6 @@ export default function FullTestResults({
           </p>
           <ul className="spelling-results spelling-results-centered">
             {incorrectWords.map(({ word, answer, index }) => {
-              const wordObj = words[index];
               return (
                 <li key={index} className="incorrect">
                   <span className="correction">
