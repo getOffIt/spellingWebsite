@@ -162,8 +162,8 @@ html, body {
 }
 
 .spelling-results .incorrect {
-  color: #ef4444;
-  border: 2px solid #ef4444;
+  color: #d97706;
+  border: 2px solid #f59e0b;
 }
 
 .correction {

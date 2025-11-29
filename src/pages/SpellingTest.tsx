@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './SpellingTest.css';
 import PracticePage from './PracticePage';
 import SpellingResults from './SpellingResults';
+import FullTestResults from './FullTestResults';
 import CongratulationsPage from './CongratulationsPage';
 import { useWord } from '../hooks/useWord';
 import { useProgress } from '../contexts/ProgressProvider';
@@ -29,10 +30,11 @@ function getBaseWord(word: string): string {
 interface SpellingTestProps {
   words: string[];
   listType: 'single' | 'less_family';
+  testMode?: 'practice' | 'full_test';
   onComplete: () => void;
 }
 
-export default function SpellingTest({ words, listType, onComplete }: SpellingTestProps) {
+export default function SpellingTest({ words, listType, testMode = 'practice', onComplete }: SpellingTestProps) {
   const navigate = useNavigate();
   // If listType is 'less_family', generate base words
   const baseWords = listType === 'less_family' ? words.map(word => getBaseWord(word)) : [];
@@ -127,8 +129,14 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
       } else {
         // If it's the full word stage or a single list
         if (areCurrentStageWordsCorrect) {
-          // If all words are correct, show congratulations
-          setDone(true);
+          // If all words are correct
+          if (testMode === 'full_test') {
+            // In full_test mode, always show results (even if perfect)
+            setShowResults(true);
+          } else {
+            // In practice mode, show congratulations for perfect score
+            setDone(true);
+          }
         } else {
           // If there are mistakes, show results
           setShowResults(true);
@@ -174,8 +182,9 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
     return <CongratulationsPage onComplete={onComplete} />;
   }
 
-  if (showPractice) {
+  if (showPractice && testMode === 'practice') {
     // Filter incorrect words from the completed stage
+    // Only show practice in practice mode, not in full_test mode
     const incorrectWords = wordsForResultsOrPractice.filter((word, idx) =>
       answersForResultsOrPractice[idx].trim().toLowerCase() !== word.toLowerCase()
     );
@@ -191,10 +200,21 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
     // For results, always show the comparison against the final word list (full words if less_family, otherwise the single list)
     const wordsForSpellingResults = listType === 'less_family' ? words : wordsForCurrentStage;
 
-    // We need to pair the words shown on the results page with the answers given for the completed stage
-    // This mapping might need adjustment depending on how SpellingResults uses the words and answers props
-    // For now, passing the final words list and the answers from the last completed stage.
-    // The SpellingResults component needs to handle the index mapping correctly.
+    // For full_test mode, use the new FullTestResults component
+    if (testMode === 'full_test') {
+      return (
+        <FullTestResults
+          words={wordsForSpellingResults.map(word => ({ word, sentence: '' }))}
+          answers={answersForResultsOrPractice}
+          onRetry={handleRetry}
+          onComplete={onComplete}
+          listType={listType}
+          isBaseStageResults={listType === 'less_family' && currentStage === 'base'}
+        />
+      );
+    }
+
+    // For practice mode, use existing SpellingResults
     return (
       <SpellingResults
         words={wordsForSpellingResults.map(word => ({ word, sentence: '' }))} // Pass the relevant word objects

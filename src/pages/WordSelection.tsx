@@ -4,7 +4,11 @@ import { wordSelectionConfigs } from '../config/wordSelectionConfigs';
 import './WordSelection.css';
 
 interface WordSelectionProps {
-  onSelectWords: (words: string[], type: 'single' | 'less_family') => void;
+  onSelectWords: (
+    words: string[], 
+    type: 'single' | 'less_family',
+    testMode?: 'practice' | 'full_test'
+  ) => void;
 }
 
 const WordSelection: React.FC<WordSelectionProps> = ({ onSelectWords }) => {

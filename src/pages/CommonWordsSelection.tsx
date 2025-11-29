@@ -5,7 +5,11 @@ import './WordSelection.css';
 import './CommonWordsSelection.css';
 
 interface CommonWordsSelectionProps {
-  onSelectWords: (words: string[], type: 'single' | 'less_family') => void;
+  onSelectWords: (
+    words: string[], 
+    type: 'single' | 'less_family',
+    testMode?: 'practice' | 'full_test'
+  ) => void;
 }
 
 const CommonWordsSelection: React.FC<CommonWordsSelectionProps> = ({ onSelectWords }) => {
