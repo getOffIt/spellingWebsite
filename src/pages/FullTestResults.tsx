@@ -1,4 +1,5 @@
 import React from 'react';
+import { DEFAULT_PASS_THRESHOLD } from '../components/Challenge';
 
 interface Word {
   word: string;
@@ -19,6 +20,7 @@ interface FullTestResultsProps {
   onComplete: () => void;
   listType: 'single' | 'less_family';
   isBaseStageResults: boolean;
+  passThreshold?: number;
 }
 
 export default function FullTestResults({
@@ -28,6 +30,7 @@ export default function FullTestResults({
   onComplete,
   listType,
   isBaseStageResults,
+  passThreshold = DEFAULT_PASS_THRESHOLD,
 }: FullTestResultsProps) {
   // Determine which words to check against
   const wordsForCorrectionCheck = isBaseStageResults && listType === 'less_family'
@@ -42,7 +45,7 @@ export default function FullTestResults({
   }).length;
   const incorrectAnswers = totalWords - correctAnswers;
   const percentage = Math.round((correctAnswers / totalWords) * 100);
-  const passed = percentage >= 85;
+  const passed = percentage >= passThreshold;
 
   // Get incorrect words for display
   const incorrectWords = wordsForCorrectionCheck
@@ -98,7 +101,7 @@ export default function FullTestResults({
           {getEncouragingMessage()}
         </div>
         <div style={{ fontSize: '1.2rem', fontWeight: 'bold', marginTop: '8px' }}>
-          Your Score: {percentage}% {passed ? '✅' : `(Need 85% to pass)`}
+          Your Score: {percentage}% {passed ? '✅' : `(Need ${passThreshold}% to pass)`}
         </div>
       </div>
 

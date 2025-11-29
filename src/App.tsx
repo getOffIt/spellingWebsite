@@ -20,14 +20,16 @@ export default function App() {
     words: string[]; 
     type: 'single' | 'less_family';
     testMode?: 'practice' | 'full_test';
+    passThreshold?: number;
   } | null>(null)
 
   const handleSelectWords = (
     words: string[], 
     type: 'single' | 'less_family',
-    testMode: 'practice' | 'full_test' = 'practice'
+    testMode: 'practice' | 'full_test' = 'practice',
+    passThreshold?: number
   ) => {
-    setSelectedList({ words, type, testMode })
+    setSelectedList({ words, type, testMode, passThreshold })
   }
 
   const handleReset = () => {
@@ -89,6 +91,7 @@ export default function App() {
                     words={selectedList.words} 
                     listType={selectedList.type}
                     testMode={selectedList.testMode || 'practice'}
+                    passThreshold={selectedList.passThreshold}
                     onComplete={handleReset} 
                   />
                 ) : (

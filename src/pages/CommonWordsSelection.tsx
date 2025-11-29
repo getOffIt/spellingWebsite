@@ -8,7 +8,8 @@ interface CommonWordsSelectionProps {
   onSelectWords: (
     words: string[], 
     type: 'single' | 'less_family',
-    testMode?: 'practice' | 'full_test'
+    testMode?: 'practice' | 'full_test',
+    passThreshold?: number
   ) => void;
 }
 

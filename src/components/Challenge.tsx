@@ -1,6 +1,9 @@
 import React from 'react';
 import '../pages/WordSelection.css';
 
+// Default pass threshold for full challenge tests
+export const DEFAULT_PASS_THRESHOLD = 85;
+
 interface WordStatus {
   id: string;
   text: string;
@@ -28,6 +31,7 @@ export interface ChallengeConfig {
     steady?: number; // default 40
     starting?: number; // default 20
   };
+  passThreshold?: number; // default 85 - percentage required to pass full test
 }
 
 interface ChallengeProps {
@@ -36,7 +40,8 @@ interface ChallengeProps {
   onSelectWords: (
     words: string[], 
     type: 'single' | 'less_family',
-    testMode?: 'practice' | 'full_test'
+    testMode?: 'practice' | 'full_test',
+    passThreshold?: number
   ) => void;
   navigate?: (path: string) => void;
 }
@@ -57,6 +62,9 @@ const Challenge: React.FC<ChallengeProps> = ({
     steady: config.thresholds?.steady ?? 40,
     starting: config.thresholds?.starting ?? 20,
   };
+
+  // Compute pass threshold once with default value
+  const passThreshold = config.passThreshold ?? DEFAULT_PASS_THRESHOLD;
 
   const selectInProgressWords = () => {
     const inProgressWords = wordStatuses.filter(word => word.status === 'in-progress');
@@ -85,7 +93,7 @@ const Challenge: React.FC<ChallengeProps> = ({
     if (allWords.length === 0) {
       return;
     }
-    onSelectWords(allWords, 'single', 'full_test');
+    onSelectWords(allWords, 'single', 'full_test', passThreshold);
     if (navigate) navigate('/spelling-test');
   };
 
@@ -214,7 +222,7 @@ const Challenge: React.FC<ChallengeProps> = ({
           📝 Take Full Challenge Test
         </button>
         <p className="challenge-full-test-description">
-          Test all {totalWords} words. 85% required to pass.
+          Test all {totalWords} words. {passThreshold}% required to pass.
         </p>
       </div>
     </div>

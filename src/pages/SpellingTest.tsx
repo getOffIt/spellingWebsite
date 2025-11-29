@@ -31,10 +31,11 @@ interface SpellingTestProps {
   words: string[];
   listType: 'single' | 'less_family';
   testMode?: 'practice' | 'full_test';
+  passThreshold?: number;
   onComplete: () => void;
 }
 
-export default function SpellingTest({ words, listType, testMode = 'practice', onComplete }: SpellingTestProps) {
+export default function SpellingTest({ words, listType, testMode = 'practice', passThreshold, onComplete }: SpellingTestProps) {
   const navigate = useNavigate();
   // If listType is 'less_family', generate base words
   const baseWords = listType === 'less_family' ? words.map(word => getBaseWord(word)) : [];
@@ -210,6 +211,7 @@ export default function SpellingTest({ words, listType, testMode = 'practice', o
           onComplete={onComplete}
           listType={listType}
           isBaseStageResults={listType === 'less_family' && currentStage === 'base'}
+          passThreshold={passThreshold}
         />
       );
     }
