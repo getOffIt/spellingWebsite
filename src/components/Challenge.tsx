@@ -33,7 +33,11 @@ export interface ChallengeConfig {
 interface ChallengeProps {
   wordStatuses: WordStatus[];
   config: ChallengeConfig;
-  onSelectWords: (words: string[], type: 'single' | 'less_family') => void;
+  onSelectWords: (
+    words: string[], 
+    type: 'single' | 'less_family',
+    testMode?: 'practice' | 'full_test'
+  ) => void;
   navigate?: (path: string) => void;
 }
 
@@ -71,9 +75,18 @@ const Challenge: React.FC<ChallengeProps> = ({
   const handleMotivationClick = () => {
     const selectedWords = selectInProgressWords();
     if (selectedWords.length > 0) {
-      onSelectWords(selectedWords, 'single');
+      onSelectWords(selectedWords, 'single', 'practice');
       if (navigate) navigate('/spelling-test');
     }
+  };
+
+  const handleFullTest = () => {
+    const allWords = wordStatuses.map(w => w.text);
+    if (allWords.length === 0) {
+      return;
+    }
+    onSelectWords(allWords, 'single', 'full_test');
+    if (navigate) navigate('/spelling-test');
   };
 
   const getMotivationMessage = () => {
@@ -188,6 +201,36 @@ const Challenge: React.FC<ChallengeProps> = ({
           )}
         </div>
       )}
+      {/* Add Full Test button */}
+      <div className="leo-challenge-action" style={{ marginTop: '20px', textAlign: 'center', position: 'relative', zIndex: 2 }}>
+        <button 
+          className="challenge-start-button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleFullTest();
+          }}
+          style={{ 
+            fontSize: '1.1rem',
+            padding: '12px 24px',
+            backgroundColor: '#2563eb',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            width: '100%',
+            maxWidth: '400px',
+            position: 'relative',
+            zIndex: 10
+          }}
+        >
+          📝 Take Full Challenge Test
+        </button>
+        <p style={{ marginTop: '8px', fontSize: '0.9rem', color: '#666', opacity: 0.9 }}>
+          Test all {totalWords} words. 85% required to pass.
+        </p>
+      </div>
     </div>
   );
 };

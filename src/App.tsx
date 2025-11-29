@@ -16,10 +16,18 @@ import ApiTest from './pages/ApiTest'
 export default function App() {
   const auth = useAuth();
  
-  const [selectedList, setSelectedList] = useState<{ words: string[]; type: 'single' | 'less_family' } | null>(null)
+  const [selectedList, setSelectedList] = useState<{ 
+    words: string[]; 
+    type: 'single' | 'less_family';
+    testMode?: 'practice' | 'full_test';
+  } | null>(null)
 
-  const handleSelectWords = (words: string[], type: 'single' | 'less_family') => {
-    setSelectedList({ words, type })
+  const handleSelectWords = (
+    words: string[], 
+    type: 'single' | 'less_family',
+    testMode: 'practice' | 'full_test' = 'practice'
+  ) => {
+    setSelectedList({ words, type, testMode })
   }
 
   const handleReset = () => {
@@ -79,7 +87,8 @@ export default function App() {
                 {selectedList ? (
                   <SpellingTest 
                     words={selectedList.words} 
-                    listType={selectedList.type} 
+                    listType={selectedList.type}
+                    testMode={selectedList.testMode || 'practice'}
                     onComplete={handleReset} 
                   />
                 ) : (
