@@ -212,7 +212,7 @@ const Challenge: React.FC<ChallengeProps> = ({
       {/* Add Full Test button */}
       <div className="challenge-full-test-action">
         <button 
-          className="challenge-start-button"
+          className="challenge-full-test-button"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();

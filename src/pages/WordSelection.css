@@ -195,10 +195,10 @@
   z-index: 2;
 }
 
-.challenge-start-button {
+.challenge-full-test-button {
   font-size: 1.1rem;
   padding: 12px 24px;
-  background-color: #2563eb;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -208,10 +208,19 @@
   max-width: 400px;
   position: relative;
   z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+  font-family: inherit;
 }
 
-.challenge-start-button:hover {
-  background-color: #1d4ed8;
+.challenge-full-test-button:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.challenge-full-test-button:active {
+  transform: translateY(0);
 }
 
 .challenge-full-test-description {
