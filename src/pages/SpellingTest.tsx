@@ -64,6 +64,7 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
   // New state to control speaking
   const [wordToUtter, setWordToUtter] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [skipEnabled, setSkipEnabled] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const inputContainerRef = useRef<HTMLDivElement>(null);
@@ -95,64 +96,65 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
     // eslint-disable-next-line
   }, [step, showResults]);
 
+  // Effect to manage skip button timer
+  useEffect(() => {
+    setSkipEnabled(false);
+    const timer = setTimeout(() => {
+      setSkipEnabled(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [step, currentStage]);
+
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newAnswers = [...answers];
     newAnswers[step] = e.target.value;
     setAnswers(newAnswers);
   };
 
-  const handleNext = () => {
-    // Update progress for the current word using the new attempt model
+  const advanceToNextWord = (userAttempt: string) => {
     const currentWord = wordsForCurrentStage[step];
-    const userAttempt = answers[step];
     const isCorrect = userAttempt.trim().toLowerCase() === currentWord.toLowerCase();
-    // Use the useWord hook for this word (from the top-level map)
     const { recordAttempt } = (currentStage === 'base' && listType === 'less_family')
       ? baseWordHooks[currentWord]
       : wordHooks[currentWord];
     recordAttempt(currentWord, isCorrect, userAttempt);
 
-    // Check if it's the last word in the current stage
     if (step === wordsForCurrentStage.length - 1) {
-      // If it's the base word stage for a less_family list
       if (currentStage === 'base' && listType === 'less_family') {
-        // In full_test mode, always continue to full word stage to test all words
         if (testMode === 'full_test') {
-          // Always transition to the full word stage in full_test mode
           setCurrentStage('full');
-          setStep(0); // Reset step for the new stage
-          setAnswers(Array(words.length).fill('')); // Initialize answers for full words
-          // The useEffect triggered by currentStage/step change will set the next word to utter
+          setStep(0);
+          setAnswers(Array(words.length).fill(''));
         } else if (areCurrentStageWordsCorrect) {
-          // In practice mode, only continue if base words are correct
           setCurrentStage('full');
           setStep(0);
           setAnswers(Array(words.length).fill(''));
         } else {
-          // In practice mode, if base words were incorrect, show results for base words
           setShowResults(true);
         }
       } else {
-        // If it's the full word stage or a single list
         if (areCurrentStageWordsCorrect) {
-          // If all words are correct
           if (testMode === 'full_test') {
-            // In full_test mode, always show results (even if perfect)
             setShowResults(true);
           } else {
-            // In practice mode, show congratulations for perfect score
             setDone(true);
           }
         } else {
-          // If there are mistakes, show results
           setShowResults(true);
         }
       }
     } else {
-      // Not the last word, move to the next step in the current stage
       setStep(step + 1);
-      // The useEffect triggered by step change will set the next word to utter
     }
+  };
+
+  const handleNext = () => {
+    advanceToNextWord(answers[step]);
+  };
+
+  const handleSkip = () => {
+    const userAttempt = answers[step] || '[skipped]';
+    advanceToNextWord(userAttempt);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -266,6 +268,9 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
       </div>
       <button className="spelling-btn" onClick={handleNext} disabled={!answers[step]}>
         {step === wordsForCurrentStage.length - 1 ? (currentStage === 'base' && listType === 'less_family' ? 'Next Stage' : 'See Results') : 'Next'}
+      </button>
+      <button className="spelling-skip-btn" onClick={handleSkip} disabled={!skipEnabled}>
+        Skip
       </button>
     </div>
   );
