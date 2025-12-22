@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "github": {
+      "url": "",
+      "headers": {},
+      "oauthScopes": [
+        "openid",
+        "email",
+        "profile",
+        "offline_access"
+      ],
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "$GITHUB_PERSONAL_ACCESS_TOKEN"
+      },
+      "timeout": 120000,
+      "disabled": false,
+      "disabledTools": []
+    }
+  }
+}
