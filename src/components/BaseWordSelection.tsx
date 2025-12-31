@@ -12,7 +12,12 @@ interface BaseWordSelectionProps {
   themeClass?: string;
   wordFilter?: (word: Word) => boolean;
   challengeConfig?: ChallengeConfig;
-  onSelectWords: (words: string[], type: 'single' | 'less_family') => void;
+  onSelectWords: (
+    words: string[], 
+    type: 'single' | 'less_family',
+    testMode?: 'practice' | 'full_test',
+    passThreshold?: number
+  ) => void;
 }
 
 const getStatusIcon = (status: string) => {

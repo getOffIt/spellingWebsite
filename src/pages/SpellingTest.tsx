@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './SpellingTest.css';
 import PracticePage from './PracticePage';
 import SpellingResults from './SpellingResults';
+import FullTestResults from './FullTestResults';
 import CongratulationsPage from './CongratulationsPage';
 import { useWord } from '../hooks/useWord';
 import { useProgress } from '../contexts/ProgressProvider';
@@ -29,10 +30,12 @@ function getBaseWord(word: string): string {
 interface SpellingTestProps {
   words: string[];
   listType: 'single' | 'less_family';
+  testMode?: 'practice' | 'full_test';
+  passThreshold?: number;
   onComplete: () => void;
 }
 
-export default function SpellingTest({ words, listType, onComplete }: SpellingTestProps) {
+export default function SpellingTest({ words, listType, testMode = 'practice', passThreshold, onComplete }: SpellingTestProps) {
   const navigate = useNavigate();
   // If listType is 'less_family', generate base words
   const baseWords = listType === 'less_family' ? words.map(word => getBaseWord(word)) : [];
@@ -61,6 +64,7 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
   // New state to control speaking
   const [wordToUtter, setWordToUtter] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [skipEnabled, setSkipEnabled] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const inputContainerRef = useRef<HTMLDivElement>(null);
@@ -92,53 +96,65 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
     // eslint-disable-next-line
   }, [step, showResults]);
 
+  // Effect to manage skip button timer
+  useEffect(() => {
+    setSkipEnabled(false);
+    const timer = setTimeout(() => {
+      setSkipEnabled(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [step, currentStage]);
+
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newAnswers = [...answers];
     newAnswers[step] = e.target.value;
     setAnswers(newAnswers);
   };
 
-  const handleNext = () => {
-    // Update progress for the current word using the new attempt model
+  const advanceToNextWord = (userAttempt: string) => {
     const currentWord = wordsForCurrentStage[step];
-    const userAttempt = answers[step];
     const isCorrect = userAttempt.trim().toLowerCase() === currentWord.toLowerCase();
-    // Use the useWord hook for this word (from the top-level map)
     const { recordAttempt } = (currentStage === 'base' && listType === 'less_family')
       ? baseWordHooks[currentWord]
       : wordHooks[currentWord];
     recordAttempt(currentWord, isCorrect, userAttempt);
 
-    // Check if it's the last word in the current stage
     if (step === wordsForCurrentStage.length - 1) {
-      // If it's the base word stage for a less_family list
       if (currentStage === 'base' && listType === 'less_family') {
-        // Check if all base words were correct
-        if (areCurrentStageWordsCorrect) {
-          // Transition to the full word stage
+        if (testMode === 'full_test') {
           setCurrentStage('full');
-          setStep(0); // Reset step for the new stage
-          setAnswers(Array(words.length).fill('')); // Initialize answers for full words
-          // The useEffect triggered by currentStage/step change will set the next word to utter
+          setStep(0);
+          setAnswers(Array(words.length).fill(''));
+        } else if (areCurrentStageWordsCorrect) {
+          setCurrentStage('full');
+          setStep(0);
+          setAnswers(Array(words.length).fill(''));
         } else {
-          // If base words were incorrect, show results for base words
           setShowResults(true);
         }
       } else {
-        // If it's the full word stage or a single list
         if (areCurrentStageWordsCorrect) {
-          // If all words are correct, show congratulations
-          setDone(true);
+          if (testMode === 'full_test') {
+            setShowResults(true);
+          } else {
+            setDone(true);
+          }
         } else {
-          // If there are mistakes, show results
           setShowResults(true);
         }
       }
     } else {
-      // Not the last word, move to the next step in the current stage
       setStep(step + 1);
-      // The useEffect triggered by step change will set the next word to utter
     }
+  };
+
+  const handleNext = () => {
+    advanceToNextWord(answers[step]);
+  };
+
+  const handleSkip = () => {
+    const userAttempt = answers[step] || '[skipped]';
+    advanceToNextWord(userAttempt);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -174,8 +190,9 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
     return <CongratulationsPage onComplete={onComplete} />;
   }
 
-  if (showPractice) {
+  if (showPractice && testMode === 'practice') {
     // Filter incorrect words from the completed stage
+    // Only show practice in practice mode, not in full_test mode
     const incorrectWords = wordsForResultsOrPractice.filter((word, idx) =>
       answersForResultsOrPractice[idx].trim().toLowerCase() !== word.toLowerCase()
     );
@@ -191,10 +208,22 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
     // For results, always show the comparison against the final word list (full words if less_family, otherwise the single list)
     const wordsForSpellingResults = listType === 'less_family' ? words : wordsForCurrentStage;
 
-    // We need to pair the words shown on the results page with the answers given for the completed stage
-    // This mapping might need adjustment depending on how SpellingResults uses the words and answers props
-    // For now, passing the final words list and the answers from the last completed stage.
-    // The SpellingResults component needs to handle the index mapping correctly.
+    // For full_test mode, use the new FullTestResults component
+    if (testMode === 'full_test') {
+      return (
+        <FullTestResults
+          words={wordsForSpellingResults.map(word => ({ word, sentence: '' }))}
+          answers={answersForResultsOrPractice}
+          onRetry={handleRetry}
+          onComplete={onComplete}
+          listType={listType}
+          isBaseStageResults={listType === 'less_family' && currentStage === 'base'}
+          passThreshold={passThreshold}
+        />
+      );
+    }
+
+    // For practice mode, use existing SpellingResults
     return (
       <SpellingResults
         words={wordsForSpellingResults.map(word => ({ word, sentence: '' }))} // Pass the relevant word objects
@@ -239,6 +268,9 @@ export default function SpellingTest({ words, listType, onComplete }: SpellingTe
       </div>
       <button className="spelling-btn" onClick={handleNext} disabled={!answers[step]}>
         {step === wordsForCurrentStage.length - 1 ? (currentStage === 'base' && listType === 'less_family' ? 'Next Stage' : 'See Results') : 'Next'}
+      </button>
+      <button className="spelling-skip-btn" onClick={handleSkip} disabled={!skipEnabled}>
+        Skip
       </button>
     </div>
   );

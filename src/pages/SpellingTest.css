@@ -134,6 +134,31 @@ html, body {
   background: #2563eb;
 }
 
+.spelling-skip-btn {
+  display: block;
+  margin: 0.75rem auto 0 auto;
+  background: #9ca3af;
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  transition: background 0.2s;
+  text-align: center;
+}
+
+.spelling-skip-btn:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.spelling-skip-btn:hover:not(:disabled) {
+  background: #6b7280;
+}
+
 .spelling-results {
   list-style: none;
   padding: 0;
@@ -162,8 +187,8 @@ html, body {
 }
 
 .spelling-results .incorrect {
-  color: #ef4444;
-  border: 2px solid #ef4444;
+  color: #d97706;
+  border: 2px solid #f59e0b;
 }
 
 .correction {
