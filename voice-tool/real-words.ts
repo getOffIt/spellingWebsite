@@ -53,7 +53,7 @@ export const YEAR1_WORDS: Word[] = [
   { id: 'think', text: 'think', year: 1, category: 'nk' },
   { id: 'honk', text: 'honk', year: 1, category: 'nk' },
   { id: 'sunk', text: 'sunk', year: 1, category: 'nk' },
-  { id: 'link-nk', text: 'link', year: 1, category: 'nk' },
+  { id: 'link', text: 'link', year: 1, category: 'nk' },
   { id: 'pink', text: 'pink', year: 1, category: 'nk' },
 
   // tch
