@@ -68,7 +68,8 @@ export function loadConfig(): AppConfig {
     defaultMode: 'interactive',
     outputFormat: 'human',
     autoPlayAudio: true,
-    verboseLogging: process.env.VERBOSE_LOGGING === 'true'
+    verboseLogging: process.env.VERBOSE_LOGGING === 'true',
+    wordsFile: process.env.WORDS_FILE || './real-words.ts'
   };
 
   return {

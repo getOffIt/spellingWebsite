@@ -32,15 +32,14 @@ A comprehensive tool for generating, reviewing, and deploying audio files for th
 
 4. **Quick Test (5 words)**:
    ```bash
-   # Edit kiro-cli.js line 1: change loadWords() to use test-5-words.ts first
-   node kiro-cli.js --batch    # Generate 5 words (~10 seconds)
+   WORDS_FILE=./test-5-words.ts node kiro-cli.js --batch    # Generate 5 words (~10 seconds)
    node kiro-cli.js --play cat # Test audio playback
    node kiro-cli.js --accept cat # Accept the audio
    ```
 
 5. **Full Production Run**:
    ```bash
-   # Edit kiro-cli.js line 1: change loadWords() to use real-words.ts first
+   # Uses ./real-words.ts by default
    node kiro-cli.js --batch    # Generate all 230 words (~5-10 minutes)
    ```
 
@@ -91,6 +90,7 @@ S3_KEY_PREFIX=voices
 AUDIO_PLATFORM=macos
 AUTO_PLAY_AUDIO=true
 VERBOSE_LOGGING=false
+WORDS_FILE=./real-words.ts  # Default: ./real-words.ts (use ./test-5-words.ts for testing)
 ```
 
 ## Architecture
@@ -119,7 +119,8 @@ voice-tool/
 │   ├── config/            # Configuration management
 │   └── cli/               # CLI interfaces
 ├── kiro-cli.js            # AI agent interface
-├── real-words.ts          # Production word list
+├── real-words.ts          # Production word list (default)
+├── test-5-words.ts        # Quick test word list (5 words)
 └── test-words.ts          # Development word list
 ```
 
@@ -130,9 +131,7 @@ voice-tool/
 npm run build
 
 # Quick test with 5 words (fast development cycle)
-# 1. Edit kiro-cli.js loadWords() to use test-5-words.ts first
-# 2. Run quick tests:
-node kiro-cli.js --batch     # ~10 seconds for 5 words
+WORDS_FILE=./test-5-words.ts node kiro-cli.js --batch     # ~10 seconds for 5 words
 node kiro-cli.js --status    # Check progress
 node kiro-cli.js --play cat  # Test playback
 

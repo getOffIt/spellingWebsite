@@ -117,8 +117,8 @@ async function handleBatch(config, client, fileManager, progressManager) {
   console.log('🎵 Starting batch generation...');
   
   const wordExtractor = new WordExtractor();
-  const words = await loadWords(wordExtractor);
-  console.log(`📚 Loaded ${words.length} words`);
+  const words = await loadWords(wordExtractor, config.cli.wordsFile);
+  console.log(`📚 Loaded ${words.length} words from ${config.cli.wordsFile}`);
   
   const isValidKey = await client.validateApiKey();
   if (!isValidKey) {
@@ -277,24 +277,8 @@ async function handleUpload(fileManager, config) {
   }
 }
 
-async function loadWords(wordExtractor) {
-  try {
-    return await wordExtractor.extractWords('./test-new-3-words.ts');
-  } catch {
-    try {
-      return await wordExtractor.extractWords('./test-5-words.ts');
-    } catch {
-      try {
-        return await wordExtractor.extractWords('./real-words.ts');
-      } catch {
-        try {
-          return await wordExtractor.extractWords('../src/data/words.ts');
-        } catch {
-          return await wordExtractor.extractWords('./test-words.ts');
-        }
-      }
-    }
-  }
+async function loadWords(wordExtractor, wordsFile) {
+  return await wordExtractor.extractWords(wordsFile);
 }
 
 main();
