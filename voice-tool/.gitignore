@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# Build output
+dist/
+
+# Audio cache and temporary files
+audio-cache/
+temp/
+test-audio-cache/
+test-progress/
+progress/
+
+# Test files (keep specific reference files)
+test-*-words.ts
+!test-words.ts
+!test-5-words.ts
+test-simple-review.js
+test-interrupt-words.ts
+test-new-*-words.ts
+
+# Documentation (temporary analysis files)
+*_ANALYSIS.md
+*_SUCCESS.md
+*_MISSING.md
+*_COMPLETE.md
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+
+# IDE files
+.vscode/
+.idea/
