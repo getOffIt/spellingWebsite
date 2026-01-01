@@ -88,7 +88,8 @@ export class CLIInterface {
     
     const rl = readline.createInterface({
       input: process.stdin,
-      output: process.stdout
+      output: process.stdout,
+      terminal: false
     });
 
     try {
@@ -142,31 +143,41 @@ export class CLIInterface {
   private async runInteractiveReview(): Promise<void> {
     console.log('\n🎧 Starting Interactive Review...');
     
+    // Create a dedicated readline interface for review
+    const reviewRl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+      terminal: false
+    });
+    
     try {
-      // Load words and check for generated audio
-      const words = await this.loadWords();
+      // Load progress data to get words that need review
       const fileManager = new FileManager();
+      const progressManager = new ProgressManager();
+      await progressManager.loadProgress();
       
-      // Filter to words that have Rachel audio
-      const wordsWithAudio = [];
-      for (const word of words.slice(0, 5)) { // Test with first 5 words
-        const hasAudio = await fileManager.audioFileExists(word.id, 'rachel');
-        if (hasAudio) {
-          wordsWithAudio.push(word);
-        }
-      }
+      // Get all words from progress file that are not completed
+      const allProgressWords = progressManager.getAllProgressWords();
+      const wordsNeedingReview = allProgressWords.filter(word => word.status !== 'completed');
       
-      if (wordsWithAudio.length === 0) {
-        console.log('❌ No generated audio found. Run batch generation first.');
+      if (wordsNeedingReview.length === 0) {
+        console.log('✅ All words have been reviewed! No words need review.');
         return;
       }
       
-      console.log(`📊 Found ${wordsWithAudio.length} words with generated audio`);
+      console.log(`📊 Found ${wordsNeedingReview.length} words needing review`);
       console.log('🎧 Starting review process...');
       console.log('Controls: y (accept), n (next voice), l (listen again), s (skip)');
       
+      // Convert progress words to Word format for the review workflow
+      const wordsForReview = wordsNeedingReview.map(pw => ({
+        id: pw.wordId,
+        text: pw.wordId, // Using wordId as text since we don't have the original word list
+        year: 1 as const,
+        category: 'unknown'
+      }));
+      
       // Initialize services for review
-      const progressManager = new ProgressManager();
       const client = new ElevenLabsClient(this.config.elevenlabs.apiKey);
       const audioPlayer = new AudioPlayer(this.config.audio.platform, true);
       
@@ -182,21 +193,22 @@ export class CLIInterface {
         fileManager,
         progressManager,
         batchGenerator,
-        this.config.voices
+        this.config.voices,
+        reviewRl
       );
       
       // Review words
-      const result = await reviewWorkflow.reviewAllWords(wordsWithAudio);
+      const result = await reviewWorkflow.reviewAllWords(wordsForReview);
       
       console.log('\n🎉 Review Complete!');
       console.log(`✅ Approved: ${result.approved} words`);
       console.log(`⏭️  Skipped: ${result.skipped} words`);
       console.log(`❌ Failed: ${result.failed} words`);
       
-      reviewWorkflow.close();
-      
     } catch (error) {
       console.error('❌ Review failed:', error instanceof Error ? error.message : error);
+    } finally {
+      reviewRl.close();
     }
   }
 
@@ -221,11 +233,7 @@ export class CLIInterface {
   }
 
   private async loadWords() {
-    try {
-      return await this.wordExtractor.extractWords('./real-words.ts');
-    } catch {
-      return await this.wordExtractor.extractWords('./test-words.ts');
-    }
+    return await this.wordExtractor.extractWords(this.config.cli.wordsFile);
   }
 
   async runCommandMode(config: CommandConfig): Promise<void> {

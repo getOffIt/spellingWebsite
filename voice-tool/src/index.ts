@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 
-import dotenv from 'dotenv';
-dotenv.config();
-
 import { CLIInterface } from './cli/CLIInterface.js';
 
 async function main() {

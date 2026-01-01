@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "start": "node dist/index.js",
+    "start": "node --env-file=.env dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
@@ -26,10 +26,9 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.958.0",
-    "dotenv": "^17.2.3"
+    "@aws-sdk/client-s3": "^3.958.0"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.6.0"
   }
 }

@@ -32,45 +32,45 @@ A comprehensive tool for generating, reviewing, and deploying audio files for th
 
 4. **Quick Test (5 words)**:
    ```bash
-   WORDS_FILE=./test-5-words.ts node kiro-cli.js --batch    # Generate 5 words (~10 seconds)
-   node kiro-cli.js --play cat # Test audio playback
-   node kiro-cli.js --accept cat # Accept the audio
+   WORDS_FILE=./test-5-words.ts node --env-file=.env kiro-cli.js --batch    # Generate 5 words (~10 seconds)
+   node --env-file=.env kiro-cli.js --play cat # Test audio playbook
+   node --env-file=.env kiro-cli.js --accept cat # Accept the audio
    ```
 
 5. **Full Production Run**:
    ```bash
    # Uses ./real-words.ts by default
-   node kiro-cli.js --batch    # Generate all 230 words (~5-10 minutes)
+   node --env-file=.env kiro-cli.js --batch    # Generate all 230 words (~5-10 minutes)
    ```
 
 ## Usage
 
 ### Interactive Mode (Human Review)
 ```bash
-node dist/index.js --interactive
+node --env-file=.env dist/index.js --interactive
 ```
 
 ### Command Mode (AI Agent Integration)
 ```bash
 # Generate all missing audio
-node kiro-cli.js --batch
+node --env-file=.env kiro-cli.js --batch
 
 # Review specific word
-node kiro-cli.js --play word
+node --env-file=.env kiro-cli.js --play word
 
 # Accept/reject voices
-node kiro-cli.js --accept word
-node kiro-cli.js --reject word
+node --env-file=.env kiro-cli.js --accept word
+node --env-file=.env kiro-cli.js --reject word
 
 # Choose from available voices
-node kiro-cli.js --list-voices word
-node kiro-cli.js --choose word voice
+node --env-file=.env kiro-cli.js --list-voices word
+node --env-file=.env kiro-cli.js --choose word voice
 
 # Upload to S3
-node kiro-cli.js --upload
+node --env-file=.env kiro-cli.js --upload
 
 # Check status
-node kiro-cli.js --status
+node --env-file=.env kiro-cli.js --status
 ```
 
 ## Configuration
@@ -119,7 +119,7 @@ voice-tool/
 │   ├── config/            # Configuration management
 │   └── cli/               # CLI interfaces
 ├── kiro-cli.js            # AI agent interface
-├── real-words.ts          # Production word list (default)
+├── real-words.ts          # Production word list (220 unique words, flat structure)
 ├── test-5-words.ts        # Quick test word list (5 words)
 └── test-words.ts          # Development word list
 ```
@@ -131,15 +131,15 @@ voice-tool/
 npm run build
 
 # Quick test with 5 words (fast development cycle)
-WORDS_FILE=./test-5-words.ts node kiro-cli.js --batch     # ~10 seconds for 5 words
-node kiro-cli.js --status    # Check progress
-node kiro-cli.js --play cat  # Test playback
+WORDS_FILE=./test-5-words.ts node --env-file=.env kiro-cli.js --batch     # ~10 seconds for 5 words
+node --env-file=.env kiro-cli.js --status    # Check progress
+node --env-file=.env kiro-cli.js --play cat  # Test playback
 
 # Interactive development
-node dist/index.js --interactive
+node --env-file=.env dist/index.js --interactive
 
 # AI agent testing
-node kiro-cli.js --status
+node --env-file=.env kiro-cli.js --status
 ```
 
 ## Integration

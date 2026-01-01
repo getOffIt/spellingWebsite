@@ -5,9 +5,6 @@
  * Stateless commands for AI agent integration
  */
 
-import dotenv from 'dotenv';
-dotenv.config();
-
 import { loadConfig } from './dist/config/config.js';
 import { WordExtractor } from './dist/services/WordExtractor.js';
 import { ProgressManager } from './dist/services/ProgressManager.js';

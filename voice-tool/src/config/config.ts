@@ -31,6 +31,66 @@ export const DEFAULT_VOICES: VoiceConfig[] = [
     id: 'pNInz6obpgDQGcFmaJgB',
     name: 'adam',
     description: 'Deep, male voice, American accent'
+  },
+  {
+    id: 'EXAVITQu4vr4xnSDxMaL',
+    name: 'sarah',
+    description: 'Young adult woman with confident, warm, mature quality'
+  },
+  {
+    id: 'FGY2WhTYpPnrIDTdsKH5',
+    name: 'laura',
+    description: 'Young adult female with sunny enthusiasm and quirky attitude'
+  },
+  {
+    id: 'IKne3meq5aSn9XLyUdCD',
+    name: 'charlie',
+    description: 'Young Australian male with confident and energetic voice'
+  },
+  {
+    id: 'JBFqnCBsd6RMkjVDRZzb',
+    name: 'george',
+    description: 'Warm British male voice that captivates listeners'
+  },
+  {
+    id: 'Xb7hH8MSUJpSbSDYk0k2',
+    name: 'alice',
+    description: 'Clear and engaging British female, suitable for education'
+  },
+  {
+    id: 'XrExE9yKIg1WjnnlVkGX',
+    name: 'matilda',
+    description: 'Professional American female with pleasing alto pitch'
+  },
+  {
+    id: 'cgSgspJ2msm6clMCkdW9',
+    name: 'jessica',
+    description: 'Young playful American female, bright and warm'
+  },
+  {
+    id: 'cjVigY5qzO86Huf0OWal',
+    name: 'eric',
+    description: 'Smooth American male tenor, trustworthy'
+  },
+  {
+    id: 'iP95p4xoKVk53GoZ742B',
+    name: 'chris',
+    description: 'Natural down-to-earth American male voice'
+  },
+  {
+    id: 'onwK4e9ZLuTAKqWW03F9',
+    name: 'daniel',
+    description: 'Strong British male voice, professional broadcaster'
+  },
+  {
+    id: 'pFZP5JQG7iQjIQuC4Bku',
+    name: 'lily',
+    description: 'Velvety British female voice with warmth and clarity'
+  },
+  {
+    id: 'bIHbv24MWmeRgasZH58o',
+    name: 'will',
+    description: 'Conversational and laid back American male'
   }
 ];
 

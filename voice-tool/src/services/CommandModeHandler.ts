@@ -7,6 +7,7 @@ import { AudioPlayer } from './AudioPlayer.js';
 import { BatchGenerator } from './BatchGenerator.js';
 import { ReviewWorkflow } from './ReviewWorkflow.js';
 import { loadConfig } from '../config/config.js';
+import readline from 'readline';
 
 export class CommandModeHandler {
   private wordExtractor: WordExtractor;
@@ -38,7 +39,11 @@ export class CommandModeHandler {
       this.fileManager,
       this.progressManager,
       this.batchGenerator,
-      this.config.voices
+      this.config.voices,
+      readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+      })
     );
   }
 
@@ -242,15 +247,6 @@ export class CommandModeHandler {
   }
 
   private async loadWords(): Promise<Word[]> {
-    // Try to load from real words file first, fallback to test words
-    try {
-      return await this.wordExtractor.extractWords('./real-words.ts');
-    } catch {
-      try {
-        return await this.wordExtractor.extractWords('../src/data/words.ts');
-      } catch {
-        return await this.wordExtractor.extractWords('./test-words.ts');
-      }
-    }
+    return await this.wordExtractor.extractWords(this.config.cli.wordsFile);
   }
 }

@@ -121,7 +121,7 @@ export interface CLIConfig {
   outputFormat: 'human' | 'json'
   autoPlayAudio: boolean
   verboseLogging: boolean
-  wordsFile: string  // Path to words file (default: './real-words.ts')
+  wordsFile: string  // Path to words file (default: './real-words.ts' - 220 unique words)
 }
 
 export enum OperationMode {

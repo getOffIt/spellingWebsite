@@ -56,7 +56,9 @@ export class ProgressManager {
     this.progressData!.words.set(wordId, updated);
     this.updateCounts();
     
+    console.log(`🔄 Saving progress for word: ${wordId}, status: ${update.status}`);
     await this.saveProgress(this.progressData!);
+    console.log(`✅ Progress saved successfully`);
   }
 
   async markWordCompleted(wordId: string, voiceUsed: string, audioPath: string): Promise<void> {
@@ -82,8 +84,14 @@ export class ProgressManager {
       return { completed: 0, total: 0, percentage: 0 };
     }
 
-    const completed = this.progressData.completedCount;
-    const total = this.progressData.totalWords;
+    // Compute both counts dynamically from actual data
+    // Handle both Map (in memory) and Object (from JSON) formats
+    const words = this.progressData.words instanceof Map 
+      ? Array.from(this.progressData.words.values())
+      : Object.values(this.progressData.words) as WordProgress[];
+    
+    const completed = words.filter(word => word.status === 'completed').length;
+    const total = words.length; // Use actual word count, not stored totalWords
     const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
     return { completed, total, percentage };
@@ -95,6 +103,25 @@ export class ProgressManager {
     }
 
     return allWords.filter(word => !this.progressData!.words.has(word.id));
+  }
+
+  getWordsNeedingReview(allWords: Word[]): Word[] {
+    if (!this.progressData) {
+      return allWords;
+    }
+
+    return allWords.filter(word => {
+      const progress = this.progressData!.words.get(word.id);
+      return !progress || progress.status !== 'completed';
+    });
+  }
+
+  getAllProgressWords(): WordProgress[] {
+    if (!this.progressData) {
+      return [];
+    }
+
+    return Array.from(this.progressData.words.values());
   }
 
   getWordProgress(wordId: string): WordProgress | undefined {

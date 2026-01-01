@@ -18,17 +18,15 @@ export class ReviewWorkflow {
     fileManager: FileManager,
     progressManager: ProgressManager,
     batchGenerator: BatchGenerator,
-    voices: VoiceConfig[]
+    voices: VoiceConfig[],
+    rl: readline.Interface
   ) {
     this.audioPlayer = audioPlayer;
     this.fileManager = fileManager;
     this.progressManager = progressManager;
     this.batchGenerator = batchGenerator;
     this.voices = voices;
-    this.rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
+    this.rl = rl;
   }
 
   async reviewWord(wordId: string, wordText: string): Promise<{
@@ -131,10 +129,15 @@ export class ReviewWorkflow {
     let skipped = 0;
     let failed = 0;
     
+    // Load progress once at the start
+    await this.progressManager.loadProgress();
+    
     for (let i = 0; i < words.length; i++) {
       const word = words[i];
       
-      console.log(`\n📊 Progress: ${i + 1}/${words.length} (${Math.round(((i + 1) / words.length) * 100)}%)`);
+      // Get current progress status (no need to reload from disk)
+      const status = this.progressManager.getCompletionStatus();
+      console.log(`\n📊 Progress: ${status.completed}/${status.total} (${status.percentage}%)`);
       
       const result = await this.reviewWord(word.id, word.text);
       
@@ -175,9 +178,5 @@ export class ReviewWorkflow {
 
   private async getAudioPath(wordId: string, voiceName: string): Promise<string> {
     return `./audio-cache/${voiceName}/${wordId}.mp3`;
-  }
-
-  close(): void {
-    this.rl.close();
   }
 }

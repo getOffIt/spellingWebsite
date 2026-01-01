@@ -381,9 +381,204 @@ const challenges = [
 
 ---
 
-## Step 6: Test Your New Word List
+---
 
-### 6.1 Checklist
+## Step 6: Generate Voice Audio Files
+
+After adding your word list to the main application, you need to generate audio files for the new words using the voice generation tool.
+
+### 6.1 Regenerate real-words.ts (Voice Tool)
+
+When you add new words to `src/data/words.ts`, you need to update the voice tool's word list:
+
+```bash
+cd voice-tool
+```
+
+**Option A: Manual Update (Recommended)**
+1. Open `voice-tool/real-words.ts`
+2. Add your new words to the `ALL_WORDS` array
+3. Ensure no duplicates exist
+4. Maintain the flat structure (single array, no nested arrays)
+
+**Option B: Regenerate from Main App (Advanced)**
+If you want to automatically sync from the main app's `words.ts`:
+```bash
+# Create a script to extract and deduplicate words from ../src/data/words.ts
+# This is more complex and requires handling the different array structures
+```
+
+### 6.2 Generate Audio Files
+
+Once your words are in `voice-tool/real-words.ts`:
+
+#### Quick Test (5 words)
+```bash
+# Test with a small subset first
+WORDS_FILE=./test-5-words.ts node kiro-cli.js --batch
+node kiro-cli.js --status
+```
+
+#### Full Generation
+```bash
+# Generate audio for all words (including new ones)
+node kiro-cli.js --batch
+```
+
+This will:
+- Generate audio files for any new words using the default Rachel voice
+- Skip words that already have audio
+- Show progress as it generates
+
+### 6.3 Review and Accept New Voices
+
+Use the interactive review process for new words:
+
+#### Check Status
+```bash
+node kiro-cli.js --status
+```
+
+#### Review Individual Words
+```bash
+# Play a specific word
+node kiro-cli.js --play your-new-word
+
+# Accept the voice
+node kiro-cli.js --accept your-new-word
+
+# Or reject to try alternative voices
+node kiro-cli.js --reject your-new-word
+```
+
+#### Interactive Review Mode
+```bash
+# Use the interactive mode for easier review
+node dist/index.js --interactive
+```
+
+The interactive mode provides:
+- Automatic playback of words needing review
+- Simple keyboard shortcuts (a=accept, r=reject, s=skip)
+- Progress tracking
+- Voice selection options
+
+### 6.4 Voice Selection Options
+
+The voice tool supports 18 different voices:
+
+**Primary Voices:**
+- **rachel** - Clear, neutral female voice (default)
+- **dorothy** - Pleasant British female voice
+- **emily** - Calm American female voice
+
+**Additional Voices:**
+- **sarah** - Confident, warm female voice
+- **laura** - Enthusiastic female voice
+- **alice** - Clear British female voice (educational)
+- **matilda** - Professional American female voice
+- **jessica** - Playful American female voice
+- **lily** - Velvety British female voice
+- **george** - Warm British male voice
+- **charlie** - Energetic Australian male voice
+- **eric** - Smooth American male voice
+- **chris** - Natural American male voice
+- **daniel** - Professional British male voice
+- **will** - Laid-back American male voice
+- **thomas** - Calm American male voice
+- **antoni** - Well-rounded American male voice
+- **adam** - Deep American male voice
+
+#### Voice Selection Process:
+1. **Play**: `node kiro-cli.js --play word` - Listen to current voice
+2. **Accept**: `node kiro-cli.js --accept word` - Keep current voice
+3. **Reject**: `node kiro-cli.js --reject word` - Try next voice in sequence
+4. **Choose**: `node kiro-cli.js --choose word voice-name` - Select specific voice
+5. **List**: `node kiro-cli.js --list-voices word` - See all available voices for a word
+
+### 6.5 Upload to S3
+
+Once all voices are reviewed and accepted:
+
+```bash
+# Upload all approved audio files to S3
+node kiro-cli.js --upload
+```
+
+**Prerequisites:**
+- AWS credentials configured
+- S3 bucket access (spellmatereact)
+- Proper IAM permissions
+
+The upload will:
+- Upload all completed audio files to S3
+- Set proper caching headers
+- Organize files by voice name
+- Make files publicly accessible for the web app
+
+### 6.6 Voice Generation Workflow Summary
+
+```bash
+# 1. Add words to voice-tool/real-words.ts
+# 2. Generate audio files
+node kiro-cli.js --batch
+
+# 3. Check status
+node kiro-cli.js --status
+
+# 4. Review new words (interactive mode recommended)
+node dist/index.js --interactive
+
+# 5. Upload to S3 when complete
+node kiro-cli.js --upload
+```
+
+### 6.7 Voice Tool File Structure
+
+```
+voice-tool/
+├── real-words.ts              # Flat list of all words (220 unique words)
+├── test-5-words.ts           # Small test set for development
+├── kiro-cli.js               # Command-line interface
+├── dist/index.js             # Interactive review interface
+├── audio-cache/              # Generated audio files
+│   ├── rachel/              # Primary voice files
+│   ├── dorothy/             # Alternative voice files
+│   └── ...                  # Other voice directories
+└── progress/                 # Progress tracking
+    └── voice-generation-progress.json
+```
+
+### 6.8 Troubleshooting Voice Generation
+
+**Issue: Words not generating**
+- ✅ Check words are in `real-words.ts`
+- ✅ Verify ElevenLabs API key in `.env`
+- ✅ Check internet connection
+- ✅ Verify API quota/limits
+
+**Issue: Progress showing wrong count**
+- ✅ The system now uses dynamic counting
+- ✅ Run `node kiro-cli.js --status` for accurate count
+- ✅ Check for duplicate words in `real-words.ts`
+
+**Issue: Upload failing**
+- ✅ Check AWS credentials are configured
+- ✅ Verify S3 bucket permissions
+- ✅ Ensure bucket exists and is accessible
+
+**Issue: Audio quality poor**
+- ✅ Try different voices using `--reject` or `--choose`
+- ✅ Use interactive mode for easier voice comparison
+- ✅ Consider educational-friendly voices (alice, matilda, george)
+
+---
+
+## Step 7: Test Your New Word List
+
+## Step 7: Test Your New Word List
+
+### 7.1 Checklist
 
 - [ ] Word list appears in `ChallengesPage` as a challenge card
 - [ ] Clicking the challenge card navigates to your word selection page
@@ -391,10 +586,27 @@ const challenges = [
 - [ ] Categories are grouped properly
 - [ ] Challenge component (if configured) displays correctly
 - [ ] Clicking a category navigates to spelling test
+- [ ] **Audio files play correctly for new words**
+- [ ] **Voice quality is acceptable for all new words**
 - [ ] Progress tracking works correctly
 - [ ] No console errors
 
-### 6.2 Common Issues
+### 7.2 Audio Testing
+
+**Test audio playback:**
+1. Navigate to your new word list
+2. Select a category with new words
+3. Start spelling test
+4. Verify audio plays when clicking the speaker icon
+5. Check audio quality and clarity
+6. Test on different devices/browsers
+
+**If audio issues:**
+- Check browser console for 404 errors
+- Verify S3 upload completed successfully
+- Test audio files directly: `https://spellmatereact.s3.eu-west-2.amazonaws.com/voices/rachel/word-id.mp3`
+
+### 7.3 Common Issues
 
 **Issue: Words not showing**
 - ✅ Check that word list is exported from `words.ts`
@@ -409,6 +621,12 @@ const challenges = [
 - ✅ Check word list is imported in `ChallengesPage.tsx`
 - ✅ Check progress calculation is correct
 - ✅ Check challenge object is added to `challenges` array
+
+**Issue: Audio not playing**
+- ✅ Check audio files were generated in voice-tool
+- ✅ Verify S3 upload completed successfully
+- ✅ Check browser console for network errors
+- ✅ Test audio URLs directly in browser
 
 **Issue: Styling issues**
 - ✅ Check `themeClass` is set correctly in config
@@ -524,15 +742,21 @@ const year2Progress = Math.round((year2Mastered / YEAR2_WORDS.length) * 100);
 
 ---
 
-## Quick Reference: File Locations
+## Quick Reference: Complete Workflow
 
-| Step | File | What to Do |
-|------|------|------------|
-| 1 | `src/data/words.ts` | Add word array export |
-| 2 | `src/config/wordSelectionConfigs.ts` | Add config object |
-| 3 | `src/pages/YourListNameSelection.tsx` | Create component file |
-| 4 | `src/App.tsx` | Add route |
-| 5 | `src/pages/ChallengesPage.tsx` | Add challenge card |
+| Step | Location | Action | Time |
+|------|----------|--------|------|
+| 1 | `src/data/words.ts` | Add word array export | 2-3 min |
+| 2 | `src/config/wordSelectionConfigs.ts` | Add config object | 3-4 min |
+| 3 | `src/pages/YourListNameSelection.tsx` | Create component file | 2 min |
+| 4 | `src/App.tsx` | Add route | 1 min |
+| 5 | `src/pages/ChallengesPage.tsx` | Add challenge card | 3-4 min |
+| 6 | `voice-tool/real-words.ts` | Add words to voice tool | 2-3 min |
+| 7 | `voice-tool/` | Generate & review audio | 10-30 min |
+| 8 | `voice-tool/` | Upload to S3 | 2-5 min |
+| 9 | Test | Verify everything works | 5 min |
+
+**Total Time: ~30-60 minutes** (depending on number of words and voice review time)
 
 ---
 
@@ -576,6 +800,6 @@ If you run into issues:
 
 ---
 
-*Last Updated: 2024-12-19*
-*This guide covers the complete process for adding a new word list to the spelling website.*
+*Last Updated: 2026-01-01*
+*This guide covers the complete process for adding a new word list to the spelling website, including voice generation.*
 
