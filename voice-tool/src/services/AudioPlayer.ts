@@ -49,10 +49,8 @@ export class AudioPlayer {
     
     try {
       const command = this.getPlayCommand(filePath);
-      console.log(`🔊 Playing audio...`);
       
       await execAsync(command);
-      console.log(`✅ Audio playback complete`);
       
     } catch (error) {
       console.error(`❌ Audio playback failed: ${error instanceof Error ? error.message : error}`);

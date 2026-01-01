@@ -55,7 +55,7 @@ async function main() {
         
       case '--play':
         if (!wordId) throw new Error('--play requires word ID');
-        await handlePlay(wordId, fileManager, audioPlayer, config);
+        await handlePlay(wordId, fileManager, audioPlayer, config, progressManager);
         break;
         
       case '--play-voice':
@@ -98,6 +98,7 @@ async function main() {
 }
 
 async function handleStatus(progressManager, fileManager) {
+  await progressManager.loadProgress();  // Fix: Load progress first
   const status = progressManager.getCompletionStatus();
   const cacheStats = await fileManager.getAudioCacheStats();
   
@@ -134,7 +135,12 @@ async function handleBatch(config, client, fileManager, progressManager) {
   console.log('➡️  Next: Use --play <word> to review audio');
 }
 
-async function handlePlay(wordId, fileManager, audioPlayer, config) {
+async function handlePlay(wordId, fileManager, audioPlayer, config, progressManager) {
+  // Show progress status
+  await progressManager.loadProgress();
+  const status = progressManager.getCompletionStatus();
+  console.log(`📊 Progress: ${status.completed}/${status.total} (${status.percentage}%)`);
+  
   // Find the most recently generated voice for this word
   const generatedVoices = await fileManager.getGeneratedVoices(wordId);
   
@@ -149,7 +155,6 @@ async function handlePlay(wordId, fileManager, audioPlayer, config) {
   const audioBuffer = await fileManager.loadAudioFile(wordId, voiceName);
   await audioPlayer.play(audioBuffer);
   
-  console.log(`✅ Audio played for "${wordId}" with ${voiceName} voice`);
   console.log('➡️  Next: Use --accept or --reject to make decision');
 }
 
