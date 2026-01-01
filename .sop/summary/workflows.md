@@ -1,285 +1,356 @@
-# Workflows
+# Key Workflows and Processes #workflow
 
-## User Workflows
-
-### Authentication Workflow
-
-```mermaid
-sequenceDiagram
-    User->>App: Access protected route
-    App->>AuthProvider: Check authentication
-    AuthProvider->>Cognito: Validate session
-    Cognito-->>AuthProvider: Not authenticated
-    AuthProvider-->>App: Redirect to /login
-    App->>User: Show login page
-    User->>Cognito: Sign in
-    Cognito-->>App: OIDC callback with code
-    App->>Cognito: Exchange code for tokens
-    Cognito-->>App: Access token, ID token
-    App->>localStorage: Store tokens
-    App->>User: Redirect to requested route
-```
+## User-Facing Workflows #react
 
 ### Spelling Practice Workflow
-
 ```mermaid
 flowchart TD
-    A[User opens app] --> B[ChallengesPage]
-    B --> C{Select challenge}
-    C -->|KS1-1| D[WordSelection]
-    C -->|Common Words| E[CommonWordsSelection]
-    D --> F[BaseWordSelection]
-    E --> F
-    F --> G{Click category or challenge}
-    G -->|Category| H[Select 3 words from category]
-    G -->|Challenge| I[Select in-progress words]
-    H --> J[SpellingTest]
-    I --> J
-    J --> K[Present word with TTS]
-    K --> L[User types spelling]
-    L --> M{Correct?}
-    M -->|Yes| N[Record correct attempt]
-    M -->|No| O[Record incorrect attempt]
-    N --> P{More words?}
-    O --> P
-    P -->|Yes| K
-    P -->|No| Q[Show results]
-    Q --> R{Test mode?}
-    R -->|Practice| S[Show detailed results]
-    R -->|Full Test| T{Pass threshold met?}
-    T -->|Yes| U[Show success]
-    T -->|No| V[Show failure]
-    S --> W[Options: Retry/Practice]
-    U --> W
-    V --> W
-    W --> X{Continue?}
-    X -->|Yes| B
-    X -->|No| Y[End]
-```
-
-### Progress Tracking Workflow
-
-```mermaid
-sequenceDiagram
-    App->>ProgressProvider: Initialize
-    ProgressProvider->>API: GET /api/progress
-    API->>DynamoDB: Query by userId
-    DynamoDB-->>API: Progress records
-    API-->>ProgressProvider: All progress data
-    ProgressProvider->>ProgressProvider: Transform to ProgressData
-    ProgressProvider->>App: Provide context
-    
-    Note over SpellingTest: User completes spelling
-    SpellingTest->>ProgressProvider: recordAttempt(wordId, correct, attempt)
-    ProgressProvider->>API: PUT /api/progress/{wordId}
-    API->>DynamoDB: Update (append to progress array)
-    DynamoDB-->>API: Updated item
-    API->>DynamoDB: Query all progress
-    DynamoDB-->>API: All progress records
-    API-->>ProgressProvider: Complete progress data
-    ProgressProvider->>ProgressProvider: Update state
-    ProgressProvider->>useWord: Notify hooks
-    useWord->>Components: Trigger re-render
-```
-
-### Two-Stage Test Workflow (less_family words)
-
-```mermaid
-flowchart TD
-    A[Start test with less_family words] --> B[Stage 1: Base Words]
-    B --> C[Present base word]
-    C --> D[User types base word]
-    D --> E{All base words done?}
-    E -->|No| C
-    E -->|Yes| F{All base words correct?}
-    F -->|No| G[Show base stage results]
-    F -->|Yes| H[Stage 2: Full Words]
-    G --> I[Options: Retry/Practice]
-    H --> J[Present full word]
-    J --> K[User types full word]
-    K --> L{All full words done?}
+    A[User Login] --> B[Authentication Check]
+    B --> C[Challenges Dashboard]
+    C --> D[Select Word List]
+    D --> E[Configure Test Settings]
+    E --> F[Start Spelling Test]
+    F --> G[Play Audio]
+    G --> H[User Input]
+    H --> I{Correct?}
+    I -->|Yes| J[Next Word]
+    I -->|No| K[Show Feedback]
+    K --> L{Retry Available?}
+    L -->|Yes| G
     L -->|No| J
-    L -->|Yes| M[Show final results]
-    M --> I
+    J --> M{More Words?}
+    M -->|Yes| G
+    M -->|No| N[Show Results]
+    N --> O[Save Progress]
+    O --> P[Return to Dashboard]
 ```
 
-### Mastery Calculation Workflow
-
-```mermaid
-flowchart TD
-    A[Get word progress] --> B{Has attempts?}
-    B -->|No| C[Status: not-started]
-    B -->|Yes| D[Calculate streak from end]
-    D --> E{Streak >= 3?}
-    E -->|No| F[Status: in-progress]
-    E -->|Yes| G{Check for unmastery}
-    G -->|Was mastered, now incorrect| H[Status: unmastered]
-    G -->|Still correct| I[Status: mastered]
-    C --> J[Return stats]
-    F --> J
-    H --> J
-    I --> J
-```
-
-## System Workflows
-
-### Application Initialization
-
+### Authentication Workflow
 ```mermaid
 sequenceDiagram
-    Browser->>main.tsx: Load application
-    main.tsx->>AuthProvider: Initialize OIDC
-    AuthProvider->>Cognito: Check existing session
-    Cognito-->>AuthProvider: Session status
-    AuthProvider->>ProgressProvider: Initialize
-    ProgressProvider->>API: GET /api/progress (if authenticated)
-    API-->>ProgressProvider: Progress data
-    ProgressProvider->>App: Render application
-    App->>Router: Setup routes
-    Router->>User: Display UI
+    participant U as User
+    participant R as React App
+    participant O as OIDC Provider
+    participant P as Protected Route
+    
+    U->>R: Access Protected Route
+    R->>P: Check Authentication
+    P->>O: Validate Token
+    
+    alt Token Valid
+        O-->>P: User Info
+        P-->>R: Render Protected Content
+        R-->>U: Show Content
+    else Token Invalid/Missing
+        P->>O: Redirect to Login
+        O->>U: Show Login Form
+        U->>O: Enter Credentials
+        O->>R: Return Auth Code
+        R->>O: Exchange for Tokens
+        O-->>R: Access Token
+        R->>P: Retry Route Access
+        P-->>R: Render Protected Content
+        R-->>U: Show Content
+    end
 ```
 
-### Word Selection Workflow
+## Voice Generation Workflows #voice-tool
 
+### Batch Audio Generation Workflow
 ```mermaid
 flowchart TD
-    A[User on WordSelection page] --> B[BaseWordSelection loads]
-    B --> C[Call useWord for all words]
-    C --> D[Group words by category]
-    D --> E[Calculate category progress]
-    E --> F[Display categories with progress]
-    F --> G{User action}
-    G -->|Click category| H[Select next 3 words from category]
-    G -->|Click challenge| I[Select in-progress words]
-    H --> J[Call onSelectWords]
-    I --> J
-    J --> K[Navigate to /spelling-test]
-    K --> L[SpellingTest component]
-```
-
-### Challenge Progress Calculation
-
-```mermaid
-flowchart TD
-    A[ChallengesPage loads] --> B[Get all words for challenge]
-    B --> C[Call useWord for each word]
-    C --> D[Filter by status]
-    D --> E[Count mastered words]
-    E --> F[Calculate percentage]
-    F --> G{Determine status}
-    G -->|100%| H[completed]
-    G -->|>= 80%| I[close]
-    G -->|>= 60%| J[good]
-    G -->|>= 40%| K[steady]
-    G -->|>= 20%| L[starting]
-    G -->|< 20%| M[beginning]
-    H --> N[Display challenge card]
-    I --> N
-    J --> N
-    K --> N
-    L --> N
+    A[Load Word List] --> B[Check Existing Progress]
+    B --> C{Resume Session?}
+    C -->|Yes| D[Load Previous State]
+    C -->|No| E[Initialize New Session]
+    D --> F[Filter Pending Words]
+    E --> F
+    F --> G[Process Batch]
+    G --> H[Generate Audio via ElevenLabs]
+    H --> I{Generation Success?}
+    I -->|Yes| J[Save to Local Cache]
+    I -->|No| K[Log Error & Retry]
+    K --> L{Max Retries?}
+    L -->|No| H
+    L -->|Yes| M[Mark as Failed]
+    J --> N[Update Progress]
     M --> N
+    N --> O{More Words?}
+    O -->|Yes| G
+    O -->|No| P[Generation Complete]
+    P --> Q[Generate Summary Report]
 ```
 
-## API Workflows
-
-### GET Progress Workflow
-
+### Human Review Workflow
 ```mermaid
-sequenceDiagram
-    Client->>API Gateway: GET /api/progress<br/>Authorization: Bearer token
-    API Gateway->>Lambda Authorizer: Validate token
-    Lambda Authorizer->>Cognito: Verify token
-    Cognito-->>Lambda Authorizer: Token valid, user claims
-    Lambda Authorizer-->>API Gateway: Authorized
-    API Gateway->>Lambda: Invoke handler
-    Lambda->>Lambda: Extract userId from claims
-    Lambda->>DynamoDB: Query by userId
-    DynamoDB-->>Lambda: Progress items
-    Lambda->>Lambda: Format response
-    Lambda-->>API Gateway: 200 OK with JSON
-    API Gateway-->>Client: Progress data
+flowchart TD
+    A[Start Review Session] --> B[Load Generated Audio]
+    B --> C[Play Current Audio]
+    C --> D[Human Decision]
+    D --> E{Accept?}
+    E -->|Yes| F[Mark as Approved]
+    E -->|No| G[Mark as Rejected]
+    G --> H{Try Alternative Voice?}
+    H -->|Yes| I[Generate with Next Voice]
+    H -->|No| J[Mark as Failed]
+    I --> K{Generation Success?}
+    K -->|Yes| C
+    K -->|No| L[Try Next Voice]
+    L --> M{More Voices?}
+    M -->|Yes| I
+    M -->|No| J
+    F --> N[Update Review State]
+    J --> N
+    N --> O{More Words?}
+    O -->|Yes| B
+    O -->|No| P[Review Complete]
+    P --> Q[Generate Review Report]
 ```
 
-### PUT Progress Workflow
-
+### S3 Deployment Workflow
 ```mermaid
-sequenceDiagram
-    Client->>API Gateway: PUT /api/progress/{wordId}<br/>Body: {progress: [...]}
-    API Gateway->>Lambda Authorizer: Validate token
-    Lambda Authorizer-->>API Gateway: Authorized
-    API Gateway->>Lambda: Invoke handler
-    Lambda->>Lambda: Extract userId, wordId, progress
-    Lambda->>Lambda: Validate request body
-    Lambda->>DynamoDB: Update item<br/>Append to progress array
-    DynamoDB-->>Lambda: Updated item
-    Lambda->>DynamoDB: Query all progress for user
-    DynamoDB-->>Lambda: All progress items
-    Lambda->>Lambda: Format response
-    Lambda-->>API Gateway: 200 OK with all progress
-    API Gateway-->>Client: Complete progress data
+flowchart TD
+    A[Start Upload Process] --> B[Scan Approved Audio]
+    B --> C[Validate File Integrity]
+    C --> D{File Valid?}
+    D -->|No| E[Log Error & Skip]
+    D -->|Yes| F[Prepare S3 Upload]
+    F --> G[Set Metadata & Headers]
+    G --> H[Upload to S3]
+    H --> I{Upload Success?}
+    I -->|No| J[Retry Upload]
+    I -->|Yes| K[Verify Upload]
+    K --> L{Verification Success?}
+    L -->|No| J
+    L -->|Yes| M[Update Upload State]
+    J --> N{Max Retries?}
+    N -->|No| H
+    N -->|Yes| O[Mark as Failed]
+    E --> P{More Files?}
+    O --> P
+    M --> P
+    P -->|Yes| B
+    P -->|No| Q[Upload Complete]
+    Q --> R[Generate Upload Report]
+    R --> S[Cleanup Temp Files]
+```
+
+## Development Workflows
+
+### Voice Tool Development Workflow
+```mermaid
+flowchart TD
+    A[Code Changes] --> B[Build TypeScript]
+    B --> C[Run Unit Tests]
+    C --> D{Tests Pass?}
+    D -->|No| E[Fix Issues]
+    E --> A
+    D -->|Yes| F[Test with 5-Word List]
+    F --> G[Run Quick Integration Test]
+    G --> H{Integration Success?}
+    H -->|No| I[Debug Issues]
+    I --> A
+    H -->|Yes| J[Test Full Workflow]
+    J --> K[Manual Review Testing]
+    K --> L[Deploy to Production]
+```
+
+### Frontend Development Workflow
+```mermaid
+flowchart TD
+    A[Component Changes] --> B[Run Dev Server]
+    B --> C[Test in Browser]
+    C --> D[Run Unit Tests]
+    D --> E{Tests Pass?}
+    E -->|No| F[Fix Issues]
+    F --> A
+    E -->|Yes| G[Build for Production]
+    G --> H[Test Production Build]
+    H --> I{Build Success?}
+    I -->|No| F
+    I -->|Yes| J[Deploy to Staging]
+    J --> K[User Acceptance Testing]
+    K --> L[Deploy to Production]
 ```
 
 ## Error Handling Workflows
 
-### Authentication Error Flow
-
+### API Error Recovery Workflow
 ```mermaid
 flowchart TD
-    A[API Request] --> B{Token present?}
-    B -->|No| C[401 Unauthorized]
-    B -->|Yes| D{Token valid?}
-    D -->|No| C
-    D -->|Yes| E[Continue request]
-    C --> F[Client: Redirect to login]
+    A[API Call Fails] --> B[Identify Error Type]
+    B --> C{Rate Limit?}
+    C -->|Yes| D[Wait & Retry]
+    C -->|No| E{Auth Error?}
+    E -->|Yes| F[Refresh Token]
+    E -->|No| G{Network Error?}
+    G -->|Yes| H[Exponential Backoff]
+    G -->|No| I{Quota Exceeded?}
+    I -->|Yes| J[Switch to Alternative]
+    I -->|No| K[Log Error & Fail]
+    D --> L{Retry Success?}
+    F --> L
+    H --> L
+    J --> L
+    L -->|Yes| M[Continue Processing]
+    L -->|No| N{Max Retries?}
+    N -->|No| O[Increment Retry Count]
+    O --> D
+    N -->|Yes| K
+    K --> P[Update Error State]
+    M --> Q[Update Success State]
 ```
 
-### API Error Flow
-
+### File System Error Recovery
 ```mermaid
 flowchart TD
-    A[API Request] --> B{Request valid?}
-    B -->|No| C[400 Bad Request]
-    B -->|Yes| D[DynamoDB Operation]
-    D --> E{Success?}
-    E -->|No| F[500 Server Error]
-    E -->|Yes| G[200 OK]
-    C --> H[Client: Show error message]
-    F --> H
-    G --> I[Client: Update UI]
+    A[File Operation Fails] --> B[Check Error Type]
+    B --> C{Permission Error?}
+    C -->|Yes| D[Request Elevated Access]
+    C -->|No| E{Disk Full?}
+    E -->|Yes| F[Cleanup Temp Files]
+    E -->|No| G{File Locked?}
+    G -->|Yes| H[Wait & Retry]
+    G -->|No| I[Log Error & Fail]
+    D --> J{Access Granted?}
+    F --> K{Space Available?}
+    H --> L{File Available?}
+    J -->|Yes| M[Retry Operation]
+    J -->|No| I
+    K -->|Yes| M
+    K -->|No| I
+    L -->|Yes| M
+    L -->|No| I
+    M --> N{Operation Success?}
+    N -->|Yes| O[Continue Processing]
+    N -->|No| P{Max Retries?}
+    P -->|No| Q[Increment Retry Count]
+    Q --> A
+    P -->|Yes| I
 ```
 
-## Data Synchronization Workflow
+## Data Flow Workflows
 
+### Audio Playback Data Flow
 ```mermaid
 sequenceDiagram
-    Note over ProgressProvider: Initial Load
-    ProgressProvider->>API: GET /api/progress
-    API-->>ProgressProvider: Progress data
-    ProgressProvider->>ProgressProvider: Store in state
+    participant U as User
+    participant R as React App
+    participant S as S3 Storage
+    participant B as Browser Audio
     
-    Note over SpellingTest: User Action
-    SpellingTest->>ProgressProvider: recordAttempt()
-    ProgressProvider->>API: PUT /api/progress/{wordId}
-    API->>DynamoDB: Update
-    DynamoDB-->>API: Updated
-    API->>DynamoDB: Query all
-    DynamoDB-->>API: All progress
-    API-->>ProgressProvider: Complete progress
-    ProgressProvider->>ProgressProvider: Update state
-    ProgressProvider->>Components: Notify via context
-    Components->>Components: Re-render with new data
+    U->>R: Click Play Audio
+    R->>S: Request Audio File
+    S-->>R: Audio File (MP3)
+    R->>B: Load Audio Data
+    B-->>R: Audio Ready
+    R->>B: Play Audio
+    B->>U: Audio Output
+    U->>R: Audio Complete
+    R->>R: Enable Next Action
 ```
 
-## Token Refresh Workflow
-
+### Progress Persistence Flow
 ```mermaid
 sequenceDiagram
-    App->>AuthProvider: Monitor token expiration
-    AuthProvider->>AuthProvider: Check expiration time
-    AuthProvider->>Cognito: Silent token renewal
-    Cognito-->>AuthProvider: New tokens
-    AuthProvider->>localStorage: Update tokens
-    AuthProvider->>App: Continue with new token
+    participant C as CLI Process
+    participant F as File System
+    participant S as State Manager
+    
+    C->>S: Update Progress
+    S->>F: Write Progress JSON
+    F-->>S: Write Confirmation
+    S-->>C: Update Complete
+    
+    Note over C,F: On Process Restart
+    C->>S: Load Previous State
+    S->>F: Read Progress JSON
+    F-->>S: Progress Data
+    S-->>C: Restored State
+    C->>C: Resume from Last Position
 ```
 
+## Integration Workflows
+
+### Kiro CLI Integration Workflow
+```mermaid
+flowchart TD
+    A[Kiro CLI Command] --> B[Parse Arguments]
+    B --> C{Command Type?}
+    C -->|--batch| D[Run Batch Generation]
+    C -->|--play| E[Play Audio for Review]
+    C -->|--accept| F[Accept Current Voice]
+    C -->|--reject| G[Reject & Try Next Voice]
+    C -->|--upload| H[Upload to S3]
+    C -->|--status| I[Show Progress Status]
+    D --> J[Execute Batch Service]
+    E --> K[Execute Audio Service]
+    F --> L[Execute Review Service]
+    G --> L
+    H --> M[Execute Upload Service]
+    I --> N[Execute Status Service]
+    J --> O[Return Results to CLI]
+    K --> O
+    L --> O
+    M --> O
+    N --> O
+    O --> P[Display Results to User]
+```
+
+### CI/CD Workflow
+```mermaid
+flowchart TD
+    A[Code Push] --> B[Run Tests]
+    B --> C{Tests Pass?}
+    C -->|No| D[Notify Developer]
+    C -->|Yes| E[Build Application]
+    E --> F{Build Success?}
+    F -->|No| D
+    F -->|Yes| G[Deploy to Staging]
+    G --> H[Run Integration Tests]
+    H --> I{Tests Pass?}
+    I -->|No| D
+    I -->|Yes| J[Deploy to Production]
+    J --> K[Health Check]
+    K --> L{Health OK?}
+    L -->|No| M[Rollback]
+    L -->|Yes| N[Deployment Complete]
+    M --> D
+```
+
+## Monitoring and Maintenance Workflows
+
+### Health Check Workflow
+```mermaid
+flowchart TD
+    A[Scheduled Health Check] --> B[Check Frontend Status]
+    B --> C[Check ElevenLabs API]
+    C --> D[Check S3 Connectivity]
+    D --> E[Check Auth Provider]
+    E --> F[Aggregate Results]
+    F --> G{All Services Healthy?}
+    G -->|Yes| H[Update Status: Healthy]
+    G -->|No| I[Identify Failed Services]
+    I --> J[Send Alerts]
+    J --> K[Update Status: Degraded]
+    H --> L[Log Status]
+    K --> L
+    L --> M[Schedule Next Check]
+```
+
+### Backup and Recovery Workflow
+```mermaid
+flowchart TD
+    A[Scheduled Backup] --> B[Backup Progress Files]
+    B --> C[Backup Audio Cache]
+    C --> D[Backup Configuration]
+    D --> E[Verify Backup Integrity]
+    E --> F{Backup Valid?}
+    F -->|Yes| G[Store Backup]
+    F -->|No| H[Retry Backup]
+    H --> I{Max Retries?}
+    I -->|No| B
+    I -->|Yes| J[Alert Admin]
+    G --> K[Cleanup Old Backups]
+    K --> L[Update Backup Log]
+```

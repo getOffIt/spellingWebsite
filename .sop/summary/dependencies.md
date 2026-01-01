@@ -1,284 +1,260 @@
-# Dependencies
+# Dependencies Analysis #dependencies
 
-## Production Dependencies
+## Frontend Dependencies #react
 
-### React Ecosystem
-- **react** (^19.0.0): Core React library
-- **react-dom** (^19.0.0): React DOM rendering
-- **react-router-dom** (^7.6.0): Client-side routing
+### Core React Ecosystem
+```json
+{
+  "react": "^19.0.0",
+  "react-dom": "^19.0.0"
+}
+```
+**Purpose**: Core React framework for UI development
+**Usage**: Component-based architecture, virtual DOM, hooks
+**Integration**: Foundation for entire frontend application
+**Upgrade Considerations**: React 19 includes new features like concurrent rendering
 
-**Purpose:** Core framework for building the user interface
-
-**Usage:**
-- React components for UI
-- React Router for navigation
-- React hooks for state management
+### Routing and Navigation
+```json
+{
+  "react-router-dom": "^7.6.0"
+}
+```
+**Purpose**: Client-side routing for single-page application
+**Usage**: Route definitions, navigation, protected routes
+**Integration**: Used in App.tsx for route configuration
+**Key Features**: Nested routing, route guards, programmatic navigation
 
 ### Authentication
-- **react-oidc-context** (^3.3.0): React context for OIDC/OAuth2
-- **oidc-client-ts** (^3.2.1): OIDC client library
+```json
+{
+  "oidc-client-ts": "^3.2.1",
+  "react-oidc-context": "^3.3.0"
+}
+```
+**Purpose**: OpenID Connect authentication implementation
+**Usage**: User login/logout, token management, protected routes
+**Integration**: Wraps entire app with authentication context
+**Security**: Industry-standard OAuth 2.0/OIDC flow
 
-**Purpose:** Handle authentication with AWS Cognito
+### UI Enhancement
+```json
+{
+  "canvas-confetti": "^1.9.3"
+}
+```
+**Purpose**: Visual celebration effects for successful test completion
+**Usage**: Triggered on spelling test success
+**Integration**: Called from SpellingTest component
+**Performance**: Lightweight animation library
 
-**Usage:**
-- `AuthProvider` wraps the application
-- `useAuth` hook provides authentication state
-- Automatic token refresh and session management
+### Development Dependencies
 
-### UI Libraries
-- **canvas-confetti** (^1.9.3): Celebration effects
+#### Build and Development Tools
+```json
+{
+  "@vitejs/plugin-react": "^4.3.4",
+  "vite": "^6.3.1"
+}
+```
+**Purpose**: Fast build tool and development server
+**Usage**: Development server, hot module replacement, production builds
+**Performance**: Significantly faster than webpack-based tools
+**Features**: ES modules, TypeScript support, optimized builds
 
-**Purpose:** Visual feedback for achievements
+#### TypeScript Support
+```json
+{
+  "@types/react": "^19.0.10",
+  "@types/react-dom": "^19.0.4",
+  "@types/node": "^22.15.3"
+}
+```
+**Purpose**: TypeScript type definitions for React ecosystem
+**Usage**: Type safety, IntelliSense, compile-time error checking
+**Integration**: Used throughout all .tsx and .ts files
 
-**Usage:**
-- Triggered on challenge completion
-- Provides engaging user experience
+#### Code Quality
+```json
+{
+  "eslint": "^9.22.0",
+  "@eslint/js": "^9.22.0",
+  "eslint-plugin-react-hooks": "^5.2.0",
+  "eslint-plugin-react-refresh": "^0.4.19",
+  "globals": "^16.0.0"
+}
+```
+**Purpose**: Code linting and style enforcement
+**Usage**: Automated code quality checks, React-specific rules
+**Integration**: Configured in eslint.config.js
+**Rules**: React hooks rules, React refresh compatibility
 
-## Development Dependencies
+#### Testing Framework
+```json
+{
+  "@testing-library/jest-dom": "^6.6.3",
+  "@testing-library/react": "^16.3.0",
+  "vitest": "^3.1.4",
+  "jsdom": "^27.0.0"
+}
+```
+**Purpose**: Component testing and DOM simulation
+**Usage**: Unit tests, component rendering tests, user interaction tests
+**Integration**: Configured in vitest.config.ts
+**Philosophy**: Testing Library's user-centric testing approach
 
-### Build Tools
-- **vite** (^6.3.1): Build tool and dev server
-- **@vitejs/plugin-react** (^4.3.4): Vite plugin for React
+## Voice Tool Dependencies #voice-tool
 
-**Purpose:** Fast development and optimized production builds
+### Core Node.js Dependencies
+```json
+{
+  "@types/node": "^22.15.3",
+  "typescript": "^5.7.3"
+}
+```
+**Purpose**: TypeScript support for Node.js development
+**Usage**: Type safety, modern JavaScript features, compile-time checking
+**Integration**: Used throughout all voice tool services
 
-**Features:**
-- Hot Module Replacement (HMR)
-- Fast builds
-- Optimized production bundles
+### ElevenLabs Integration
+**Package**: Custom HTTP client implementation
+**Purpose**: AI voice generation API integration
+**Usage**: Text-to-speech conversion, voice selection, audio generation
+**API Version**: v1
+**Rate Limiting**: Built-in request throttling
 
-### Testing
-- **vitest** (^3.1.4): Test runner
-- **@testing-library/react** (^16.3.0): React testing utilities
-- **@testing-library/jest-dom** (^6.6.3): DOM matchers
-- **jsdom** (^27.0.0): DOM implementation for testing
+### AWS SDK Integration
+**Package**: AWS SDK v3 (S3 client)
+**Purpose**: Cloud storage for generated audio files
+**Usage**: File uploads, bucket management, CDN delivery
+**Authentication**: AWS credential chain (environment variables, IAM roles)
+**Region**: eu-west-2
 
-**Purpose:** Unit and integration testing
+### CLI Framework
+**Package**: Custom Kiro CLI integration
+**Purpose**: AI agent compatibility and command-line interface
+**Usage**: Batch processing, interactive review, status reporting
+**Integration**: kiro-cli.js provides command interface
 
-**Usage:**
-- Component testing
-- Hook testing
-- Utility function testing
+### Audio Processing
+**Package**: Node.js built-in modules (fs, path, stream)
+**Purpose**: File system operations, audio file management
+**Usage**: Local caching, file validation, temporary storage
+**Performance**: Streaming for large audio files
 
-### Code Quality
-- **eslint** (^9.22.0): Linter
-- **@eslint/js** (^9.22.0): ESLint JavaScript configuration
-- **eslint-plugin-react-hooks** (^5.2.0): React hooks linting rules
-- **eslint-plugin-react-refresh** (^0.4.19): React Fast Refresh linting
+## Dependency Analysis
 
-**Purpose:** Code quality and consistency
+### Version Compatibility Matrix
 
-**Configuration:**
-- React-specific rules
-- Hooks rules
-- Fast Refresh compatibility
-
-### TypeScript
-- **@types/node** (^22.15.3): Node.js type definitions
-- **@types/react** (^19.0.10): React type definitions
-- **@types/react-dom** (^19.0.4): React DOM type definitions
-
-**Purpose:** TypeScript type support
-
-**Usage:**
-- Type checking
-- IDE autocomplete
-- Compile-time error detection
-
-### Utilities
-- **globals** (^16.0.0): Global variables for ESLint
-
-**Purpose:** ESLint configuration support
-
-## Backend Dependencies
-
-### AWS Lambda (lambdas/progress.js)
-- **@aws-sdk/client-dynamodb** (^3.x): DynamoDB client
-- **@aws-sdk/lib-dynamodb** (^3.x): DynamoDB document client
-
-**Purpose:** Interact with DynamoDB
-
-**Usage:**
-- Query user progress
-- Update progress records
-- Scan for maintenance operations
-
-## External Services
-
-### AWS Cognito
-**Service:** User authentication and authorization
-
-**Configuration:**
-- Region: eu-west-2
-- User Pool: eu-west-2_XeQbQOSjJ
-- Client ID: 3ua09or8n2k4cqldeu3u8bv585
-
-**Features Used:**
-- OIDC/OAuth2 authentication
-- Token management
-- Session monitoring
-
-### AWS DynamoDB
-**Service:** NoSQL database
-
-**Table:** `spellingProgress`
-
-**Access Pattern:**
-- Partition key: userId
-- Sort key: wordId
-- Query by userId to get all progress
-
-### AWS API Gateway
-**Service:** REST API endpoint
-
-**Base URL:** `https://api.spellingninjas.com/api/progress`
-
-**Endpoints:**
-- GET /api/progress
-- PUT /api/progress/{wordId}
-
-**Features:**
-- Lambda integration
-- CORS configuration
-- JWT authorizer
-
-### AWS Lambda
-**Service:** Serverless compute
-
-**Runtime:** Node.js 22
-
-**Function:** `lambdas/progress.js`
-
-**Features:**
-- Progress retrieval
-- Progress updates
-- Data deduplication utility
-
-## Browser APIs
-
-### Web Speech API
-**API:** `window.speechSynthesis`
-
-**Purpose:** Text-to-speech for word pronunciation
-
-**Usage:**
-```typescript
-const utterance = new SpeechSynthesisUtterance(word);
-speechSynthesis.speak(utterance);
+#### React Ecosystem Compatibility
+```
+React 19.0.0
+├── react-dom@19.0.0 ✓ Compatible
+├── react-router-dom@7.6.0 ✓ Compatible
+├── react-oidc-context@3.3.0 ✓ Compatible
+└── @testing-library/react@16.3.0 ✓ Compatible
 ```
 
-**Browser Support:** Modern browsers (Chrome, Firefox, Safari, Edge)
-
-### Web Storage API
-**API:** `localStorage`
-
-**Purpose:** Token storage via `WebStorageStateStore`
-
-**Usage:**
-- OIDC tokens (access, ID, refresh)
-- Session state
-
-## Dependency Relationships
-
-```mermaid
-graph TD
-    A[React App] --> B[react-router-dom]
-    A --> C[react-oidc-context]
-    C --> D[oidc-client-ts]
-    A --> E[canvas-confetti]
-    
-    F[Vite Build] --> G[@vitejs/plugin-react]
-    F --> H[TypeScript]
-    
-    I[Testing] --> J[vitest]
-    I --> K[@testing-library/react]
-    I --> L[jsdom]
-    
-    M[Lambda] --> N[@aws-sdk/client-dynamodb]
-    M --> O[@aws-sdk/lib-dynamodb]
-    
-    P[External Services] --> Q[AWS Cognito]
-    P --> R[AWS DynamoDB]
-    P --> S[AWS API Gateway]
-    P --> T[AWS Lambda]
+#### Build Tool Compatibility
+```
+Vite 6.3.1
+├── @vitejs/plugin-react@4.3.4 ✓ Compatible
+├── vitest@3.1.4 ✓ Compatible
+└── TypeScript@5.x ✓ Compatible
 ```
 
-## Version Constraints
+### Security Considerations
 
-### React 19
-- Latest major version
-- Breaking changes from React 18
-- Improved performance and features
+#### Frontend Security
+- **OIDC Libraries**: Regularly updated, security-focused
+- **React**: Latest version with security patches
+- **Build Tools**: Vite has good security track record
+- **Dependencies**: No known high-severity vulnerabilities
 
-### React Router 7
-- Latest major version
-- Improved TypeScript support
-- Better performance
+#### Voice Tool Security
+- **API Keys**: Environment variable storage only
+- **AWS Integration**: Uses official AWS patterns
+- **File System**: Proper permission handling
+- **Network**: HTTPS-only API communications
 
-### Vite 6
-- Latest major version
-- Improved build performance
-- Better plugin system
+### Performance Impact
 
-## Security Considerations
+#### Bundle Size Analysis
+- **React + React DOM**: ~42KB gzipped (core)
+- **React Router**: ~12KB gzipped
+- **OIDC Client**: ~25KB gzipped
+- **Canvas Confetti**: ~3KB gzipped
+- **Total Core**: ~82KB gzipped (excellent for SPA)
 
-### Authentication Dependencies
-- **react-oidc-context**: Handles secure token storage
-- **oidc-client-ts**: Implements OIDC security best practices
-- Tokens stored in localStorage (consider httpOnly cookies for production)
+#### Runtime Performance
+- **React 19**: Improved concurrent rendering
+- **Vite**: Fast development builds, optimized production
+- **OIDC**: Minimal runtime overhead
+- **Audio Playback**: Browser-native, no additional overhead
 
-### API Dependencies
-- All API calls require Bearer token authentication
-- CORS configured for API endpoints
-- No sensitive data in client-side code
+### Upgrade Paths
 
-## Dependency Management
+#### Planned Upgrades
+1. **React Router v8**: When stable, for improved performance
+2. **Vite v7**: When available, for build improvements
+3. **ESLint v10**: For enhanced linting capabilities
 
-### Package Manager
-- **npm**: Used via `package-lock.json`
-- Lock file ensures consistent installs
+#### Breaking Changes to Monitor
+- **React 19**: New JSX transform (already adopted)
+- **React Router v7**: New data loading patterns (current version)
+- **TypeScript 5.x**: Strict mode improvements (compatible)
 
-### Updates
-- Regular security updates recommended
-- Test thoroughly before major version upgrades
-- Monitor for breaking changes in React 19 ecosystem
+### Development Workflow Dependencies
 
-## Build Dependencies
+#### Package Manager
+- **npm**: Using package-lock.json for deterministic builds
+- **Node.js**: Version 18+ required for React 19 compatibility
 
-### Production Build
-- Vite bundles all dependencies
-- Tree-shaking removes unused code
-- Code splitting for optimal loading
+#### IDE Support
+- **TypeScript**: Full IntelliSense and error checking
+- **ESLint**: Real-time code quality feedback
+- **Vite**: Hot module replacement for fast development
 
-### Development
-- Vite dev server for fast HMR
-- TypeScript compilation on-the-fly
-- ESLint runs during development
+### External Service Dependencies
 
-## Runtime Dependencies
+#### Runtime Dependencies
+- **OIDC Provider**: Authentication service availability
+- **ElevenLabs API**: Voice generation service
+- **AWS S3**: Audio file storage and delivery
+- **CDN**: Fast audio file delivery (S3 + CloudFront)
 
-### Browser Requirements
-- Modern browser with ES2020+ support
-- Web Speech API support (for TTS)
-- localStorage support (for token storage)
+#### Development Dependencies
+- **npm Registry**: Package installation and updates
+- **TypeScript Compiler**: Build-time type checking
+- **ESLint Rules**: Code quality enforcement
 
-### Node.js (Lambda)
-- Node.js 22 runtime
-- ES modules support
-- AWS SDK v3
+### Risk Assessment
 
-## Optional Dependencies
+#### High Risk Dependencies
+- **None identified**: All dependencies are well-maintained
 
-None currently. All dependencies are required for core functionality.
+#### Medium Risk Dependencies
+- **react-oidc-context**: Smaller community, but actively maintained
+- **canvas-confetti**: Fun library, but not critical to core functionality
 
-## Future Dependency Considerations
+#### Low Risk Dependencies
+- **React Ecosystem**: Large community, Facebook backing
+- **Vite**: Growing adoption, active development
+- **TypeScript**: Microsoft backing, widespread adoption
 
-### Potential Additions
-- **React Query / SWR**: For better API state management
-- **Zustand / Jotai**: If state management becomes complex
-- **React Hook Form**: For form validation if needed
-- **Date-fns / Day.js**: For date formatting if needed
+### Dependency Management Strategy
 
-### Potential Removals
-- None identified
+#### Update Policy
+- **Security Updates**: Immediate application
+- **Minor Updates**: Monthly review and application
+- **Major Updates**: Quarterly evaluation and planning
 
+#### Monitoring
+- **npm audit**: Regular security vulnerability scanning
+- **Dependabot**: Automated dependency update PRs
+- **Manual Review**: Quarterly dependency health check
+
+#### Backup Plans
+- **React Router**: Could migrate to Reach Router if needed
+- **OIDC**: Multiple OIDC library alternatives available
+- **Vite**: Could fall back to webpack if necessary

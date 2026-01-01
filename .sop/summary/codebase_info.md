@@ -1,94 +1,69 @@
 # Codebase Information
 
 ## Project Overview
+- **Name**: Spelling Website
+- **Type**: React-based web application with voice generation tooling
+- **Version**: 0.0.0
+- **Technology Stack**: React 19, TypeScript, Vite, Node.js
 
-**Project Name:** Spelling Website (Spelling Mate)  
-**Type:** React + TypeScript Web Application  
-**Purpose:** Educational spelling practice application for children with progress tracking, authentication, and gamified challenges
+## Directory Structure
 
-## Technology Stack
+### Main Application (`/src`)
+- **Frontend Framework**: React 19 with TypeScript
+- **Build Tool**: Vite
+- **Testing**: Vitest with React Testing Library
+- **Routing**: React Router DOM v7
+- **Authentication**: OIDC (OpenID Connect)
 
-### Frontend
-- **Framework:** React 19.0.0
-- **Language:** TypeScript
-- **Build Tool:** Vite 6.3.1
-- **Routing:** React Router DOM 7.6.0
-- **Authentication:** react-oidc-context 3.3.0 (OIDC/OAuth2 with AWS Cognito)
-- **UI Libraries:** 
-  - canvas-confetti 1.9.3 (celebration effects)
+### Voice Tool (`/voice-tool`)
+- **Purpose**: ElevenLabs voice generation and management
+- **Technology**: Node.js with TypeScript
+- **Integration**: AWS S3, ElevenLabs API
+- **CLI Interface**: Kiro CLI compatible
 
-### Backend/Infrastructure
-- **API:** REST API hosted at `https://api.spellingninjas.com/api/progress`
-- **Database:** AWS DynamoDB (table: `spellingProgress`)
-- **Authentication Provider:** AWS Cognito (eu-west-2 region)
-- **Serverless Functions:** AWS Lambda (Node.js 22, ES modules)
+## Key Components
 
-### Development Tools
-- **Testing:** Vitest 3.1.4, @testing-library/react 16.3.0, jsdom 27.0.0
-- **Linting:** ESLint 9.22.0 with React plugins
-- **Type Checking:** TypeScript with @types packages
+### Main Application
+- `src/App.tsx` - Main application component
+- `src/components/` - Reusable UI components
+- `src/pages/` - Page-level components
+- `src/contexts/` - React contexts for state management
+- `src/hooks/` - Custom React hooks
+- `src/config/` - Configuration management
+- `src/data/` - Data models and constants
+- `src/utils/` - Utility functions
 
-## Project Structure
+### Voice Tool
+- `src/` - TypeScript source code
+- `kiro-cli.js` - AI agent interface
+- `real-words.ts` - Production word list (220+ words)
+- `progress/` - State persistence for voice generation
+- `audio-cache/` - Generated audio files
 
-```
-spellingWebsite/
-├── src/
-│   ├── components/          # Reusable React components
-│   ├── contexts/            # React Context providers (Auth, Progress)
-│   ├── pages/               # Page-level components (routes)
-│   ├── hooks/               # Custom React hooks
-│   ├── config/              # Configuration files
-│   ├── data/                # Static data (word lists)
-│   ├── utils/               # Utility functions
-│   ├── test/                # Test setup
-│   ├── App.tsx              # Main app component with routing
-│   ├── main.tsx             # Application entry point
-│   └── *.css                # Component styles
-├── lambdas/                 # AWS Lambda functions
-├── public/                  # Static assets
-├── dist/                    # Build output
-└── *.config.ts              # Configuration files (Vite, Vitest, ESLint)
-```
+## Dependencies
 
-## Supported Programming Languages
+### Main Application
+- **Core**: React 19, React DOM 19
+- **Routing**: react-router-dom ^7.6.0
+- **Authentication**: oidc-client-ts, react-oidc-context
+- **UI Effects**: canvas-confetti
+- **Development**: Vite, ESLint, Vitest
 
-- **TypeScript/JavaScript:** Primary language (100% of codebase)
-- **CSS:** Styling
-- **HTML:** Template files
+### Voice Tool
+- **API Integration**: ElevenLabs API
+- **Cloud Storage**: AWS S3
+- **CLI Framework**: Kiro CLI compatible
+- **Audio Processing**: Node.js native modules
 
-## Key Features
+## Architecture Patterns
+- **Frontend**: Component-based React architecture
+- **State Management**: React Context API
+- **Authentication**: OIDC flow
+- **Voice Generation**: Batch processing with human-in-the-loop review
+- **File Organization**: Feature-based directory structure
 
-1. **Spelling Tests:** Interactive spelling practice with text-to-speech
-2. **Progress Tracking:** Per-word progress tracking with mastery system (3 consecutive correct = mastered)
-3. **Challenges:** Gamified challenges with progress visualization
-4. **Authentication:** OIDC-based authentication with AWS Cognito
-5. **Word Lists:** Organized by phonics categories and difficulty levels
-6. **Two Test Modes:** Practice mode and full test mode with pass thresholds
-
-## Dependencies Summary
-
-### Production Dependencies
-- React ecosystem (react, react-dom, react-router-dom)
-- Authentication (react-oidc-context, oidc-client-ts)
-- UI effects (canvas-confetti)
-
-### Development Dependencies
-- Build tools (vite, @vitejs/plugin-react)
-- Testing (vitest, @testing-library/react, jsdom)
-- Code quality (eslint, typescript types)
-
-## Build and Run
-
-```bash
-npm run dev      # Development server
-npm run build    # Production build
-npm run preview  # Preview production build
-npm run lint     # Run linter
-```
-
-## Environment
-
-- **Node.js:** ES modules (type: "module" in package.json)
-- **Target:** Modern browsers (ES2020+)
-- **Deployment:** Static site hosting (Vite build output)
-
+## Recent Focus Areas
+- Voice tool development and integration
+- ElevenLabs API integration
+- AWS S3 deployment automation
+- AI agent compatibility (Kiro CLI)

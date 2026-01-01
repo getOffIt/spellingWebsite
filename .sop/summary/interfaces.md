@@ -1,301 +1,327 @@
-# Interfaces and APIs
+# APIs and Interfaces #api
 
-## Frontend Interfaces
+## External API Integrations
 
-### React Component Interfaces
+### ElevenLabs API #voice-tool
+**Purpose**: AI voice generation for spelling word pronunciation
+**Base URL**: `https://api.elevenlabs.io/v1/`
+**Authentication**: API Key in headers
 
-#### Word Type
+#### Voice Generation Endpoint
 ```typescript
-type Word = {
-  id: string;          // Unique identifier (e.g., "ff-off")
-  text: string;        // Plain word text
-  year: 1 | 2;         // Year level
-  category: string;    // Phonics grouping ("ff", "ll", "ss", etc.)
+POST /text-to-speech/{voice_id}
+Headers: {
+  'xi-api-key': string,
+  'Content-Type': 'application/json'
+}
+Body: {
+  text: string,
+  model_id?: string,
+  voice_settings?: {
+    stability: number,
+    similarity_boost: number
+  }
+}
+Response: Audio file (MP3)
+```
+
+#### Available Voices
+- **Rachel**: Primary voice (female, clear pronunciation)
+- **Dorothy**: Alternative female voice
+- **Emily**: Secondary female voice
+- **Thomas**: Primary male voice
+- **Antoni**: Alternative male voice
+- **Adam**: Secondary male voice
+
+### AWS S3 API #voice-tool
+**Purpose**: Audio file storage and CDN delivery
+**Service**: AWS S3 with public read access
+**Bucket**: `spellmatereact`
+**Region**: `eu-west-2`
+
+#### Upload Configuration
+```typescript
+{
+  Bucket: 'spellmatereact',
+  Key: `voices/${voice_name}/${word_id}.mp3`,
+  Body: audioBuffer,
+  ContentType: 'audio/mpeg',
+  CacheControl: 'public, max-age=31536000'
 }
 ```
 
-#### Progress Data Types
+#### Access Pattern
+```
+https://spellmatereact.s3.eu-west-2.amazonaws.com/voices/{voice_name}/{word_id}.mp3
+```
+
+### OIDC Authentication API #react
+**Purpose**: User authentication and authorization
+**Provider**: Configurable OIDC provider
+**Flow**: Authorization Code Flow with PKCE
+
+#### Configuration
 ```typescript
-type WordAttempt = {
-  date: string;        // ISO date string
-  correct: boolean;    // Whether attempt was correct
-  attempt: string;     // User's spelling attempt
+{
+  authority: string,
+  client_id: string,
+  redirect_uri: string,
+  response_type: 'code',
+  scope: 'openid profile email',
+  automaticSilentRenew: true
+}
+```
+
+## Internal Interfaces
+
+### React Component Interfaces #react
+
+#### Word Selection Interface
+```typescript
+interface WordSelectionProps {
+  onSelectWords: (
+    words: string[],
+    type: 'single' | 'less_family',
+    testMode?: 'practice' | 'full_test',
+    passThreshold?: number
+  ) => void;
+}
+```
+
+#### Spelling Test Interface
+```typescript
+interface SpellingTestProps {
+  words: string[];
+  listType: 'single' | 'less_family';
+  testMode: 'practice' | 'full_test';
+  passThreshold?: number;
+  onComplete: () => void;
+}
+```
+
+#### Authentication Context
+```typescript
+interface AuthContextType {
+  user?: User;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  signinRedirect: () => Promise<void>;
+  signoutRedirect: () => Promise<void>;
+}
+```
+
+### Voice Tool Service Interfaces #voice-tool
+
+#### Voice Generation Service
+```typescript
+interface VoiceGenerationService {
+  generateVoice(request: VoiceRequest): Promise<VoiceResponse>;
+  getAvailableVoices(): Promise<Voice[]>;
+  validateApiKey(): Promise<boolean>;
 }
 
-type ProgressData = Record<string, WordAttempt[]>;
-// Maps wordId to array of attempts
+interface VoiceRequest {
+  text: string;
+  voiceId: string;
+  outputPath: string;
+  settings?: VoiceSettings;
+}
 
-type WordStats = {
-  status: 'not-started' | 'in-progress' | 'mastered' | 'unmastered';
+interface VoiceResponse {
+  success: boolean;
+  audioPath?: string;
+  error?: string;
+  duration?: number;
+}
+```
+
+#### Progress Management Service
+```typescript
+interface ProgressService {
+  saveProgress(state: ProgressState): Promise<void>;
+  loadProgress(): Promise<ProgressState>;
+  markCompleted(wordId: string): Promise<void>;
+  markFailed(wordId: string, error: string): Promise<void>;
+}
+
+interface ProgressState {
+  completed: string[];
+  failed: string[];
+  pending: string[];
+  currentVoice: string;
+  lastUpdated: string;
+  errors: Record<string, string>;
+}
+```
+
+#### S3 Upload Service
+```typescript
+interface S3Service {
+  uploadFile(params: UploadParams): Promise<UploadResult>;
+  verifyUpload(key: string): Promise<boolean>;
+  listFiles(prefix: string): Promise<S3Object[]>;
+}
+
+interface UploadParams {
+  filePath: string;
+  key: string;
+  contentType: string;
+  cacheControl?: string;
+}
+```
+
+## Data Contracts
+
+### Word List Structure #data
+```typescript
+interface WordList {
+  id: string;
+  name: string;
+  words: string[];
+  type: 'single' | 'less_family';
+  difficulty?: number;
+  category?: string;
+}
+```
+
+### Audio File Metadata
+```typescript
+interface AudioMetadata {
+  wordId: string;
+  voice: string;
+  duration: number;
+  fileSize: number;
+  generatedAt: string;
+  s3Key: string;
+  s3Url: string;
+}
+```
+
+### Test Results Structure
+```typescript
+interface TestResult {
+  wordId: string;
+  userInput: string;
+  correct: boolean;
   attempts: number;
-  streak: number;      // Consecutive correct answers
-  lastSeen: string | null;
+  timeSpent: number;
+  audioPlayed: number;
+}
+
+interface TestSession {
+  sessionId: string;
+  userId: string;
+  listType: 'single' | 'less_family';
+  testMode: 'practice' | 'full_test';
+  results: TestResult[];
+  score: number;
+  passed: boolean;
+  completedAt: string;
 }
 ```
 
-#### Challenge Configuration
-```typescript
-interface ChallengeConfig {
-  title: string;
-  description: string;
-  rewardText?: string;
-  themeClass?: string;
-  motivationMessages: {
-    complete?: string;
-    close?: string;    // >= 80%
-    good?: string;     // >= 60%
-    steady?: string;   // >= 40%
-    starting?: string; // >= 20%
-    beginning?: string; // < 20%
-  };
-  thresholds?: {
-    close?: number;    // default 80
-    good?: number;     // default 60
-    steady?: number;   // default 40
-    starting?: number; // default 20
-  };
-  passThreshold?: number; // default 85
-}
-```
+## Integration Patterns
 
-## Backend API Interfaces
-
-### REST API Endpoints
-
-**Base URL:** `https://api.spellingninjas.com/api/progress`
-
-#### GET /api/progress
-**Purpose:** Retrieve all progress data for authenticated user
-
-**Authentication:** Bearer token in Authorization header
-
-**Request:**
-```http
-GET /api/progress
-Authorization: Bearer <access_token>
-```
-
-**Response:**
-```json
-[
-  {
-    "userId": "cognito-sub-id",
-    "wordId": "off",
-    "progress": [
-      {
-        "date": "2024-01-15T10:30:00.000Z",
-        "correct": true,
-        "attempt": "off"
-      },
-      {
-        "date": "2024-01-16T14:20:00.000Z",
-        "correct": false,
-        "attempt": "of"
-      }
-    ]
-  },
-  // ... more word progress records
-]
-```
-
-**Status Codes:**
-- `200`: Success
-- `401`: Unauthorized (missing or invalid token)
-- `500`: Server error
-
-#### PUT /api/progress/{wordId}
-**Purpose:** Record a new attempt for a word
-
-**Authentication:** Bearer token in Authorization header
-
-**Request:**
-```http
-PUT /api/progress/{wordId}
-Authorization: Bearer <access_token>
-Content-Type: application/json
-
-{
-  "progress": [
-    {
-      "date": "2024-01-17T09:15:00.000Z",
-      "correct": true,
-      "attempt": "off"
-    }
-  ]
-}
-```
-
-**Response:** Same as GET /api/progress (returns all progress data)
-
-**Status Codes:**
-- `200`: Success
-- `400`: Bad request (missing body or progress property)
-- `401`: Unauthorized
-- `500`: Server error
-
-**Note:** The API appends new attempts to the existing progress array using DynamoDB's `list_append` operation.
-
-## AWS Lambda Interface
-
-### Lambda Handler
-**File:** `lambdas/progress.js`
-
-**Event Structure:**
-```javascript
-{
-  requestContext: {
-    http: {
-      method: 'GET' | 'PUT' | 'OPTIONS'
-    },
-    authorizer: {
-      jwt: {
-        claims: {
-          sub: 'cognito-user-id'
-        }
-      }
-    }
-  },
-  routeKey: 'GET /api/progress' | 'PUT /api/progress/{wordId}',
-  pathParameters: {
-    wordId: 'word-id' // Only for PUT requests
-  },
-  body: '{"progress": [...]}' // Only for PUT requests
-}
-```
-
-**Response Structure:**
-```javascript
-{
-  statusCode: 200 | 400 | 401 | 404 | 500,
-  headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type,Authorization',
-    'Access-Control-Allow-Methods': 'GET,PUT,OPTIONS'
-  },
-  body: JSON.stringify(data)
-}
-```
-
-## DynamoDB Schema
-
-### Table: `spellingProgress`
-
-**Partition Key:** `userId` (String)  
-**Sort Key:** `wordId` (String)
-
-**Item Structure:**
-```json
-{
-  "userId": "cognito-sub-id",
-  "wordId": "off",
-  "progress": [
-    {
-      "date": "2024-01-15T10:30:00.000Z",
-      "correct": true,
-      "attempt": "off"
-    }
-  ]
-}
-```
-
-**Operations:**
-- **Query:** Get all items for a userId (partition key query)
-- **Update:** Append to progress array using `list_append`
-
-## Authentication Interface
-
-### OIDC Configuration
-**Provider:** AWS Cognito  
-**Region:** eu-west-2  
-**User Pool ID:** eu-west-2_XeQbQOSjJ  
-**Client ID:** 3ua09or8n2k4cqldeu3u8bv585
-
-**Configuration:**
-```typescript
-{
-  authority: "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_XeQbQOSjJ",
-  client_id: "3ua09or8n2k4cqldeu3u8bv585",
-  redirect_uri: window.location.origin + "/",
-  silent_redirect_uri: window.location.origin + "/silent-renew.html",
-  response_type: "code",
-  scope: "openid email phone",
-  automaticSilentRenew: true,
-  monitorSession: true,
-  checkSessionInterval: 60,
-  accessTokenExpiringNotificationTime: 60
-}
-```
-
-**Token Storage:**
-- Uses `WebStorageStateStore` with localStorage
-- Stores access_token, id_token, refresh_token
-
-**Token Usage:**
-- Access token sent in `Authorization: Bearer <token>` header
-- User ID extracted from token's `sub` claim
-
-## Integration Points
-
-### Frontend ↔ Backend
-
+### Frontend-to-S3 Integration #workflow
 ```mermaid
 sequenceDiagram
-    Frontend->>API: GET /api/progress<br/>Authorization: Bearer token
-    API->>DynamoDB: Query by userId
-    DynamoDB-->>API: Progress records
-    API-->>Frontend: JSON array
-    
-    Frontend->>API: PUT /api/progress/{wordId}<br/>Authorization: Bearer token<br/>Body: {progress: [...]}
-    API->>DynamoDB: Update (append to progress array)
-    DynamoDB-->>API: Updated item
-    API->>DynamoDB: Query all progress (return complete data)
-    DynamoDB-->>API: All progress records
-    API-->>Frontend: JSON array (all progress)
+    React App->>S3: Request Audio File
+    S3-->>React App: Audio File (MP3)
+    React App->>Browser: Play Audio
+    User->>React App: Spelling Input
+    React App->>React App: Validate Spelling
 ```
 
-### Authentication Flow
-
+### Voice Tool Workflow #workflow
 ```mermaid
 sequenceDiagram
-    User->>Cognito: Sign in
-    Cognito-->>User: Redirect with code
-    User->>App: OIDC callback
-    App->>Cognito: Exchange code for tokens
-    Cognito-->>App: Access token, ID token, Refresh token
-    App->>localStorage: Store tokens
-    App->>API: API call with Bearer token
-    API->>Cognito: Validate token
-    Cognito-->>API: Token valid, user claims
-    API->>DynamoDB: Query/Update with userId
+    CLI->>ElevenLabs: Generate Voice
+    ElevenLabs-->>CLI: Audio Data
+    CLI->>Local Cache: Store Audio
+    CLI->>Human: Review Audio
+    Human-->>CLI: Accept/Reject
+    CLI->>S3: Upload Approved Audio
+    CLI->>Progress: Update State
 ```
 
-## Error Handling
+### Authentication Flow #workflow
+```mermaid
+sequenceDiagram
+    User->>React App: Access Protected Route
+    React App->>OIDC Provider: Check Auth Status
+    OIDC Provider-->>React App: Auth Response
+    alt Authenticated
+        React App->>User: Render Protected Content
+    else Not Authenticated
+        React App->>OIDC Provider: Redirect to Login
+        OIDC Provider->>User: Login Form
+        User->>OIDC Provider: Credentials
+        OIDC Provider->>React App: Auth Code
+        React App->>OIDC Provider: Exchange for Tokens
+        OIDC Provider-->>React App: Access Token
+        React App->>User: Render Protected Content
+    end
+```
 
-### API Error Responses
-```json
-{
-  "error": "Error message description"
+## Error Handling Interfaces
+
+### API Error Response
+```typescript
+interface ApiError {
+  code: string;
+  message: string;
+  details?: Record<string, any>;
+  timestamp: string;
 }
 ```
 
-### Common Error Scenarios
-1. **401 Unauthorized:** Missing or invalid token
-2. **400 Bad Request:** Missing request body or invalid JSON
-3. **404 Not Found:** Invalid route
-4. **500 Server Error:** DynamoDB error or other server issue
+### Voice Generation Errors
+```typescript
+enum VoiceGenerationError {
+  API_KEY_INVALID = 'api_key_invalid',
+  QUOTA_EXCEEDED = 'quota_exceeded',
+  VOICE_NOT_FOUND = 'voice_not_found',
+  TEXT_TOO_LONG = 'text_too_long',
+  NETWORK_ERROR = 'network_error'
+}
+```
 
-### Frontend Error Handling
-- API errors logged to console
-- User sees loading states during API calls
-- Failed attempts don't block UI (graceful degradation)
+### S3 Upload Errors
+```typescript
+enum S3UploadError {
+  ACCESS_DENIED = 'access_denied',
+  BUCKET_NOT_FOUND = 'bucket_not_found',
+  FILE_TOO_LARGE = 'file_too_large',
+  NETWORK_ERROR = 'network_error'
+}
+```
 
-## CORS Configuration
+## Rate Limiting and Quotas
 
-**Allowed Origins:** `*` (all origins)  
-**Allowed Methods:** `GET, PUT, OPTIONS`  
-**Allowed Headers:** `Content-Type, Authorization`
+### ElevenLabs API Limits
+- **Free Tier**: 10,000 characters/month
+- **Starter**: 30,000 characters/month
+- **Creator**: 100,000 characters/month
+- **Rate Limit**: Configurable requests per minute
 
-## Rate Limiting
+### S3 Upload Limits
+- **File Size**: 5GB maximum per file
+- **Request Rate**: No specific limits for standard uploads
+- **Bandwidth**: Scales automatically
 
-Not currently implemented. Consider adding for production use.
+## Security Considerations
 
+### API Key Management
+- Environment variable storage
+- No hardcoded keys in source code
+- Rotation capability
+
+### CORS Configuration
+- Restricted origins for production
+- Appropriate headers for development
+- Secure cookie settings
+
+### S3 Security
+- Public read access for audio files
+- Restricted write access via IAM
+- Proper bucket policies
