@@ -13,16 +13,12 @@ audio-cache/
 temp/
 test-audio-cache/
 test-progress/
-progress/
-!progress/voice-generation-progress.json
 
 # Test files (keep specific reference files)
-test-*-words.ts
 !test-words.ts
 !test-5-words.ts
 test-simple-review.js
 test-interrupt-words.ts
-test-new-*-words.ts
 
 # Documentation (temporary analysis files)
 *_ANALYSIS.md
