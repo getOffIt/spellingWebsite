@@ -1,0 +1,2381 @@
+{
+  "version": "1.0.0",
+  "sessionId": "session_1767274313460",
+  "startedAt": "2026-01-01T13:31:53.460Z",
+  "lastUpdatedAt": "2026-01-01T16:45:27.701Z",
+  "totalWords": 230,
+  "completedCount": 220,
+  "failedCount": 0,
+  "words": {
+    "off": {
+      "wordId": "off",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/off.mp3",
+      "completedAt": "2026-01-01T16:17:37.119Z"
+    },
+    "stuff": {
+      "wordId": "stuff",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/stuff.mp3",
+      "completedAt": "2026-01-01T16:17:40.200Z"
+    },
+    "cliff": {
+      "wordId": "cliff",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/cliff.mp3",
+      "completedAt": "2026-01-01T16:17:44.599Z"
+    },
+    "staff": {
+      "wordId": "staff",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/staff.mp3",
+      "completedAt": "2026-01-01T16:14:23.212Z"
+    },
+    "cuff": {
+      "wordId": "cuff",
+      "status": "completed",
+      "generatedVoices": [
+        "thomas"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/cuff.mp3",
+      "completedAt": "2026-01-01T16:14:26.455Z"
+    },
+    "fluff": {
+      "wordId": "fluff",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/fluff.mp3",
+      "completedAt": "2026-01-01T16:14:28.598Z"
+    },
+    "well": {
+      "wordId": "well",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/well.mp3",
+      "completedAt": "2026-01-01T16:14:31.794Z"
+    },
+    "fell": {
+      "wordId": "fell",
+      "status": "completed",
+      "generatedVoices": [
+        "antoni"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/fell.mp3",
+      "completedAt": "2026-01-01T16:14:41.169Z"
+    },
+    "hill": {
+      "wordId": "hill",
+      "status": "completed",
+      "generatedVoices": [
+        "adam"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/hill.mp3",
+      "completedAt": "2026-01-01T16:14:44.522Z"
+    },
+    "bell": {
+      "wordId": "bell",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/bell.mp3",
+      "completedAt": "2026-01-01T16:14:47.676Z"
+    },
+    "smell": {
+      "wordId": "smell",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/smell.mp3",
+      "completedAt": "2026-01-01T16:14:50.439Z"
+    },
+    "till": {
+      "wordId": "till",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/till.mp3",
+      "completedAt": "2026-01-01T16:14:55.703Z"
+    },
+    "doll": {
+      "wordId": "doll",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/doll.mp3",
+      "completedAt": "2026-01-01T16:14:59.318Z"
+    },
+    "miss": {
+      "wordId": "miss",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/miss.mp3",
+      "completedAt": "2026-01-01T13:51:34.677Z"
+    },
+    "hiss": {
+      "wordId": "hiss",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/hiss.mp3",
+      "completedAt": "2026-01-01T13:51:57.994Z"
+    },
+    "pass": {
+      "wordId": "pass",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/pass.mp3",
+      "completedAt": "2026-01-01T16:22:48.313Z"
+    },
+    "fuss": {
+      "wordId": "fuss",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/fuss.mp3",
+      "completedAt": "2026-01-01T16:22:56.211Z"
+    },
+    "kiss": {
+      "wordId": "kiss",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/kiss.mp3",
+      "completedAt": "2026-01-01T13:52:09.934Z"
+    },
+    "press": {
+      "wordId": "press",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/press.mp3",
+      "completedAt": "2026-01-01T13:54:09.758Z"
+    },
+    "buzz": {
+      "wordId": "buzz",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/buzz.mp3",
+      "completedAt": "2026-01-01T13:57:17.358Z"
+    },
+    "fuzz": {
+      "wordId": "fuzz",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/fuzz.mp3",
+      "completedAt": "2026-01-01T13:57:38.383Z"
+    },
+    "frizz": {
+      "wordId": "frizz",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/frizz.mp3",
+      "completedAt": "2026-01-01T13:58:03.292Z"
+    },
+    "whizz": {
+      "wordId": "whizz",
+      "status": "completed",
+      "generatedVoices": [
+        "antoni"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/whizz.mp3",
+      "completedAt": "2026-01-01T13:59:04.588Z"
+    },
+    "jazz": {
+      "wordId": "jazz",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/jazz.mp3",
+      "completedAt": "2026-01-01T14:00:00.024Z"
+    },
+    "back": {
+      "wordId": "back",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/back.mp3",
+      "completedAt": "2026-01-01T14:01:42.044Z"
+    },
+    "thick": {
+      "wordId": "thick",
+      "status": "completed",
+      "generatedVoices": [
+        "antoni"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "antoni",
+      "localAudioPath": "./audio-cache/antoni/thick.mp3",
+      "completedAt": "2026-01-01T14:03:34.397Z"
+    },
+    "lick": {
+      "wordId": "lick",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/lick.mp3",
+      "completedAt": "2026-01-01T14:03:52.282Z"
+    },
+    "snack": {
+      "wordId": "snack",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/snack.mp3",
+      "completedAt": "2026-01-01T14:04:07.151Z"
+    },
+    "pick": {
+      "wordId": "pick",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/pick.mp3",
+      "completedAt": "2026-01-01T14:04:21.854Z"
+    },
+    "stick": {
+      "wordId": "stick",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/stick.mp3",
+      "completedAt": "2026-01-01T14:04:37.458Z"
+    },
+    "bank": {
+      "wordId": "bank",
+      "status": "completed",
+      "generatedVoices": [
+        "antoni"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "antoni",
+      "localAudioPath": "./audio-cache/antoni/bank.mp3",
+      "completedAt": "2026-01-01T14:06:10.799Z"
+    },
+    "think": {
+      "wordId": "think",
+      "status": "completed",
+      "generatedVoices": [
+        "antoni"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "antoni",
+      "localAudioPath": "./audio-cache/antoni/think.mp3",
+      "completedAt": "2026-01-01T14:07:26.129Z"
+    },
+    "honk": {
+      "wordId": "honk",
+      "status": "completed",
+      "generatedVoices": [
+        "adam"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "thomas",
+      "localAudioPath": "./audio-cache/thomas/honk.mp3",
+      "completedAt": "2026-01-01T14:10:12.800Z"
+    },
+    "sunk": {
+      "wordId": "sunk",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/sunk.mp3",
+      "completedAt": "2026-01-01T14:10:31.405Z"
+    },
+    "link": {
+      "wordId": "link",
+      "status": "completed",
+      "generatedVoices": [
+        "rachel"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "localAudioPath": "./audio-cache/rachel/link.mp3",
+      "voiceUsed": "rachel",
+      "completedAt": "2026-01-01T14:10:46.643Z"
+    },
+    "pink": {
+      "wordId": "pink",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/pink.mp3",
+      "completedAt": "2026-01-01T14:11:03.911Z"
+    },
+    "catch": {
+      "wordId": "catch",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/catch.mp3",
+      "completedAt": "2026-01-01T14:11:27.815Z"
+    },
+    "fetch": {
+      "wordId": "fetch",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/fetch.mp3",
+      "completedAt": "2026-01-01T14:11:45.191Z"
+    },
+    "kitchen": {
+      "wordId": "kitchen",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/kitchen.mp3",
+      "completedAt": "2026-01-01T14:12:03.574Z"
+    },
+    "notch": {
+      "wordId": "notch",
+      "status": "completed",
+      "generatedVoices": [
+        "emily"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "emily",
+      "localAudioPath": "./audio-cache/emily/notch.mp3",
+      "completedAt": "2026-01-01T14:12:54.522Z"
+    },
+    "match": {
+      "wordId": "match",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/match.mp3",
+      "completedAt": "2026-01-01T14:13:26.788Z"
+    },
+    "have": {
+      "wordId": "have",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/have.mp3",
+      "completedAt": "2026-01-01T14:16:09.684Z"
+    },
+    "live": {
+      "wordId": "live",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/live.mp3",
+      "completedAt": "2026-01-01T14:16:40.587Z"
+    },
+    "give": {
+      "wordId": "give",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/give.mp3",
+      "completedAt": "2026-01-01T14:40:32.466Z"
+    },
+    "love": {
+      "wordId": "love",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/love.mp3",
+      "completedAt": "2026-01-01T14:40:50.955Z"
+    },
+    "glove": {
+      "wordId": "glove",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/glove.mp3",
+      "completedAt": "2026-01-01T14:41:23.232Z"
+    },
+    "above": {
+      "wordId": "above",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/above.mp3",
+      "completedAt": "2026-01-01T16:42:00.486Z"
+    },
+    "cats": {
+      "wordId": "cats",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/cats.mp3",
+      "completedAt": "2026-01-01T14:41:57.648Z"
+    },
+    "dogs": {
+      "wordId": "dogs",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/dogs.mp3",
+      "completedAt": "2026-01-01T14:42:14.717Z"
+    },
+    "spends": {
+      "wordId": "spends",
+      "status": "completed",
+      "generatedVoices": [
+        "emily"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "emily",
+      "localAudioPath": "./audio-cache/emily/spends.mp3",
+      "completedAt": "2026-01-01T14:44:05.085Z"
+    },
+    "rocks": {
+      "wordId": "rocks",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/rocks.mp3",
+      "completedAt": "2026-01-01T14:44:23.139Z"
+    },
+    "thanks": {
+      "wordId": "thanks",
+      "status": "completed",
+      "generatedVoices": [
+        "antoni"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "antoni",
+      "localAudioPath": "./audio-cache/antoni/thanks.mp3",
+      "completedAt": "2026-01-01T14:45:42.708Z"
+    },
+    "hands": {
+      "wordId": "hands",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/hands.mp3",
+      "completedAt": "2026-01-01T14:46:47.077Z"
+    },
+    "catches": {
+      "wordId": "catches",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/catches.mp3",
+      "completedAt": "2026-01-01T14:47:41.777Z"
+    },
+    "batches": {
+      "wordId": "batches",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/batches.mp3",
+      "completedAt": "2026-01-01T14:48:05.808Z"
+    },
+    "hatches": {
+      "wordId": "hatches",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/hatches.mp3",
+      "completedAt": "2026-01-01T14:48:32.599Z"
+    },
+    "patches": {
+      "wordId": "patches",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/patches.mp3",
+      "completedAt": "2026-01-01T14:48:52.165Z"
+    },
+    "boxes": {
+      "wordId": "boxes",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/boxes.mp3",
+      "completedAt": "2026-01-01T14:49:10.741Z"
+    },
+    "foxes": {
+      "wordId": "foxes",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/foxes.mp3",
+      "completedAt": "2026-01-01T14:49:27.593Z"
+    },
+    "rain": {
+      "wordId": "rain",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/rain.mp3",
+      "completedAt": "2026-01-01T14:49:46.106Z"
+    },
+    "wait": {
+      "wordId": "wait",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/wait.mp3",
+      "completedAt": "2026-01-01T16:44:52.543Z"
+    },
+    "train": {
+      "wordId": "train",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/train.mp3",
+      "completedAt": "2026-01-01T14:50:42.382Z"
+    },
+    "paid": {
+      "wordId": "paid",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/paid.mp3",
+      "completedAt": "2026-01-01T14:51:00.356Z"
+    },
+    "afraid": {
+      "wordId": "afraid",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/afraid.mp3",
+      "completedAt": "2026-01-01T16:42:16.438Z"
+    },
+    "aid": {
+      "wordId": "aid",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/aid.mp3",
+      "completedAt": "2026-01-01T16:42:56.785Z"
+    },
+    "oil": {
+      "wordId": "oil",
+      "status": "completed",
+      "generatedVoices": [
+        "antoni"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "antoni",
+      "localAudioPath": "./audio-cache/antoni/oil.mp3",
+      "completedAt": "2026-01-01T14:53:49.579Z"
+    },
+    "join": {
+      "wordId": "join",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/join.mp3",
+      "completedAt": "2026-01-01T14:54:26.100Z"
+    },
+    "coin": {
+      "wordId": "coin",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/coin.mp3",
+      "completedAt": "2026-01-01T14:54:44.568Z"
+    },
+    "point": {
+      "wordId": "point",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/point.mp3",
+      "completedAt": "2026-01-01T14:55:05.465Z"
+    },
+    "way": {
+      "wordId": "way",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/way.mp3",
+      "completedAt": "2026-01-01T14:55:45.434Z"
+    },
+    "soil": {
+      "wordId": "soil",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/soil.mp3",
+      "completedAt": "2026-01-01T14:56:21.463Z"
+    },
+    "boil": {
+      "wordId": "boil",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/boil.mp3",
+      "completedAt": "2026-01-01T14:56:39.803Z"
+    },
+    "day": {
+      "wordId": "day",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/day.mp3",
+      "completedAt": "2026-01-01T14:56:57.393Z"
+    },
+    "play": {
+      "wordId": "play",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/play.mp3",
+      "completedAt": "2026-01-01T14:57:34.189Z"
+    },
+    "say": {
+      "wordId": "say",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/say.mp3",
+      "completedAt": "2026-01-01T14:58:39.188Z"
+    },
+    "stay": {
+      "wordId": "stay",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/stay.mp3",
+      "completedAt": "2026-01-01T14:58:59.196Z"
+    },
+    "clay": {
+      "wordId": "clay",
+      "status": "completed",
+      "generatedVoices": [
+        "antoni"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "antoni",
+      "localAudioPath": "./audio-cache/antoni/clay.mp3",
+      "completedAt": "2026-01-01T15:01:21.909Z"
+    },
+    "pocket": {
+      "wordId": "pocket",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/pocket.mp3",
+      "completedAt": "2026-01-01T15:01:43.116Z"
+    },
+    "rabbit": {
+      "wordId": "rabbit",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/rabbit.mp3",
+      "completedAt": "2026-01-01T15:02:20.667Z"
+    },
+    "carrot": {
+      "wordId": "carrot",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/carrot.mp3",
+      "completedAt": "2026-01-01T15:02:59.418Z"
+    },
+    "thunder": {
+      "wordId": "thunder",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/thunder.mp3",
+      "completedAt": "2026-01-01T15:03:36.790Z"
+    },
+    "sunset": {
+      "wordId": "sunset",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/sunset.mp3",
+      "completedAt": "2026-01-01T15:04:00.568Z"
+    },
+    "i": {
+      "wordId": "i",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/i.mp3",
+      "completedAt": "2026-01-01T15:04:44.370Z"
+    },
+    "the": {
+      "wordId": "the",
+      "status": "completed",
+      "generatedVoices": [
+        "adam"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/the.mp3",
+      "completedAt": "2026-01-01T15:08:07.949Z"
+    },
+    "no": {
+      "wordId": "no",
+      "status": "completed",
+      "generatedVoices": [
+        "adam"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "antoni",
+      "localAudioPath": "./audio-cache/antoni/no.mp3",
+      "completedAt": "2026-01-01T15:11:42.565Z"
+    },
+    "put": {
+      "wordId": "put",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/put.mp3",
+      "completedAt": "2026-01-01T15:12:15.178Z"
+    },
+    "of": {
+      "wordId": "of",
+      "status": "completed",
+      "generatedVoices": [
+        "thomas"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "thomas",
+      "localAudioPath": "./audio-cache/thomas/of.mp3",
+      "completedAt": "2026-01-01T15:13:42.786Z"
+    },
+    "is": {
+      "wordId": "is",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/is.mp3",
+      "completedAt": "2026-01-01T15:14:06.079Z"
+    },
+    "to": {
+      "wordId": "to",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/to.mp3",
+      "completedAt": "2026-01-01T15:14:29.593Z"
+    },
+    "go": {
+      "wordId": "go",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/go.mp3",
+      "completedAt": "2026-01-01T15:14:56.125Z"
+    },
+    "into": {
+      "wordId": "into",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/into.mp3",
+      "completedAt": "2026-01-01T15:15:22.451Z"
+    },
+    "pull": {
+      "wordId": "pull",
+      "status": "completed",
+      "generatedVoices": [
+        "antoni"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "antoni",
+      "localAudioPath": "./audio-cache/antoni/pull.mp3",
+      "completedAt": "2026-01-01T15:17:16.360Z"
+    },
+    "as": {
+      "wordId": "as",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/as.mp3",
+      "completedAt": "2026-01-01T16:44:32.989Z"
+    },
+    "his": {
+      "wordId": "his",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/his.mp3",
+      "completedAt": "2026-01-01T15:18:51.014Z"
+    },
+    "he": {
+      "wordId": "he",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/he.mp3",
+      "completedAt": "2026-01-01T15:19:36.178Z"
+    },
+    "she": {
+      "wordId": "she",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/she.mp3",
+      "completedAt": "2026-01-01T15:21:01.378Z"
+    },
+    "buses": {
+      "wordId": "buses",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/buses.mp3",
+      "completedAt": "2026-01-01T15:21:26.824Z"
+    },
+    "we": {
+      "wordId": "we",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/we.mp3",
+      "completedAt": "2026-01-01T15:21:49.727Z"
+    },
+    "me": {
+      "wordId": "me",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/me.mp3",
+      "completedAt": "2026-01-01T15:22:13.881Z"
+    },
+    "be": {
+      "wordId": "be",
+      "status": "completed",
+      "generatedVoices": [
+        "adam"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "thomas",
+      "localAudioPath": "./audio-cache/thomas/be.mp3",
+      "completedAt": "2026-01-01T15:26:16.860Z"
+    },
+    "push": {
+      "wordId": "push",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/push.mp3",
+      "completedAt": "2026-01-01T15:26:40.143Z"
+    },
+    "was": {
+      "wordId": "was",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/was.mp3",
+      "completedAt": "2026-01-01T15:27:26.345Z"
+    },
+    "her": {
+      "wordId": "her",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/her.mp3",
+      "completedAt": "2026-01-01T15:28:34.622Z"
+    },
+    "my": {
+      "wordId": "my",
+      "status": "completed",
+      "generatedVoices": [
+        "emily"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "emily",
+      "localAudioPath": "./audio-cache/emily/my.mp3",
+      "completedAt": "2026-01-01T15:30:08.244Z"
+    },
+    "you": {
+      "wordId": "you",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/you.mp3",
+      "completedAt": "2026-01-01T15:30:50.259Z"
+    },
+    "they": {
+      "wordId": "they",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/they.mp3",
+      "completedAt": "2026-01-01T15:32:15.009Z"
+    },
+    "all": {
+      "wordId": "all",
+      "status": "completed",
+      "generatedVoices": [
+        "antoni"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "antoni",
+      "localAudioPath": "./audio-cache/antoni/all.mp3",
+      "completedAt": "2026-01-01T16:43:54.844Z"
+    },
+    "are": {
+      "wordId": "are",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/are.mp3",
+      "completedAt": "2026-01-01T16:44:20.691Z"
+    },
+    "ball": {
+      "wordId": "ball",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/ball.mp3",
+      "completedAt": "2026-01-01T15:34:41.130Z"
+    },
+    "tall": {
+      "wordId": "tall",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/tall.mp3",
+      "completedAt": "2026-01-01T15:35:08.191Z"
+    },
+    "when": {
+      "wordId": "when",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/when.mp3",
+      "completedAt": "2026-01-01T15:35:56.918Z"
+    },
+    "what": {
+      "wordId": "what",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/what.mp3",
+      "completedAt": "2026-01-01T15:36:54.045Z"
+    },
+    "said": {
+      "wordId": "said",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/said.mp3",
+      "completedAt": "2026-01-01T15:37:38.249Z"
+    },
+    "so": {
+      "wordId": "so",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/so.mp3",
+      "completedAt": "2026-01-01T16:23:00.492Z"
+    },
+    "were": {
+      "wordId": "were",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy",
+        "emily",
+        "thomas",
+        "antoni"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "antoni",
+      "localAudioPath": "./audio-cache/antoni/were.mp3",
+      "completedAt": "2026-01-01T16:23:24.237Z"
+    },
+    "out": {
+      "wordId": "out",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/out.mp3",
+      "completedAt": "2026-01-01T16:23:43.437Z"
+    },
+    "like": {
+      "wordId": "like",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy",
+        "emily"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "emily",
+      "localAudioPath": "./audio-cache/emily/like.mp3",
+      "completedAt": "2026-01-01T16:23:53.143Z"
+    },
+    "some": {
+      "wordId": "some",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/some.mp3",
+      "completedAt": "2026-01-01T16:23:59.530Z"
+    },
+    "come": {
+      "wordId": "come",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/come.mp3",
+      "completedAt": "2026-01-01T16:24:02.410Z"
+    },
+    "there": {
+      "wordId": "there",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/there.mp3",
+      "completedAt": "2026-01-01T16:24:05.650Z"
+    },
+    "little": {
+      "wordId": "little",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/little.mp3",
+      "completedAt": "2026-01-01T16:24:11.741Z"
+    },
+    "one": {
+      "wordId": "one",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/one.mp3",
+      "completedAt": "2026-01-01T16:24:14.662Z"
+    },
+    "do": {
+      "wordId": "do",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/do.mp3",
+      "completedAt": "2026-01-01T16:24:17.951Z"
+    },
+    "children": {
+      "wordId": "children",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/children.mp3",
+      "completedAt": "2026-01-01T16:24:23.915Z"
+    },
+    "oh": {
+      "wordId": "oh",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/oh.mp3",
+      "completedAt": "2026-01-01T16:24:35.622Z"
+    },
+    "their": {
+      "wordId": "their",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy",
+        "emily",
+        "thomas",
+        "antoni"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "antoni",
+      "localAudioPath": "./audio-cache/antoni/their.mp3",
+      "completedAt": "2026-01-01T16:24:51.923Z"
+    },
+    "a": {
+      "wordId": "a",
+      "status": "completed",
+      "generatedVoices": [
+        "will"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "will",
+      "localAudioPath": "./audio-cache/will/a.mp3",
+      "completedAt": "2026-01-01T16:39:20.041Z"
+    },
+    "people": {
+      "wordId": "people",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/people.mp3",
+      "completedAt": "2026-01-01T16:25:23.963Z"
+    },
+    "mr": {
+      "wordId": "mr",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/mr.mp3",
+      "completedAt": "2026-01-01T16:25:27.846Z"
+    },
+    "mrs": {
+      "wordId": "mrs",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/mrs.mp3",
+      "completedAt": "2026-01-01T16:25:30.951Z"
+    },
+    "your": {
+      "wordId": "your",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/your.mp3",
+      "completedAt": "2026-01-01T16:25:33.895Z"
+    },
+    "ask": {
+      "wordId": "ask",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/ask.mp3",
+      "completedAt": "2026-01-01T16:25:36.889Z"
+    },
+    "should": {
+      "wordId": "should",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/should.mp3",
+      "completedAt": "2026-01-01T16:25:39.605Z"
+    },
+    "would": {
+      "wordId": "would",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/would.mp3",
+      "completedAt": "2026-01-01T16:25:45.320Z"
+    },
+    "could": {
+      "wordId": "could",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/could.mp3",
+      "completedAt": "2026-01-01T16:25:48.141Z"
+    },
+    "asked": {
+      "wordId": "asked",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/asked.mp3",
+      "completedAt": "2026-01-01T16:25:51.479Z"
+    },
+    "house": {
+      "wordId": "house",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/house.mp3",
+      "completedAt": "2026-01-01T16:25:54.889Z"
+    },
+    "mouse": {
+      "wordId": "mouse",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/mouse.mp3",
+      "completedAt": "2026-01-01T16:25:57.367Z"
+    },
+    "water": {
+      "wordId": "water",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/water.mp3",
+      "completedAt": "2026-01-01T16:26:00.320Z"
+    },
+    "want": {
+      "wordId": "want",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/want.mp3",
+      "completedAt": "2026-01-01T16:45:27.700Z"
+    },
+    "very": {
+      "wordId": "very",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/very.mp3",
+      "completedAt": "2026-01-01T16:26:05.841Z"
+    },
+    "careless": {
+      "wordId": "careless",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/careless.mp3",
+      "completedAt": "2026-01-01T16:26:08.644Z"
+    },
+    "harmless": {
+      "wordId": "harmless",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/harmless.mp3",
+      "completedAt": "2026-01-01T16:26:11.422Z"
+    },
+    "helpless": {
+      "wordId": "helpless",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/helpless.mp3",
+      "completedAt": "2026-01-01T16:26:14.585Z"
+    },
+    "homeless": {
+      "wordId": "homeless",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/homeless.mp3",
+      "completedAt": "2026-01-01T16:26:17.466Z"
+    },
+    "joyless": {
+      "wordId": "joyless",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/joyless.mp3",
+      "completedAt": "2026-01-01T16:26:20.339Z"
+    },
+    "mindless": {
+      "wordId": "mindless",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/mindless.mp3",
+      "completedAt": "2026-01-01T16:26:23.810Z"
+    },
+    "painless": {
+      "wordId": "painless",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/painless.mp3",
+      "completedAt": "2026-01-01T16:26:26.856Z"
+    },
+    "speechless": {
+      "wordId": "speechless",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/speechless.mp3",
+      "completedAt": "2026-01-01T16:26:30.008Z"
+    },
+    "thankless": {
+      "wordId": "thankless",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/thankless.mp3",
+      "completedAt": "2026-01-01T16:26:32.842Z"
+    },
+    "useless": {
+      "wordId": "useless",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/useless.mp3",
+      "completedAt": "2026-01-01T16:26:35.947Z"
+    },
+    "berries": {
+      "wordId": "berries",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/berries.mp3",
+      "completedAt": "2026-01-01T16:26:42.247Z"
+    },
+    "cries": {
+      "wordId": "cries",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/cries.mp3",
+      "completedAt": "2026-01-01T16:26:46.385Z"
+    },
+    "flies": {
+      "wordId": "flies",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/flies.mp3",
+      "completedAt": "2026-01-01T16:27:13.848Z"
+    },
+    "ladies": {
+      "wordId": "ladies",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/ladies.mp3",
+      "completedAt": "2026-01-01T16:27:17.015Z"
+    },
+    "pennies": {
+      "wordId": "pennies",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/pennies.mp3",
+      "completedAt": "2026-01-01T16:27:20.404Z"
+    },
+    "tries": {
+      "wordId": "tries",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/tries.mp3",
+      "completedAt": "2026-01-01T16:27:24.022Z"
+    },
+    "dirtier": {
+      "wordId": "dirtier",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/dirtier.mp3",
+      "completedAt": "2026-01-01T16:27:26.653Z"
+    },
+    "dirtiest": {
+      "wordId": "dirtiest",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/dirtiest.mp3",
+      "completedAt": "2026-01-01T16:27:29.765Z"
+    },
+    "drier": {
+      "wordId": "drier",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/drier.mp3",
+      "completedAt": "2026-01-01T16:27:32.360Z"
+    },
+    "driest": {
+      "wordId": "driest",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/driest.mp3",
+      "completedAt": "2026-01-01T16:27:35.257Z"
+    },
+    "funnier": {
+      "wordId": "funnier",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/funnier.mp3",
+      "completedAt": "2026-01-01T16:27:37.820Z"
+    },
+    "funniest": {
+      "wordId": "funniest",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/funniest.mp3",
+      "completedAt": "2026-01-01T16:27:40.688Z"
+    },
+    "happier": {
+      "wordId": "happier",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/happier.mp3",
+      "completedAt": "2026-01-01T16:27:43.130Z"
+    },
+    "happiest": {
+      "wordId": "happiest",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/happiest.mp3",
+      "completedAt": "2026-01-01T16:27:45.920Z"
+    },
+    "door": {
+      "wordId": "door",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/door.mp3",
+      "completedAt": "2026-01-01T16:27:48.515Z"
+    },
+    "floor": {
+      "wordId": "floor",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/floor.mp3",
+      "completedAt": "2026-01-01T16:27:51.262Z"
+    },
+    "poor": {
+      "wordId": "poor",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/poor.mp3",
+      "completedAt": "2026-01-01T16:27:59.404Z"
+    },
+    "because": {
+      "wordId": "because",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/because.mp3",
+      "completedAt": "2026-01-01T16:28:02.555Z"
+    },
+    "find": {
+      "wordId": "find",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/find.mp3",
+      "completedAt": "2026-01-01T16:28:08.480Z"
+    },
+    "kind": {
+      "wordId": "kind",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/kind.mp3",
+      "completedAt": "2026-01-01T16:28:11.059Z"
+    },
+    "mind": {
+      "wordId": "mind",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/mind.mp3",
+      "completedAt": "2026-01-01T16:28:13.639Z"
+    },
+    "behind": {
+      "wordId": "behind",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/behind.mp3",
+      "completedAt": "2026-01-01T16:28:16.310Z"
+    },
+    "child": {
+      "wordId": "child",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/child.mp3",
+      "completedAt": "2026-01-01T16:28:19.042Z"
+    },
+    "wild": {
+      "wordId": "wild",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/wild.mp3",
+      "completedAt": "2026-01-01T16:28:21.541Z"
+    },
+    "climb": {
+      "wordId": "climb",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/climb.mp3",
+      "completedAt": "2026-01-01T16:28:24.109Z"
+    },
+    "most": {
+      "wordId": "most",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/most.mp3",
+      "completedAt": "2026-01-01T16:28:26.601Z"
+    },
+    "only": {
+      "wordId": "only",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy",
+        "emily",
+        "thomas"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "thomas",
+      "localAudioPath": "./audio-cache/thomas/only.mp3",
+      "completedAt": "2026-01-01T16:28:42.010Z"
+    },
+    "both": {
+      "wordId": "both",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/both.mp3",
+      "completedAt": "2026-01-01T16:28:44.450Z"
+    },
+    "old": {
+      "wordId": "old",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/old.mp3",
+      "completedAt": "2026-01-01T16:28:47.104Z"
+    },
+    "cold": {
+      "wordId": "cold",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/cold.mp3",
+      "completedAt": "2026-01-01T16:28:49.714Z"
+    },
+    "gold": {
+      "wordId": "gold",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/gold.mp3",
+      "completedAt": "2026-01-01T16:28:59.027Z"
+    },
+    "hold": {
+      "wordId": "hold",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/hold.mp3",
+      "completedAt": "2026-01-01T16:29:04.545Z"
+    },
+    "told": {
+      "wordId": "told",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/told.mp3",
+      "completedAt": "2026-01-01T16:29:10.190Z"
+    },
+    "every": {
+      "wordId": "every",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy",
+        "emily",
+        "thomas"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "thomas",
+      "localAudioPath": "./audio-cache/thomas/every.mp3",
+      "completedAt": "2026-01-01T16:29:24.112Z"
+    },
+    "everybody": {
+      "wordId": "everybody",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/everybody.mp3",
+      "completedAt": "2026-01-01T16:29:27.424Z"
+    },
+    "even": {
+      "wordId": "even",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/even.mp3",
+      "completedAt": "2026-01-01T16:29:33.079Z"
+    },
+    "great": {
+      "wordId": "great",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/great.mp3",
+      "completedAt": "2026-01-01T16:29:35.748Z"
+    },
+    "break": {
+      "wordId": "break",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/break.mp3",
+      "completedAt": "2026-01-01T16:29:38.343Z"
+    },
+    "steak": {
+      "wordId": "steak",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/steak.mp3",
+      "completedAt": "2026-01-01T16:29:40.907Z"
+    },
+    "pretty": {
+      "wordId": "pretty",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/pretty.mp3",
+      "completedAt": "2026-01-01T16:29:46.523Z"
+    },
+    "beautiful": {
+      "wordId": "beautiful",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/beautiful.mp3",
+      "completedAt": "2026-01-01T16:29:49.249Z"
+    },
+    "after": {
+      "wordId": "after",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/after.mp3",
+      "completedAt": "2026-01-01T16:42:28.326Z"
+    },
+    "fast": {
+      "wordId": "fast",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/fast.mp3",
+      "completedAt": "2026-01-01T16:30:02.392Z"
+    },
+    "last": {
+      "wordId": "last",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/last.mp3",
+      "completedAt": "2026-01-01T16:30:06.662Z"
+    },
+    "past": {
+      "wordId": "past",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/past.mp3",
+      "completedAt": "2026-01-01T16:30:38.689Z"
+    },
+    "father": {
+      "wordId": "father",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy",
+        "emily"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "emily",
+      "localAudioPath": "./audio-cache/emily/father.mp3",
+      "completedAt": "2026-01-01T16:30:47.970Z"
+    },
+    "class": {
+      "wordId": "class",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/class.mp3",
+      "completedAt": "2026-01-01T16:30:50.737Z"
+    },
+    "grass": {
+      "wordId": "grass",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/grass.mp3",
+      "completedAt": "2026-01-01T16:30:53.638Z"
+    },
+    "plant": {
+      "wordId": "plant",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/plant.mp3",
+      "completedAt": "2026-01-01T16:30:56.283Z"
+    },
+    "path": {
+      "wordId": "path",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy",
+        "emily",
+        "thomas"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "thomas",
+      "localAudioPath": "./audio-cache/thomas/path.mp3",
+      "completedAt": "2026-01-01T16:31:09.543Z"
+    },
+    "bath": {
+      "wordId": "bath",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy",
+        "emily",
+        "thomas"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "thomas",
+      "localAudioPath": "./audio-cache/thomas/bath.mp3",
+      "completedAt": "2026-01-01T16:31:21.011Z"
+    },
+    "hour": {
+      "wordId": "hour",
+      "status": "completed",
+      "generatedVoices": [
+        "george"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "george",
+      "localAudioPath": "./audio-cache/george/hour.mp3",
+      "completedAt": "2026-01-01T16:40:24.937Z"
+    },
+    "move": {
+      "wordId": "move",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/move.mp3",
+      "completedAt": "2026-01-01T16:31:47.672Z"
+    },
+    "prove": {
+      "wordId": "prove",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/prove.mp3",
+      "completedAt": "2026-01-01T16:31:54.422Z"
+    },
+    "improve": {
+      "wordId": "improve",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/improve.mp3",
+      "completedAt": "2026-01-01T16:31:57.386Z"
+    },
+    "sure": {
+      "wordId": "sure",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/sure.mp3",
+      "completedAt": "2026-01-01T16:32:03.169Z"
+    },
+    "sugar": {
+      "wordId": "sugar",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/sugar.mp3",
+      "completedAt": "2026-01-01T16:32:05.883Z"
+    },
+    "eye": {
+      "wordId": "eye",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/eye.mp3",
+      "completedAt": "2026-01-01T16:32:08.417Z"
+    },
+    "who": {
+      "wordId": "who",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/who.mp3",
+      "completedAt": "2026-01-01T16:32:11.256Z"
+    },
+    "whole": {
+      "wordId": "whole",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/whole.mp3",
+      "completedAt": "2026-01-01T16:32:14.313Z"
+    },
+    "any": {
+      "wordId": "any",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/any.mp3",
+      "completedAt": "2026-01-01T16:44:07.244Z"
+    },
+    "many": {
+      "wordId": "many",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/many.mp3",
+      "completedAt": "2026-01-01T16:32:25.817Z"
+    },
+    "clothes": {
+      "wordId": "clothes",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy",
+        "emily"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "emily",
+      "localAudioPath": "./audio-cache/emily/clothes.mp3",
+      "completedAt": "2026-01-01T16:32:35.823Z"
+    },
+    "busy": {
+      "wordId": "busy",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy",
+        "emily"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "emily",
+      "localAudioPath": "./audio-cache/emily/busy.mp3",
+      "completedAt": "2026-01-01T16:32:45.153Z"
+    },
+    "again": {
+      "wordId": "again",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/again.mp3",
+      "completedAt": "2026-01-01T16:42:41.410Z"
+    },
+    "half": {
+      "wordId": "half",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/half.mp3",
+      "completedAt": "2026-01-01T16:32:50.808Z"
+    },
+    "money": {
+      "wordId": "money",
+      "status": "completed",
+      "generatedVoices": [
+        "dorothy"
+      ],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/money.mp3",
+      "completedAt": "2026-01-01T16:32:56.582Z"
+    },
+    "parents": {
+      "wordId": "parents",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/parents.mp3",
+      "completedAt": "2026-01-01T16:32:59.478Z"
+    },
+    "christmas": {
+      "wordId": "christmas",
+      "status": "completed",
+      "generatedVoices": [],
+      "s3Uploaded": false,
+      "attempts": 0,
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/christmas.mp3",
+      "completedAt": "2026-01-01T16:33:02.373Z"
+    }
+  }
+}
