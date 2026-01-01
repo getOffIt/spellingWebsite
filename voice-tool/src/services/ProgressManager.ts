@@ -1,5 +1,5 @@
 import { readFile, writeFile, mkdir } from 'fs/promises';
-import { join, dirname } from 'path';
+import { dirname } from 'path';
 import { ProgressData, WordProgress, Word, CompletedWord } from '../types/index.js';
 
 export class ProgressManager {

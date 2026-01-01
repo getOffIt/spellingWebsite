@@ -2,6 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import readline from 'readline';
 import { exec } from 'child_process';
 import { promisify } from 'util';
@@ -20,7 +21,12 @@ const VOICES = {
 
 const MODEL = 'eleven_turbo_v2_5';
 
-// Import words (you'll need to adjust path)
+// Get script directory for resolving relative paths
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Import words - path relative to scripts/ directory
+// Used in extractWords() function
 const WORDS_FILE = '../src/data/words.ts';
 
 // Create readline interface
@@ -146,7 +152,9 @@ async function processWord(word) {
 
 async function extractWords() {
   // Simple extraction - you might need to adjust this
-  const content = fs.readFileSync(path.join(process.cwd(), 'src/data/words.ts'), 'utf8');
+  // Use WORDS_FILE constant resolved relative to script directory
+  const wordsPath = path.resolve(__dirname, WORDS_FILE);
+  const content = fs.readFileSync(wordsPath, 'utf8');
   
   // Extract word objects using regex (basic approach)
   const wordMatches = content.match(/{\s*id:\s*['"`]([^'"`]+)['"`],\s*text:\s*['"`]([^'"`]+)['"`]/g);

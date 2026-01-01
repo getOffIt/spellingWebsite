@@ -1,4 +1,4 @@
-import { VoiceSettings, ErrorType, ErrorAction } from '../types/index.js';
+import { VoiceSettings, ErrorType } from '../types/index.js';
 
 export class ElevenLabsClient {
   private apiKey: string;

@@ -156,6 +156,9 @@ async function handlePlay(wordId, fileManager, audioPlayer, config, progressMana
 }
 
 async function handleAccept(wordId, progressManager, fileManager, config) {
+  // Load progress first to ensure we have the latest state
+  await progressManager.loadProgress();
+  
   // Find the most recently generated voice for this word
   const generatedVoices = await fileManager.getGeneratedVoices(wordId);
   const voiceName = generatedVoices[generatedVoices.length - 1] || config.voices[0].name;
@@ -216,6 +219,9 @@ async function handlePlayVoice(wordId, voiceName, fileManager, audioPlayer) {
 }
 
 async function handleChoose(wordId, voiceName, progressManager, fileManager) {
+  // Load progress first to ensure we have the latest state
+  await progressManager.loadProgress();
+  
   // Check if the voice exists
   const generatedVoices = await fileManager.getGeneratedVoices(wordId);
   

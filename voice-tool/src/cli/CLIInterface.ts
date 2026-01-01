@@ -1,4 +1,4 @@
-import { CommandConfig, OperationMode } from '../types/index.js';
+import { CommandConfig } from '../types/index.js';
 import { loadConfig, validateConfig } from '../config/config.js';
 import { WordExtractor } from '../services/WordExtractor.js';
 import { CommandModeHandler } from '../services/CommandModeHandler.js';

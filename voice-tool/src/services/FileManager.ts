@@ -1,5 +1,5 @@
 import { writeFile, readFile, mkdir, unlink, readdir, stat } from 'fs/promises';
-import { join, dirname } from 'path';
+import { join } from 'path';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 export interface ApprovedFile {

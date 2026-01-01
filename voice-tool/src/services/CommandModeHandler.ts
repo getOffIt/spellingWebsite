@@ -143,7 +143,7 @@ export class CommandModeHandler {
 
   async executeStatus(): Promise<CommandResult> {
     try {
-      const progress = await this.progressManager.loadProgress();
+      await this.progressManager.loadProgress();
       const status = this.progressManager.getCompletionStatus();
       const cacheStats = await this.fileManager.getAudioCacheStats();
       
