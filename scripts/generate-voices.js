@@ -11,7 +11,7 @@ const execAsync = promisify(exec);
 
 // Configuration
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
-const S3_BUCKET = process.env.S3_BUCKET || 'spelling-website-voices';
+const S3_BUCKET = process.env.S3_BUCKET || 'spellmatereact';
 
 const VOICES = {
   rachel: '21m00Tcm4TlvDq8ikWAM',

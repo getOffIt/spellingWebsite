@@ -161,7 +161,16 @@ async function handleAccept(wordId, progressManager, fileManager, config) {
   
   // Find the most recently generated voice for this word
   const generatedVoices = await fileManager.getGeneratedVoices(wordId);
-  const voiceName = generatedVoices[generatedVoices.length - 1] || config.voices[0].name;
+  
+  if (generatedVoices.length === 0) {
+    throw new Error(`No audio found for "${wordId}"`);
+  }
+  
+  const voiceName = generatedVoices[generatedVoices.length - 1];
+  const hasAudio = await fileManager.audioFileExists(wordId, voiceName);
+  if (!hasAudio) {
+    throw new Error(`No audio found for "${wordId}" with ${voiceName} voice`);
+  }
   
   const audioPath = `./audio-cache/${voiceName}/${wordId}.mp3`;
   
