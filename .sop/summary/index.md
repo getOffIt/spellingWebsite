@@ -94,9 +94,16 @@ Each documentation section includes metadata tags for targeted retrieval:
 5. **Focus on the voice-tool directory** for recent changes and new functionality
 
 ## Recent Changes Focus
-The voice-tool directory contains the most recent development work:
-- ElevenLabs API integration
-- Batch audio generation
-- Human-in-the-loop review workflow
-- AWS S3 deployment automation
-- Kiro CLI agent compatibility
+Recent development work includes:
+- **Progress API Documentation**: Comprehensive documentation of the progress tracking system
+- **Voice Tool Integration**: ElevenLabs API integration with batch audio generation
+- **Enhanced Error Handling**: Improved error handling in voice generation workflow
+- **AWS Configuration Updates**: Updated region configuration to eu-west-2
+- **Documentation Streamlining**: Removed outdated planning documents and improved AGENTS.md
+
+## Progress API Quick Reference
+For questions about user progress tracking:
+- **API Endpoints**: See PROGRESS_API.md → API Endpoints section
+- **Data Models**: See PROGRESS_API.md → Data Models section  
+- **State Management**: See PROGRESS_API.md → State Management section
+- **Integration**: See PROGRESS_API.md → Integration Points section
