@@ -1,211 +1,165 @@
-# System Architecture
+# System Architecture #architecture
 
 ## Overview
-
-The Spelling Website is a client-side React application with a serverless backend. It follows a modern SPA (Single Page Application) architecture with authentication, state management through React Context, and RESTful API integration.
-
-## Architecture Diagram
+The Spelling Website is a dual-system architecture consisting of a React frontend application and a Node.js voice generation tool, designed for educational spelling practice with AI-generated voice prompts.
 
 ```mermaid
 graph TB
-    User[User Browser] -->|HTTPS| App[React SPA]
-    App -->|OIDC/OAuth2| Cognito[AWS Cognito]
-    App -->|REST API| API[API Gateway + Lambda]
-    API -->|DynamoDB Operations| DynamoDB[(DynamoDB<br/>spellingProgress)]
-    
-    subgraph "Frontend (React)"
-        App --> Router[React Router]
-        Router --> Pages[Page Components]
-        Pages --> Contexts[React Contexts]
-        Contexts --> Hooks[Custom Hooks]
-        Hooks --> API
+    subgraph "Frontend Application"
+        A[React App] --> B[Authentication]
+        A --> C[Spelling Test]
+        A --> D[Word Selection]
+        B --> E[OIDC Provider]
     end
     
-    subgraph "Backend (AWS)"
-        API --> Lambda[Lambda Function]
-        Lambda --> DynamoDB
+    subgraph "Voice Generation System"
+        F[Voice Tool] --> G[ElevenLabs API]
+        F --> H[AWS S3]
+        F --> I[Kiro CLI Interface]
     end
-```
-
-## Design Patterns
-
-### 1. Component-Based Architecture
-- **Pattern:** React functional components with hooks
-- **Structure:** Pages → Components → Hooks → Utils
-- **Benefits:** Reusability, testability, maintainability
-
-### 2. Context API for State Management
-- **Pattern:** React Context for global state
-- **Implementations:**
-  - `AuthProvider` (via react-oidc-context): Authentication state
-  - `ProgressProvider`: User progress tracking
-- **Benefits:** Avoids prop drilling, centralized state
-
-### 3. Custom Hooks Pattern
-- **Pattern:** Encapsulate business logic in reusable hooks
-- **Examples:**
-  - `useWord`: Word-specific progress and stats
-  - `useProgressApi`: API communication abstraction
-- **Benefits:** Logic reuse, separation of concerns
-
-### 4. Protected Routes Pattern
-- **Pattern:** Route-level authentication guards
-- **Implementation:** `ProtectedRoute` component wraps protected pages
-- **Flow:** Check auth → Redirect to login if not authenticated
-
-### 5. Configuration-Driven Development
-- **Pattern:** Centralized configuration objects
-- **Example:** `wordSelectionConfigs.ts` defines word list configurations
-- **Benefits:** Easy to add new word lists, maintainable
-
-## Application Flow
-
-### Authentication Flow
-
-```mermaid
-sequenceDiagram
-    User->>App: Access protected route
-    App->>Cognito: Check authentication
-    Cognito-->>App: Not authenticated
-    App->>User: Redirect to /login
-    User->>Cognito: Sign in
-    Cognito-->>App: OIDC callback with tokens
-    App->>App: Store tokens in localStorage
-    App->>User: Redirect to requested route
-```
-
-### Spelling Test Flow
-
-```mermaid
-sequenceDiagram
-    User->>ChallengesPage: Select challenge
-    ChallengesPage->>WordSelection: Navigate
-    WordSelection->>User: Display word list
-    User->>WordSelection: Select words
-    WordSelection->>SpellingTest: Start test
-    SpellingTest->>User: Present word (TTS)
-    User->>SpellingTest: Enter spelling
-    SpellingTest->>ProgressProvider: Record attempt
-    ProgressProvider->>API: PUT /api/progress/{wordId}
-    API->>DynamoDB: Update progress
-    DynamoDB-->>API: Return updated data
-    API-->>ProgressProvider: Progress data
-    ProgressProvider->>SpellingTest: Update state
-    SpellingTest->>User: Show results
-```
-
-### Progress Tracking Flow
-
-```mermaid
-sequenceDiagram
-    App->>ProgressProvider: Initialize
-    ProgressProvider->>API: GET /api/progress
-    API->>DynamoDB: Query by userId
-    DynamoDB-->>API: Progress records
-    API-->>ProgressProvider: Progress data
-    ProgressProvider->>App: Provide progress context
     
-    Note over ProgressProvider: User completes spelling
-    SpellingTest->>ProgressProvider: recordAttempt(wordId, correct, attempt)
-    ProgressProvider->>API: PUT /api/progress/{wordId}
-    API->>DynamoDB: Append to progress array
-    DynamoDB-->>API: Updated progress
-    API-->>ProgressProvider: All progress data
-    ProgressProvider->>App: Update context
+    subgraph "External Services"
+        E[OIDC Provider]
+        G[ElevenLabs API]
+        H[AWS S3 Storage]
+    end
+    
+    A --> H
+    C --> J[Audio Playback]
+    J --> H
 ```
 
-## Data Flow Architecture
+## Frontend Architecture #react
 
-### State Management Layers
-
+### Component Hierarchy
 ```mermaid
 graph TD
-    A[User Interaction] --> B[Page Component]
-    B --> C[Custom Hook]
-    C --> D[Context Provider]
-    D --> E[API Call]
-    E --> F[Backend API]
-    F --> G[DynamoDB]
-    G --> F
-    F --> E
-    E --> D
-    D --> C
-    C --> B
-    B --> A
+    App --> Header
+    App --> ProtectedRoute
+    ProtectedRoute --> ChallengesPage
+    ProtectedRoute --> WordSelection
+    ProtectedRoute --> CommonWordsSelection
+    ProtectedRoute --> SpellingTest
+    ProtectedRoute --> ProfilePage
+    ProtectedRoute --> ApiTest
+    App --> Login
 ```
 
-### Context Hierarchy
+### State Management Pattern
+- **Local State**: React useState for component-specific state
+- **Authentication State**: OIDC Context for user authentication
+- **Word Selection State**: Lifted state in App component
+- **Test Progress**: Local state in SpellingTest component
 
+### Routing Architecture
+- **Protected Routes**: All main functionality behind authentication
+- **Route Guards**: ProtectedRoute component wraps authenticated pages
+- **Navigation Flow**: Login → Challenges → Word Selection → Spelling Test
+
+## Voice Tool Architecture #voice-tool
+
+### Service Layer Pattern
 ```mermaid
-graph TD
-    AuthProvider[AuthProvider<br/>react-oidc-context] --> ProgressProvider[ProgressProvider<br/>Custom Context]
-    ProgressProvider --> App[App Component]
-    App --> Pages[Page Components]
-    Pages --> Hooks[Custom Hooks]
-    Hooks --> ProgressProvider
+graph TB
+    CLI[Kiro CLI Interface] --> BatchService
+    CLI --> ReviewService
+    CLI --> UploadService
+    
+    BatchService --> ElevenLabsService
+    ReviewService --> AudioService
+    UploadService --> S3Service
+    
+    ElevenLabsService --> API[ElevenLabs API]
+    S3Service --> S3[AWS S3]
+    AudioService --> Cache[Audio Cache]
 ```
 
-## Security Architecture
+### Processing Workflow
+1. **Batch Generation**: Process word lists through ElevenLabs API
+2. **Human Review**: Interactive CLI for voice quality control
+3. **Voice Selection**: Multiple voice options with fallback chain
+4. **S3 Deployment**: Automated upload with proper caching headers
 
-### Authentication
-- **Method:** OIDC/OAuth2 with AWS Cognito
-- **Token Storage:** localStorage via WebStorageStateStore
-- **Token Renewal:** Automatic silent renewal
-- **Session Monitoring:** Active session checking every 60 seconds
+## Integration Patterns
 
-### Authorization
-- **Route Protection:** Client-side route guards
-- **API Authorization:** Bearer token in Authorization header
-- **User Identification:** Cognito `sub` claim used as userId
+### Authentication Flow #api
+```mermaid
+sequenceDiagram
+    User->>React App: Access Protected Route
+    React App->>OIDC Provider: Check Authentication
+    OIDC Provider-->>React App: Auth Status
+    React App->>User: Render Content/Redirect
+```
 
-### Data Security
-- **HTTPS:** All communications encrypted
-- **CORS:** Configured for API endpoints
-- **Token Validation:** Server-side validation in Lambda authorizer
+### Voice Generation Flow #workflow
+```mermaid
+sequenceDiagram
+    CLI->>ElevenLabs: Generate Audio
+    ElevenLabs-->>CLI: Audio File
+    CLI->>Human: Review Audio
+    Human-->>CLI: Accept/Reject
+    CLI->>S3: Upload Approved Audio
+    React App->>S3: Fetch Audio for Playback
+```
+
+## Data Flow Architecture #data
+
+### Frontend Data Flow
+- **Props Down**: Data flows down through component hierarchy
+- **Events Up**: User interactions bubble up through callbacks
+- **Context**: Authentication state shared via React Context
+- **Local Storage**: Minimal use for user preferences
+
+### Voice Tool Data Flow
+- **File-based State**: JSON files for progress persistence
+- **Streaming**: Audio files processed and cached locally
+- **Batch Processing**: Word lists processed in configurable batches
+- **Error Recovery**: Resume capability for interrupted sessions
 
 ## Deployment Architecture
 
-### Frontend
-- **Build:** Vite production build
-- **Output:** Static files in `dist/` directory
-- **Hosting:** Static site hosting (e.g., S3 + CloudFront)
+### Frontend Deployment
+- **Build Tool**: Vite for optimized production builds
+- **Static Hosting**: Suitable for CDN deployment
+- **Environment Config**: Build-time configuration injection
 
-### Backend
-- **API:** AWS API Gateway
-- **Compute:** AWS Lambda (Node.js 22)
-- **Database:** AWS DynamoDB
-- **Authentication:** AWS Cognito User Pool
+### Voice Tool Deployment
+- **CLI Tool**: Standalone Node.js application
+- **Local Execution**: Runs on developer machines
+- **Cloud Integration**: Direct AWS S3 and ElevenLabs API access
 
-## Scalability Considerations
+## Security Architecture
 
-1. **Stateless Frontend:** Can be CDN-cached
-2. **Serverless Backend:** Auto-scales with Lambda
-3. **NoSQL Database:** DynamoDB scales horizontally
-4. **Token-Based Auth:** Stateless authentication
+### Frontend Security
+- **OIDC Authentication**: Industry-standard authentication flow
+- **Route Protection**: All sensitive routes behind authentication
+- **HTTPS Only**: Secure communication with external services
 
-## Technology Decisions
+### Voice Tool Security
+- **API Key Management**: Environment variable configuration
+- **AWS Credentials**: Standard AWS credential chain
+- **Local File Security**: Temporary files with appropriate permissions
 
-### Why React Context over Redux?
-- Simpler state management needs
-- Built-in React solution
-- Less boilerplate
-- Sufficient for current scale
+## Performance Considerations
 
-### Why Vite over Create React App?
-- Faster development builds
-- Better HMR (Hot Module Replacement)
-- Modern tooling
-- Smaller bundle sizes
+### Frontend Performance
+- **Code Splitting**: Vite handles automatic code splitting
+- **Lazy Loading**: Route-based code splitting
+- **Audio Caching**: Browser caching of audio files from S3
 
-### Why DynamoDB?
-- Serverless-friendly
-- Auto-scaling
-- Pay-per-use model
-- Good for user-specific data (userId partition key)
+### Voice Tool Performance
+- **Batch Processing**: Configurable batch sizes for API rate limits
+- **Local Caching**: Audio files cached locally during generation
+- **Resume Capability**: Avoid re-processing completed work
 
-### Why OIDC/OAuth2?
-- Industry standard
-- Secure token-based auth
-- AWS Cognito integration
-- Automatic token refresh
+## Scalability Patterns
 
+### Horizontal Scaling
+- **Frontend**: Stateless React app scales via CDN
+- **Voice Generation**: Parallel processing capability
+- **Storage**: S3 provides unlimited scalable storage
+
+### Vertical Scaling
+- **API Rate Limits**: Configurable to match ElevenLabs quotas
+- **Memory Management**: Streaming audio processing
+- **Concurrent Processing**: Multiple voice generation streams

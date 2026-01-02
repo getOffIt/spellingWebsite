@@ -1,332 +1,435 @@
-# Data Models
+# Data Models and Structures #data
 
-## Core Data Structures
+## Frontend Data Models #react
 
-### Word Model
+### Word and List Structures
 
-**Location:** `src/data/words.ts`
-
+#### Word List Configuration
 ```typescript
-type Word = {
-  id: string;          // Unique identifier, e.g., "off", "ff-off"
-  text: string;        // Display text, e.g., "off"
-  year: 1 | 2;         // Year level (1 or 2)
-  category: string;    // Phonics category, e.g., "ff", "ll", "ai", "less"
+interface WordListConfig {
+  words: string[];
+  type: 'single' | 'less_family';
+  testMode?: 'practice' | 'full_test';
+  passThreshold?: number;
 }
 ```
 
-**Examples:**
+#### Word List Types
+- **single**: Individual words for spelling practice
+- **less_family**: Word families with common patterns (e.g., -less suffix)
+
+#### Test Configuration
 ```typescript
-{ id: 'off', text: 'off', year: 1, category: 'ff' }
-{ id: 'helpless', text: 'helpless', year: 2, category: 'less' }
-```
-
-**Collections:**
-- `YEAR1_WORDS`: Array of Year 1 words
-- `COMMON_WORDS`: Array of common words
-- `ALL_WORDS`: Combined array of all words
-
-### Progress Data Model
-
-**Location:** `src/contexts/ProgressProvider.tsx`
-
-#### WordAttempt
-```typescript
-type WordAttempt = {
-  date: string;        // ISO 8601 date string
-  correct: boolean;    // Whether the attempt was correct
-  attempt: string;     // The user's spelling attempt
+interface TestConfig {
+  mode: 'practice' | 'full_test';
+  passThreshold: number; // Percentage required to pass
+  allowRetries: boolean;
+  showCorrectAnswer: boolean;
+  audioPlayLimit?: number;
 }
 ```
 
-#### ProgressData
-```typescript
-type ProgressData = Record<string, WordAttempt[]>;
-// Maps wordId (string) to array of attempts
-```
+### User and Authentication Models
 
-**Example:**
+#### User Profile
 ```typescript
-{
-  "off": [
-    { date: "2024-01-15T10:30:00.000Z", correct: true, attempt: "off" },
-    { date: "2024-01-16T14:20:00.000Z", correct: false, attempt: "of" }
-  ],
-  "well": [
-    { date: "2024-01-17T09:15:00.000Z", correct: true, attempt: "well" }
-  ]
+interface UserProfile {
+  id: string;
+  email: string;
+  name: string;
+  preferredVoice?: string;
+  testHistory: TestSession[];
+  preferences: UserPreferences;
+}
+
+interface UserPreferences {
+  autoPlayAudio: boolean;
+  showHints: boolean;
+  preferredDifficulty: 'easy' | 'medium' | 'hard';
+  audioVolume: number;
 }
 ```
 
-#### WordStats
+#### Authentication State
 ```typescript
-type WordStats = {
-  status: 'not-started' | 'in-progress' | 'mastered' | 'unmastered';
-  attempts: number;      // Total number of attempts
-  streak: number;       // Consecutive correct answers from most recent
-  lastSeen: string | null; // ISO date of last attempt
-}
-```
-
-**Status Calculation:**
-- `not-started`: No attempts recorded
-- `in-progress`: Has attempts but not mastered
-- `mastered`: 3+ consecutive correct answers
-- `unmastered`: Was previously mastered but got an incorrect answer
-
-### User Model
-
-**Source:** AWS Cognito user profile
-
-```typescript
-type User = {
-  profile: {
-    sub: string;                    // Cognito user ID
-    email?: string;
-    'cognito:username'?: string;
-    phone?: string;
+interface AuthState {
+  user?: User;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error?: string;
+  tokens?: {
+    accessToken: string;
+    refreshToken: string;
+    expiresAt: number;
   };
-  access_token: string;             // OAuth2 access token
-  id_token: string;                 // OIDC ID token
-  refresh_token?: string;            // OAuth2 refresh token
 }
 ```
 
-## Database Schema
+### Test and Progress Models
 
-### DynamoDB Table: `spellingProgress`
+#### Test Session
+```typescript
+interface TestSession {
+  sessionId: string;
+  userId: string;
+  listType: 'single' | 'less_family';
+  testMode: 'practice' | 'full_test';
+  words: string[];
+  results: TestResult[];
+  startedAt: string;
+  completedAt?: string;
+  score: number;
+  passed: boolean;
+  timeSpent: number;
+}
 
-**Partition Key:** `userId` (String)  
-**Sort Key:** `wordId` (String)
-
-**Item Structure:**
-```json
-{
-  "userId": "cognito-sub-id-12345",
-  "wordId": "off",
-  "progress": [
-    {
-      "date": "2024-01-15T10:30:00.000Z",
-      "correct": true,
-      "attempt": "off"
-    },
-    {
-      "date": "2024-01-16T14:20:00.000Z",
-      "correct": false,
-      "attempt": "of"
-    }
-  ]
+interface TestResult {
+  wordId: string;
+  word: string;
+  userInput: string;
+  correct: boolean;
+  attempts: number;
+  timeSpent: number;
+  audioPlayCount: number;
+  hintsUsed: number;
 }
 ```
 
-**Access Patterns:**
-1. **Get all progress for user:** Query by `userId` (partition key)
-2. **Update word progress:** Update item with `userId` + `wordId`, append to `progress` array
-
-## Component State Models
-
-### App Component State
-
+#### Progress Tracking
 ```typescript
-type SelectedList = {
-  words: string[];                    // Array of word texts
-  type: 'single' | 'less_family';     // Word list type
-  testMode?: 'practice' | 'full_test'; // Test mode
-  passThreshold?: number;              // Percentage threshold for full test
-} | null;
-```
+interface UserProgress {
+  userId: string;
+  completedLists: string[];
+  currentStreak: number;
+  longestStreak: number;
+  totalWordsLearned: number;
+  averageScore: number;
+  lastActivity: string;
+  achievements: Achievement[];
+}
 
-### SpellingTest Component State
-
-```typescript
-type SpellingTestState = {
-  step: number;                       // Current word index (0-based)
-  answers: string[];                  // User's answers for all words
-  currentStage: 'base' | 'full';      // For two-stage tests
-  showResults: boolean;               // Whether to show results
-  showPractice: boolean;              // Whether to show practice mode
-  wordToUtter: string | null;         // Word to speak via TTS
-  done: boolean;                      // Test completion flag
+interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  unlockedAt: string;
+  category: 'streak' | 'score' | 'completion' | 'special';
 }
 ```
 
-### Challenge Configuration Model
+## Voice Tool Data Models #voice-tool
 
+### Voice Generation Models
+
+#### Voice Configuration
 ```typescript
-interface ChallengeConfig {
-  title: string;
-  description: string;                 // Supports {total}, {mastered}, {remaining}
-  rewardText?: string;
-  themeClass?: string;
-  motivationMessages: {
-    complete?: string;                // 100% progress
-    close?: string;                   // >= 80%
-    good?: string;                    // >= 60%
-    steady?: string;                  // >= 40%
-    starting?: string;                // >= 20%
-    beginning?: string;               // < 20%
+interface VoiceConfig {
+  id: string;
+  name: string;
+  gender: 'male' | 'female';
+  accent: string;
+  language: string;
+  description: string;
+  isDefault: boolean;
+  priority: number;
+}
+
+interface VoiceSettings {
+  stability: number; // 0.0 - 1.0
+  similarityBoost: number; // 0.0 - 1.0
+  style?: number; // 0.0 - 1.0
+  useSpeakerBoost?: boolean;
+}
+```
+
+#### Voice Generation Request
+```typescript
+interface VoiceGenerationRequest {
+  text: string;
+  voiceId: string;
+  wordId: string;
+  outputPath: string;
+  settings?: VoiceSettings;
+  metadata: {
+    listType: string;
+    difficulty?: number;
+    category?: string;
   };
-  thresholds?: {
-    close?: number;                   // default 80
-    good?: number;                    // default 60
-    steady?: number;                  // default 40
-    starting?: number;                 // default 20
+}
+
+interface VoiceGenerationResponse {
+  success: boolean;
+  audioPath?: string;
+  duration?: number;
+  fileSize?: number;
+  error?: VoiceGenerationError;
+  metadata: AudioMetadata;
+}
+```
+
+### Progress and State Models
+
+#### Generation Progress State
+```typescript
+interface GenerationProgressState {
+  sessionId: string;
+  totalWords: number;
+  completed: string[];
+  failed: string[];
+  pending: string[];
+  currentVoice: string;
+  startedAt: string;
+  lastUpdated: string;
+  errors: Record<string, GenerationError>;
+  statistics: GenerationStatistics;
+}
+
+interface GenerationStatistics {
+  totalRequests: number;
+  successfulGenerations: number;
+  failedGenerations: number;
+  averageDuration: number;
+  totalAudioDuration: number;
+  apiCallsUsed: number;
+  charactersProcessed: number;
+}
+
+interface GenerationError {
+  wordId: string;
+  voice: string;
+  error: string;
+  timestamp: string;
+  retryCount: number;
+  lastRetryAt?: string;
+}
+```
+
+#### Review State
+```typescript
+interface ReviewState {
+  wordId: string;
+  availableVoices: string[];
+  currentVoice: string;
+  reviewStatus: 'pending' | 'approved' | 'rejected';
+  reviewNotes?: string;
+  reviewedAt?: string;
+  reviewedBy?: string;
+  qualityScore?: number;
+}
+
+interface BatchReviewState {
+  sessionId: string;
+  totalWords: number;
+  reviewed: ReviewState[];
+  pending: string[];
+  approved: string[];
+  rejected: string[];
+  currentIndex: number;
+  startedAt: string;
+  lastUpdated: string;
+}
+```
+
+### Storage and Deployment Models
+
+#### Audio File Metadata
+```typescript
+interface AudioMetadata {
+  wordId: string;
+  word: string;
+  voice: string;
+  voiceId: string;
+  duration: number;
+  fileSize: number;
+  format: 'mp3' | 'wav';
+  sampleRate: number;
+  bitRate: number;
+  generatedAt: string;
+  localPath: string;
+  s3Key?: string;
+  s3Url?: string;
+  uploadedAt?: string;
+  cacheControl?: string;
+}
+```
+
+#### S3 Upload State
+```typescript
+interface S3UploadState {
+  sessionId: string;
+  totalFiles: number;
+  uploaded: UploadResult[];
+  pending: string[];
+  failed: UploadError[];
+  currentFile?: string;
+  startedAt: string;
+  completedAt?: string;
+  statistics: UploadStatistics;
+}
+
+interface UploadResult {
+  wordId: string;
+  localPath: string;
+  s3Key: string;
+  s3Url: string;
+  fileSize: number;
+  uploadedAt: string;
+  duration: number;
+}
+
+interface UploadError {
+  wordId: string;
+  localPath: string;
+  error: string;
+  timestamp: string;
+  retryCount: number;
+}
+
+interface UploadStatistics {
+  totalFiles: number;
+  successfulUploads: number;
+  failedUploads: number;
+  totalBytes: number;
+  averageUploadTime: number;
+  totalUploadTime: number;
+}
+```
+
+## Configuration Models
+
+### Application Configuration
+```typescript
+interface AppConfig {
+  environment: 'development' | 'staging' | 'production';
+  api: {
+    baseUrl: string;
+    timeout: number;
+    retryAttempts: number;
   };
-  passThreshold?: number;             // default 85
+  auth: {
+    authority: string;
+    clientId: string;
+    redirectUri: string;
+    scope: string;
+  };
+  audio: {
+    defaultVoice: string;
+    maxPlayCount: number;
+    volume: number;
+    autoPlay: boolean;
+  };
 }
 ```
 
-## Data Flow Models
-
-### Progress Tracking Flow
-
-```mermaid
-graph LR
-    A[User Input] --> B[SpellingTest]
-    B --> C[recordAttempt]
-    C --> D[ProgressProvider]
-    D --> E[API PUT]
-    E --> F[DynamoDB]
-    F --> G[API Response]
-    G --> D
-    D --> H[Update Context]
-    H --> I[useWord Hook]
-    I --> J[Component Re-render]
-```
-
-### Word Status Calculation
-
-```mermaid
-graph TD
-    A[Progress Data] --> B{Has Attempts?}
-    B -->|No| C[not-started]
-    B -->|Yes| D[Calculate Streak]
-    D --> E{Streak >= 3?}
-    E -->|Yes| F{Recent Incorrect?}
-    E -->|No| G[in-progress]
-    F -->|Yes| H[unmastered]
-    F -->|No| I[mastered]
-```
-
-## Data Transformations
-
-### API Response → Frontend State
-
-**API Response:**
-```json
-[
-  { "userId": "user1", "wordId": "off", "progress": [...] },
-  { "userId": "user1", "wordId": "well", "progress": [...] }
-]
-```
-
-**Transformed to:**
+### Voice Tool Configuration
 ```typescript
-{
-  "off": [...],
-  "well": [...]
+interface VoiceToolConfig {
+  elevenlabs: {
+    apiKey: string;
+    baseUrl: string;
+    defaultVoice: string;
+    voiceSettings: VoiceSettings;
+    rateLimits: {
+      requestsPerMinute: number;
+      charactersPerMonth: number;
+    };
+  };
+  aws: {
+    region: string;
+    bucket: string;
+    keyPrefix: string;
+    cacheControl: string;
+  };
+  processing: {
+    batchSize: number;
+    maxRetries: number;
+    retryDelay: number;
+    parallelRequests: number;
+  };
+  storage: {
+    tempDir: string;
+    cacheDir: string;
+    progressFile: string;
+    cleanupOnExit: boolean;
+  };
 }
 ```
 
-**Transformation Code:**
+## Data Validation Schemas
+
+### Word List Validation
 ```typescript
-const progressByWord: ProgressData = {};
-remote.forEach(item => {
-  progressByWord[item.wordId] = item.progress;
-});
-```
-
-### Word Selection → Test Configuration
-
-**Input:** User selects words from UI
-
-**Output:**
-```typescript
-{
-  words: ["off", "well", "hill"],
-  type: "single",
-  testMode: "practice",
-  passThreshold: undefined
+interface WordListValidation {
+  minWords: number;
+  maxWords: number;
+  allowedCharacters: RegExp;
+  maxWordLength: number;
+  requiredFields: string[];
 }
 ```
 
-## Data Validation
-
-### Word Attempt Validation
-- `date`: Must be valid ISO 8601 string
-- `correct`: Must be boolean
-- `attempt`: Must be non-empty string
-
-### Progress Data Validation
-- `progress`: Must be array
-- Each item must match `WordAttempt` structure
-- Array is append-only (no deletions)
-
-### Word ID Validation
-- Must exist in `ALL_WORDS` array
-- Falls back to wordId as text if not found
-
-## Data Persistence
-
-### Frontend Storage
-- **Tokens:** localStorage via `WebStorageStateStore`
-- **Progress:** Fetched from API, stored in React Context (in-memory)
-- **No local persistence:** Progress always synced with backend
-
-### Backend Storage
-- **DynamoDB:** Persistent storage
-- **Partition Key:** userId (enables efficient user-specific queries)
-- **Sort Key:** wordId (enables per-word updates)
-
-## Data Consistency
-
-### Progress Updates
-- **Atomic Operations:** DynamoDB `list_append` ensures atomic updates
-- **Complete Data Return:** PUT operations return all progress data
-- **Optimistic Updates:** Frontend updates immediately, syncs with backend
-
-### Mastery Status
-- **Calculated Client-Side:** Based on attempt history
-- **Streak-Based:** 3 consecutive correct = mastered
-- **State Tracking:** Tracks "unmastered" state for previously mastered words
-
-## Data Relationships
-
-```mermaid
-erDiagram
-    USER ||--o{ PROGRESS : has
-    PROGRESS ||--o{ ATTEMPT : contains
-    WORD ||--o{ PROGRESS : tracked_in
-    CHALLENGE ||--o{ WORD : includes
-    
-    USER {
-        string userId
-        string email
-    }
-    
-    PROGRESS {
-        string userId
-        string wordId
-        array attempts
-    }
-    
-    ATTEMPT {
-        string date
-        boolean correct
-        string attempt
-    }
-    
-    WORD {
-        string id
-        string text
-        number year
-        string category
-    }
-    
-    CHALLENGE {
-        string id
-        array wordIds
-        object config
-    }
+### Audio Quality Validation
+```typescript
+interface AudioQualityMetrics {
+  minDuration: number; // seconds
+  maxDuration: number; // seconds
+  minFileSize: number; // bytes
+  maxFileSize: number; // bytes
+  requiredFormat: string[];
+  minSampleRate: number;
+  maxSilenceDuration: number;
+}
 ```
 
+## Error and Status Models
+
+### Error Types
+```typescript
+enum ErrorType {
+  VALIDATION_ERROR = 'validation_error',
+  API_ERROR = 'api_error',
+  NETWORK_ERROR = 'network_error',
+  FILE_ERROR = 'file_error',
+  AUTHENTICATION_ERROR = 'auth_error',
+  PERMISSION_ERROR = 'permission_error',
+  QUOTA_ERROR = 'quota_error',
+  TIMEOUT_ERROR = 'timeout_error'
+}
+
+interface ApplicationError {
+  type: ErrorType;
+  code: string;
+  message: string;
+  details?: Record<string, any>;
+  timestamp: string;
+  context?: {
+    userId?: string;
+    sessionId?: string;
+    wordId?: string;
+    operation?: string;
+  };
+}
+```
+
+### Status Models
+```typescript
+interface SystemStatus {
+  overall: 'healthy' | 'degraded' | 'down';
+  services: {
+    frontend: ServiceStatus;
+    voiceTool: ServiceStatus;
+    elevenlabs: ServiceStatus;
+    s3: ServiceStatus;
+    auth: ServiceStatus;
+  };
+  lastChecked: string;
+}
+
+interface ServiceStatus {
+  status: 'up' | 'down' | 'degraded';
+  responseTime?: number;
+  errorRate?: number;
+  lastError?: string;
+  uptime?: number;
+}
+```

@@ -1,12 +1,38 @@
-# React + Vite
+# Spelling Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based spelling practice application with voice generation capabilities.
 
-Currently, two official plugins are available:
+## Quick Start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Clone with submodules: `git clone --recurse-submodules <repo-url>`
+2. Install dependencies: `npm install`
+3. Start development server: `npm run dev`
+4. Build for production: `npm run build`
 
-## Expanding the ESLint configuration
+## Documentation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **AGENTS.md** - AI assistant guide for development
+- **PROGRESS_API.md** - Progress tracking system documentation
+- **infrastructure/** - Private infrastructure documentation (git submodule)
+- **voice-tool/** - Voice generation tool with ElevenLabs integration
+
+## Features
+
+- Interactive spelling tests and practice
+- Progress tracking with DynamoDB
+- Voice generation with ElevenLabs API
+- AWS Cognito authentication
+- Responsive design for all devices
+
+## Infrastructure
+
+Infrastructure documentation and configuration is maintained in a separate private repository and included as a git submodule in the `infrastructure/` directory.
+
+To access infrastructure docs:
+```bash
+# Initialize submodules if not already done
+git submodule update --init --recursive
+
+# Access infrastructure documentation
+cd infrastructure/
+```

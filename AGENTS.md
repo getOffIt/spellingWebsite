@@ -1,758 +1,329 @@
 # AGENTS.md - AI Assistant Guide for Spelling Website
 
-> **Purpose:** This document provides comprehensive context for AI coding assistants working on the Spelling Website codebase. It focuses on development patterns, file organization, coding conventions, and assistant-specific guidance that complements existing documentation.
-
-## Table of Contents
-
-- [Project Overview](#project-overview)
-- [Directory Structure & File Organization](#directory-structure--file-organization)
-- [Coding Style & Patterns](#coding-style--patterns)
-- [Component Development Patterns](#component-development-patterns)
-- [State Management Patterns](#state-management-patterns)
-- [API Integration Patterns](#api-integration-patterns)
-- [Testing Guidelines](#testing-guidelines)
-- [Development Workflow](#development-workflow)
-- [Common Tasks & How-To](#common-tasks--how-to)
-- [Key Files Reference](#key-files-reference)
-- [Package-Specific Guidance](#package-specific-guidance)
-
----
-
 ## Project Overview
 
-**Spelling Website** is a React + TypeScript educational application for children to practice spelling. It features:
-- Interactive spelling tests with text-to-speech
-- Progress tracking with mastery system (3 consecutive correct = mastered)
-- Gamified challenges with progress visualization
-- OIDC authentication with AWS Cognito
-- RESTful API integration for progress persistence
+The Spelling Website is a React-based educational application with an integrated voice generation system. It consists of two main components:
 
-**Tech Stack:**
-- Frontend: React 19, TypeScript, Vite, React Router 7
-- Authentication: react-oidc-context, AWS Cognito
-- Backend: AWS Lambda, DynamoDB, API Gateway
-- Testing: Vitest, Testing Library
+1. **Frontend Application**: React 19 app for spelling practice with OIDC authentication
+2. **Voice Tool**: Node.js CLI tool for generating AI voices via ElevenLabs API
 
----
+## Quick Context for AI Assistants
 
-## Directory Structure & File Organization
+### Primary Technologies
+- **Frontend**: React 19, TypeScript, Vite, React Router v7, OIDC authentication
+- **Voice Tool**: Node.js, TypeScript, ElevenLabs API, AWS S3, Kiro CLI compatible
+- **Testing**: Vitest, React Testing Library
+- **Build**: Vite for frontend, TypeScript compiler for voice tool
 
-### Root Level
+### Recent Development Focus
+The **voice-tool directory** contains the most recent development work:
+- ElevenLabs API integration for voice generation
+- Batch processing with human-in-the-loop review
+- AWS S3 deployment automation
+- Kiro CLI agent compatibility
+
+## Directory Structure and File Organization
+
 ```
 spellingWebsite/
-├── src/              # Source code
-├── public/            # Static assets
-├── dist/              # Build output (gitignored)
-├── lambdas/           # AWS Lambda functions
-├── .sop/              # Documentation (this summary)
-└── *.config.ts        # Configuration files
+├── src/                          # React frontend application
+│   ├── App.tsx                   # Main app component with routing
+│   ├── components/               # Reusable UI components
+│   │   ├── Header.tsx           # Navigation and auth status
+│   │   ├── ProtectedRoute.tsx   # Route guard component
+│   │   ├── BaseWordSelection.tsx # Shared word selection logic
+│   │   ├── Challenge.tsx        # Individual challenge display
+│   │   └── WordChip.tsx         # Word display component
+│   ├── pages/                   # Page-level components
+│   │   ├── ChallengesPage.tsx   # Main dashboard
+│   │   ├── WordSelection.tsx    # Word list selection
+│   │   ├── SpellingTest.tsx     # Core spelling test functionality
+│   │   ├── ProfilePage.tsx      # User profile management
+│   │   └── Login.tsx            # Authentication page
+│   ├── contexts/                # React contexts for state
+│   ├── hooks/                   # Custom React hooks
+│   ├── config/                  # Configuration management
+│   ├── data/                    # Data models and constants
+│   └── utils/                   # Utility functions
+├── voice-tool/                  # Voice generation system
+│   ├── src/
+│   │   ├── services/            # Core business logic services
+│   │   │   ├── ElevenLabsService # Voice generation API
+│   │   │   ├── AudioService     # Audio file management
+│   │   │   ├── S3Service        # AWS S3 integration
+│   │   │   ├── ProgressService  # State persistence
+│   │   │   ├── BatchService     # Batch processing
+│   │   │   ├── ReviewService    # Human review workflow
+│   │   │   └── UploadService    # S3 deployment
+│   │   ├── types/               # TypeScript interfaces
+│   │   ├── config/              # Configuration management
+│   │   └── cli/                 # CLI interfaces
+│   ├── kiro-cli.js             # AI agent interface (Kiro CLI)
+│   ├── real-words.ts           # Production word list (220+ words)
+│   ├── test-5-words.ts         # Quick test word list
+│   ├── progress/               # State persistence files
+│   └── audio-cache/            # Generated audio files
+├── public/                     # Static assets
+├── lambdas/                    # AWS Lambda functions
+└── scripts/                    # Build and deployment scripts
 ```
 
-### Source Directory (`src/`)
-```
-src/
-├── components/        # Reusable React components
-│   ├── BaseWordSelection.tsx
-│   ├── Challenge.tsx
-│   ├── Header.tsx
-│   ├── ProtectedRoute.tsx
-│   └── WordChip.tsx
-├── pages/             # Page-level components (routes)
-│   ├── ChallengesPage.tsx
-│   ├── WordSelection.tsx
-│   ├── CommonWordsSelection.tsx
-│   ├── SpellingTest.tsx
-│   └── *.css          # Component-scoped styles
-├── contexts/          # React Context providers
-│   ├── AuthContext.tsx (unused - using react-oidc-context)
-│   └── ProgressProvider.tsx
-├── hooks/             # Custom React hooks
-│   ├── useWord.ts
-│   └── useProgressApi.ts
-├── config/            # Configuration objects
-│   └── wordSelectionConfigs.ts
-├── data/              # Static data
-│   └── words.ts
-├── utils/             # Utility functions
-│   └── wordSelection.ts
-├── test/              # Test setup
-│   └── setup.ts
-├── App.tsx            # Main app component
-├── main.tsx           # Application entry point
-└── *.css              # Global styles
-```
+## Development Patterns and Conventions
 
-### File Naming Conventions
-- **Components:** PascalCase (e.g., `BaseWordSelection.tsx`)
-- **Hooks:** camelCase starting with "use" (e.g., `useWord.ts`)
-- **Utilities:** camelCase (e.g., `wordSelection.ts`)
-- **Config:** camelCase (e.g., `wordSelectionConfigs.ts`)
-- **Data:** camelCase (e.g., `words.ts`)
-- **CSS:** Matches component name (e.g., `SpellingTest.css`)
+### React Component Patterns
 
-### Import Organization Pattern
+#### Component Structure
 ```typescript
-// 1. React and external libraries
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-// 2. Internal components
-import BaseWordSelection from '../components/BaseWordSelection';
-
-// 3. Internal hooks
-import { useWord } from '../hooks/useWord';
-
-// 4. Internal utilities/config/data
-import { wordSelectionConfigs } from '../config/wordSelectionConfigs';
-import { Word } from '../data/words';
-
-// 5. Styles (last)
-import './ComponentName.css';
-```
-
----
-
-## Coding Style & Patterns
-
-### TypeScript Conventions
-
-**Type Definitions:**
-- Use `type` for unions and intersections
-- Use `interface` for object shapes that may be extended
-- Export types that are used across files
-
-```typescript
-// ✅ Good
-export type WordStatus = 'mastered' | 'in-progress' | 'not-started';
-export interface Word {
-  id: string;
-  text: string;
-  year: 1 | 2;
-  category: string;
-}
-```
-
-**Function Signatures:**
-- Explicit return types for exported functions
-- Use arrow functions for callbacks
-- Prefer function declarations for exported functions
-
-```typescript
-// ✅ Good
-export function selectNextWords<T extends WordWithStatus>(
-  words: T[], 
-  maxCount: number = 3
-): string[] {
-  // implementation
-}
-```
-
-### React Patterns
-
-**Component Structure:**
-```typescript
-// 1. Imports
-import React from 'react';
-// ... other imports
-
-// 2. Types/Interfaces
-interface ComponentProps {
-  // props
-}
-
-// 3. Component
-const Component: React.FC<ComponentProps> = ({ prop1, prop2 }) => {
-  // 4. Hooks (at top)
-  const [state, setState] = useState();
-  const hookValue = useCustomHook();
+// Standard functional component pattern
+export default function ComponentName({ prop1, prop2 }: Props) {
+  const [localState, setLocalState] = useState<Type>(initialValue);
   
-  // 5. Derived state / computations
-  const computed = useMemo(() => {
-    // expensive computation
-  }, [dependencies]);
-  
-  // 6. Event handlers
-  const handleClick = () => {
-    // handler logic
+  // Event handlers
+  const handleEvent = (param: Type) => {
+    // Handle event logic
   };
   
-  // 7. Effects
-  useEffect(() => {
-    // effect logic
-  }, [dependencies]);
-  
-  // 8. Render
   return (
-    <div>
-      {/* JSX */}
+    <div className="component-container">
+      {/* JSX content */}
     </div>
   );
-};
-
-// 9. Export
-export default Component;
-```
-
-**Hook Rules:**
-- ✅ Always call hooks at the top level
-- ✅ Call hooks in the same order every render
-- ✅ Use consistent number of hook calls (important for `useWord` in loops)
-
-```typescript
-// ✅ Good - consistent hook calls
-const allWordsStatusList = words.map(word => useWord(word.id));
-
-// ❌ Bad - conditional hook calls
-if (condition) {
-  const status = useWord(wordId); // Don't do this
 }
 ```
 
-### State Management Patterns
+#### State Management Patterns
+- **Local State**: `useState` for component-specific state
+- **Lifted State**: Pass state up to parent components (see App.tsx word selection)
+- **Context**: React Context for authentication (OIDC context)
+- **Props Down, Events Up**: Standard React data flow pattern
 
-**Local State:**
-- Use `useState` for component-local state
-- Use `useRef` for values that don't trigger re-renders
-- Use `useMemo` for expensive computations
-
-**Global State:**
-- Use React Context for app-wide state
-- `ProgressProvider` for progress data
-- `AuthProvider` (from react-oidc-context) for authentication
-
-**State Updates:**
-- Always use functional updates for state that depends on previous state
-- Batch related updates when possible
-
+#### Route Protection Pattern
 ```typescript
-// ✅ Good
-setAnswers(prev => [...prev, newAnswer]);
-
-// ❌ Bad
-setAnswers([...answers, newAnswer]); // if answers is in closure
-```
-
----
-
-## Component Development Patterns
-
-### Configuration-Driven Components
-
-Many components accept configuration objects for flexibility:
-
-```typescript
-// BaseWordSelection accepts config
-<BaseWordSelection
-  words={config.words}
-  title={config.title}
-  themeClass={config.themeClass}
-  wordFilter={config.wordFilter}
-  challengeConfig={config.challengeConfig}
-  onSelectWords={handleSelectWords}
+// All main routes wrapped with ProtectedRoute
+<Route
+  path="/protected-page"
+  element={
+    <ProtectedRoute>
+      <ProtectedComponent />
+    </ProtectedRoute>
+  }
 />
 ```
 
-**Pattern:** Extract configuration to `src/config/` files for reusability.
+### Voice Tool Service Patterns
 
-### Status-Based Rendering
+#### Service Layer Architecture
+- **Single Responsibility**: Each service handles one concern
+- **Dependency Injection**: Services receive dependencies via constructor
+- **Error Handling**: Consistent error handling with retry logic
+- **State Persistence**: JSON-based progress tracking for resume capability
 
-Components often render differently based on word status:
-
+#### CLI Interface Pattern
 ```typescript
-const getStatusIcon = (status: WordStatus) => {
-  switch (status) {
-    case 'mastered': return '✔︎';
-    case 'unmastered': return '✗';
-    case 'in-progress': return '🔄';
-    default: return '❔';
-  }
-};
+// Kiro CLI compatible command structure
+node --env-file=.env kiro-cli.js --command [args]
+
+// Available commands:
+--batch          # Generate all missing audio
+--play word      # Review specific word
+--accept word    # Accept current voice
+--reject word    # Reject and try next voice
+--upload         # Deploy to S3
+--status         # Show progress
 ```
 
-**Pattern:** Use switch statements or lookup objects for status-based logic.
+## Testing Patterns
 
-### Memoization for Performance
+### Frontend Testing
+- **Component Tests**: React Testing Library for user-centric testing
+- **Test Files**: `.test.tsx` suffix (e.g., `WordChip.test.tsx`)
+- **Testing Philosophy**: Test user interactions, not implementation details
+- **Mocking**: Mock external dependencies and API calls
 
-Use `useMemo` and `useRef` to optimize expensive operations:
+### Voice Tool Testing
+- **Unit Tests**: Service layer testing with mocked dependencies
+- **Integration Tests**: API integration validation
+- **CLI Tests**: Command interface testing
+- **Test Data**: Use `test-5-words.ts` for quick development testing
 
+## Configuration Management
+
+### Frontend Configuration
+- **Environment Variables**: Build-time injection via Vite
+- **OIDC Config**: Authentication provider configuration
+- **API Endpoints**: Configurable base URLs
+
+### Voice Tool Configuration
 ```typescript
-// ✅ Good - memoized category grouping
-const categories = useMemo(() => {
-  // expensive grouping logic
-  return groupedCategories;
-}, [filteredWords]);
-
-// ✅ Good - ref for values that don't need re-renders
-const prevStatusesRef = useRef<string>('');
+// Environment variables (.env file)
+ELEVENLABS_API_KEY=your_api_key_here
+S3_BUCKET=spellmatereact
+S3_REGION=eu-west-2
+S3_KEY_PREFIX=voices
+AUDIO_PLATFORM=macos
+AUTO_PLAY_AUDIO=true
+WORDS_FILE=./real-words.ts  # or ./test-5-words.ts for testing
 ```
-
-**When to Memoize:**
-- Expensive computations (filtering, grouping, sorting)
-- Derived data from props/state
-- Objects/arrays passed as props to child components
-
-### Callback Prop Pattern
-
-Parent components pass callbacks to children for handling actions:
-
-```typescript
-// Parent
-const handleSelectWords = (words: string[], type: 'single' | 'less_family') => {
-  setSelectedList({ words, type });
-  navigate('/spelling-test');
-};
-
-// Child
-<BaseWordSelection onSelectWords={handleSelectWords} />
-```
-
-**Pattern:** Maintain unidirectional data flow with callback props.
-
----
-
-## State Management Patterns
-
-### Context API Usage
-
-**ProgressProvider Pattern:**
-```typescript
-// 1. Define context type
-interface ProgressContext {
-  progress: ProgressData;
-  recordAttempt(wordId: string, correct: boolean, attempt: string): Promise<void>;
-  getWordStats(wordId: string): WordStats;
-}
-
-// 2. Create context
-const ProgressContext = createContext<ProgressContext | null>(null);
-
-// 3. Provider component
-export function ProgressProvider({ children }: { children: React.ReactNode }) {
-  const [progress, setProgress] = useState<ProgressData>({});
-  // ... implementation
-  return (
-    <ProgressContext.Provider value={{ progress, recordAttempt, getWordStats }}>
-      {children}
-    </ProgressContext.Provider>
-  );
-}
-
-// 4. Custom hook for consuming
-export function useProgress() {
-  const context = useContext(ProgressContext);
-  if (!context) {
-    throw new Error('useProgress must be used within a ProgressProvider');
-  }
-  return context;
-}
-```
-
-### Custom Hooks Pattern
-
-Encapsulate business logic in reusable hooks:
-
-```typescript
-// useWord hook combines word data with progress
-export function useWord(wordId: string) {
-  const { progress, recordAttempt, getWordStats } = useProgress();
-  const word = useMemo(() => {
-    return ALL_WORDS.find(w => w.id === wordId) || fallbackWord;
-  }, [wordId]);
-  const stats = getWordStats(wordId);
-  return {
-    ...word,
-    ...stats,
-    recordAttempt
-  };
-}
-```
-
-**Benefits:**
-- Logic reuse across components
-- Separation of concerns
-- Easier testing
-
----
 
 ## API Integration Patterns
 
-### API Call Pattern
+### ElevenLabs API Integration
+- **Rate Limiting**: Built-in request throttling
+- **Voice Fallback**: Rachel → Dorothy → Emily → Thomas → Antoni → Adam
+- **Error Handling**: Exponential backoff with retry logic
+- **Quality Control**: Human-in-the-loop review workflow
 
-```typescript
-// 1. Define API functions in hooks/useProgressApi.ts
-export async function getAllProgress(token: string): Promise<ProgressData> {
-  const res = await fetch(API_BASE, {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  if (!res.ok) {
-    throw new Error(`Failed to fetch progress: ${res.status}`);
-  }
-  return await res.json();
-}
+### AWS S3 Integration
+- **Upload Pattern**: Direct upload with proper caching headers
+- **File Structure**: `voices/{voice_name}/{word_id}.mp3`
+- **CDN Delivery**: Public read access for audio playback
+- **Batch Operations**: Parallel uploads with progress tracking
 
-// 2. Use in context/provider
-const refreshProgress = async () => {
-  if (!token) return;
-  try {
-    const remote = await getAllProgress(token);
-    // Transform and update state
-  } catch (err) {
-    console.error('Failed to load progress:', err);
-    // Handle error gracefully
-  }
-};
-```
-
-### Error Handling Pattern
-
-```typescript
-// ✅ Good - graceful error handling
-try {
-  await apiCall();
-} catch (err) {
-  console.error('Operation failed:', err);
-  // Don't block UI, show loading state or fallback
-  setProgress({});
-}
-```
-
-### Token Management
-
-- Tokens stored in localStorage via `WebStorageStateStore`
-- Access token extracted from `auth.user?.access_token`
-- Token automatically refreshed by react-oidc-context
-
----
-
-## Testing Guidelines
-
-### Test Setup
-
-**Location:** `src/test/setup.ts`
-```typescript
-import '@testing-library/jest-dom';
-```
-
-**Test File Naming:** `*.test.tsx` or `*.test.ts`
-
-### Testing Patterns
-
-**Component Testing:**
-```typescript
-import { render, screen } from '@testing-library/react';
-import Component from './Component';
-
-describe('Component', () => {
-  it('renders correctly', () => {
-    render(<Component prop="value" />);
-    expect(screen.getByText('Expected Text')).toBeInTheDocument();
-  });
-});
-```
-
-**Hook Testing:**
-- Test hooks using `@testing-library/react-hooks` or render hook in component
-- Mock context providers when needed
-
-**Utility Testing:**
-```typescript
-import { selectNextWords } from './wordSelection';
-
-describe('selectNextWords', () => {
-  it('selects words by priority', () => {
-    const words = [
-      { text: 'word1', status: 'mastered' },
-      { text: 'word2', status: 'in-progress' },
-    ];
-    const result = selectNextWords(words, 1);
-    expect(result).toEqual(['word2']); // in-progress has higher priority
-  });
-});
-```
-
-### Running Tests
-
-```bash
-npm test              # Run tests in watch mode
-npm test -- --run     # Run tests once
-npm test -- --coverage # With coverage
-```
-
----
+### OIDC Authentication
+- **Flow**: Authorization Code Flow with PKCE
+- **Token Management**: Automatic refresh with react-oidc-context
+- **Route Protection**: All main routes behind authentication
 
 ## Development Workflow
 
-### Starting Development
-
+### Frontend Development
 ```bash
-npm install           # Install dependencies
-npm run dev           # Start dev server (usually http://localhost:5173)
+# Development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run tests
+npm test
+
+# Lint code
+npm run lint
 ```
 
-### Making Changes
-
-1. **Create/Modify Component:**
-   - Follow component structure pattern
-   - Add corresponding CSS file if needed
-   - Update imports in parent components
-
-2. **Add New Route:**
-   - Add route in `src/App.tsx`
-   - Wrap in `<ProtectedRoute>` if authentication required
-   - Import page component
-
-3. **Add New Word List:**
-   - Follow `ADDING_NEW_WORD_LIST_GUIDE.md`
-   - Add words to `src/data/words.ts`
-   - Create config in `src/config/wordSelectionConfigs.ts`
-   - Create page component
-   - Add route and challenge card
-
-### Code Quality
-
+### Voice Tool Development
 ```bash
-npm run lint          # Run ESLint
+# Build TypeScript
+npm run build
+
+# Quick test (5 words, ~10 seconds)
+WORDS_FILE=./test-5-words.ts node --env-file=.env kiro-cli.js --batch
+
+# Test audio playback
+node --env-file=.env kiro-cli.js --play cat
+
+# Full production run (220+ words, ~5-10 minutes)
+node --env-file=.env kiro-cli.js --batch
+
+# Check status
+node --env-file=.env kiro-cli.js --status
 ```
 
-**Linting Rules:**
-- React hooks rules enforced
-- TypeScript strict mode
-- React Fast Refresh compatibility
+## Common Development Tasks
 
-### Building for Production
+### Adding New React Components
+1. Create component file in appropriate directory (`src/components/` or `src/pages/`)
+2. Follow functional component pattern with TypeScript
+3. Add to routing in `App.tsx` if it's a page component
+4. Wrap with `ProtectedRoute` if authentication required
+5. Add tests in `.test.tsx` file
 
-```bash
-npm run build         # Create production build in dist/
-npm run preview       # Preview production build locally
-```
+### Adding New Voice Tool Services
+1. Create service in `src/services/` directory
+2. Follow service layer pattern with dependency injection
+3. Add TypeScript interfaces in `src/types/`
+4. Integrate with CLI interface in `kiro-cli.js`
+5. Add unit tests
 
----
+### Modifying Word Lists
+- **Development**: Use `test-5-words.ts` for quick testing
+- **Production**: Modify `real-words.ts` for production word list
+- **Format**: Flat array of strings, no nested structures
 
-## Common Tasks & How-To
+### Voice Generation Workflow
+1. **Generate**: `--batch` command processes all missing words
+2. **Review**: `--play word` to listen to generated audio
+3. **Accept/Reject**: `--accept word` or `--reject word` to control quality
+4. **Alternative Voices**: Rejection automatically tries next voice in chain
+5. **Deploy**: `--upload` command deploys approved audio to S3
 
-### Adding a New Component
+## Error Handling Guidelines
 
-1. Create file in appropriate directory (`components/` or `pages/`)
-2. Follow component structure pattern
-3. Add TypeScript interface for props
-4. Export component
-5. Import and use in parent component
-6. Add CSS file if needed
+### Frontend Error Handling
+- **Route Guards**: Redirect to login for unauthenticated users
+- **API Errors**: Graceful degradation with user-friendly messages
+- **Component Boundaries**: Use error boundaries for component failures
 
-### Adding a New Page/Route
+### Voice Tool Error Handling
+- **API Failures**: Exponential backoff with configurable retry limits
+- **File System Errors**: Proper permission and disk space handling
+- **State Recovery**: Resume from last known good state on restart
+- **User Feedback**: Clear error messages with suggested actions
 
-1. Create page component in `src/pages/`
-2. Add route in `src/App.tsx`:
-   ```typescript
-   <Route
-     path="/new-page"
-     element={
-       <ProtectedRoute>
-         <NewPage />
-       </ProtectedRoute>
-     }
-   />
-   ```
-3. Add navigation link if needed
+## Performance Considerations
 
-### Adding a New Word List
+### Frontend Performance
+- **Code Splitting**: Vite handles automatic route-based splitting
+- **Bundle Size**: Current core bundle ~82KB gzipped
+- **Audio Caching**: Browser caching of S3-delivered audio files
+- **Lazy Loading**: Route-based component lazy loading
 
-**See:** `ADDING_NEW_WORD_LIST_GUIDE.md` for complete guide.
+### Voice Tool Performance
+- **Batch Processing**: Configurable batch sizes for API rate limits
+- **Local Caching**: Audio files cached during generation process
+- **Parallel Processing**: Multiple concurrent voice generation streams
+- **Resume Capability**: Avoid re-processing completed work
 
-**Quick Steps:**
-1. Add words to `src/data/words.ts`
-2. Add config to `src/config/wordSelectionConfigs.ts`
-3. Create page component using `BaseWordSelection`
-4. Add route in `src/App.tsx`
-5. Add challenge card in `src/pages/ChallengesPage.tsx`
+## Deployment and Operations
 
-### Modifying Progress Tracking
+### Frontend Deployment
+- **Build Tool**: Vite optimized production builds
+- **Static Hosting**: Suitable for CDN deployment
+- **Environment Config**: Build-time configuration injection
 
-1. **Update Data Model:** Modify types in `src/contexts/ProgressProvider.tsx`
-2. **Update API:** Modify `src/hooks/useProgressApi.ts` if API changes
-3. **Update Lambda:** Modify `lambdas/progress.js` if backend changes
-4. **Update Components:** Update components using `useProgress` or `useWord`
+### Voice Tool Deployment
+- **Local Execution**: Runs on developer machines
+- **Cloud Integration**: Direct AWS S3 and ElevenLabs API access
+- **State Persistence**: JSON files for progress tracking
+- **Cleanup**: Automatic temporary file cleanup
 
-### Adding New Challenge Configuration
+## AI Assistant Usage Guidelines
 
-1. Add config to `src/config/wordSelectionConfigs.ts`
-2. Configure `challengeConfig` with:
-   - `title`, `description`
-   - `motivationMessages` for each progress level
-   - `thresholds` (optional, defaults: 80, 60, 40, 20)
-   - `passThreshold` (optional, default: 85)
+### Effective Patterns
+1. **Context Files**: Add `.sop/summary/index.md` to context for comprehensive project understanding
+2. **Specific Documentation**: Reference individual files in `.sop/summary/` for detailed information
+3. **Recent Changes**: Focus on `voice-tool/` directory for latest development work
+4. **Testing**: Use `test-5-words.ts` for quick development cycles
 
----
+### Common Questions and Answers
 
-## Key Files Reference
+**Q: How do I add a new spelling word?**
+A: Add to `real-words.ts` array, then run `--batch` to generate audio
 
-### Core Application Files
+**Q: How do I test voice generation quickly?**
+A: Use `WORDS_FILE=./test-5-words.ts node --env-file=.env kiro-cli.js --batch`
 
-| File | Purpose | Key Exports |
-|------|---------|-------------|
-| `src/main.tsx` | Application entry point | React root render |
-| `src/App.tsx` | Main app component | Routes, state management |
-| `src/App.css` | Global app styles | - |
+**Q: How do I add a new React page?**
+A: Create component in `src/pages/`, add route in `App.tsx`, wrap with `ProtectedRoute`
 
-### Context Providers
+**Q: How do I handle authentication in new components?**
+A: Use `useAuth()` hook from react-oidc-context, wrap routes with `ProtectedRoute`
 
-| File | Purpose | Key Exports |
-|------|---------|-------------|
-| `src/contexts/ProgressProvider.tsx` | Progress tracking context | `ProgressProvider`, `useProgress` |
-| `src/contexts/AuthContext.tsx` | (Unused - using react-oidc-context) | - |
+**Q: How do I modify the voice generation workflow?**
+A: Edit services in `voice-tool/src/services/`, update CLI interface in `kiro-cli.js`
 
-### Custom Hooks
+## Troubleshooting Common Issues
 
-| File | Purpose | Key Exports |
-|------|---------|-------------|
-| `src/hooks/useWord.ts` | Word data + progress stats | `useWord` |
-| `src/hooks/useProgressApi.ts` | API communication | `getAllProgress`, `putWordProgress` |
+### Voice Tool Issues
+- **API Key Errors**: Check `ELEVENLABS_API_KEY` in `.env` file
+- **S3 Upload Failures**: Verify AWS credentials and bucket permissions
+- **Audio Playback Issues**: Check `AUDIO_PLATFORM` setting (macos/linux/windows)
+- **Progress Lost**: Check `progress/` directory for state files
 
-### Configuration
+### Frontend Issues
+- **Authentication Loops**: Check OIDC provider configuration
+- **Route Access Issues**: Verify `ProtectedRoute` wrapping
+- **Build Failures**: Check TypeScript errors and dependency versions
+- **Audio Not Playing**: Verify S3 URLs and CORS configuration
 
-| File | Purpose | Key Exports |
-|------|---------|-------------|
-| `src/config/wordSelectionConfigs.ts` | Word list configurations | `wordSelectionConfigs` |
-| `src/data/words.ts` | Word data arrays | `YEAR1_WORDS`, `COMMON_WORDS`, `ALL_WORDS`, `Word` type |
-
-### Utilities
-
-| File | Purpose | Key Exports |
-|------|---------|-------------|
-| `src/utils/wordSelection.ts` | Word selection logic | `selectNextWords`, `sortWordsByPriority` |
-
-### Backend
-
-| File | Purpose |
-|------|---------|
-| `lambdas/progress.js` | AWS Lambda handler for progress API |
-
----
-
-## Package-Specific Guidance
-
-### react-oidc-context
-
-**Usage:**
-```typescript
-import { useAuth } from 'react-oidc-context';
-
-const auth = useAuth();
-const token = auth.user?.access_token;
-const isAuthenticated = auth.isAuthenticated;
-```
-
-**Configuration:** In `src/main.tsx`, `cognitoAuthConfig` object
-
-**Token Access:** `auth.user?.access_token` for API calls
-
-### react-router-dom
-
-**Usage:**
-```typescript
-import { useNavigate, Navigate } from 'react-router-dom';
-
-const navigate = useNavigate();
-navigate('/path');
-
-// In component
-if (!authenticated) {
-  return <Navigate to="/login" replace />;
-}
-```
-
-**Route Protection:** Use `ProtectedRoute` component wrapper
-
-### canvas-confetti
-
-**Usage:**
-```typescript
-import confetti from 'canvas-confetti';
-
-confetti({
-  particleCount: 100,
-  spread: 70,
-  origin: { y: 0.6 }
-});
-```
-
-**When to Use:** Challenge completion, achievements
-
----
-
-## Development Patterns Summary
-
-### ✅ Do
-
-- Use TypeScript for type safety
-- Follow component structure pattern
-- Use custom hooks for reusable logic
-- Memoize expensive computations
-- Handle errors gracefully
-- Use configuration objects for flexibility
-- Follow file naming conventions
-- Export types/interfaces used across files
-- Use React Context for global state
-- Call hooks consistently (same order, same count)
-
-### ❌ Don't
-
-- Don't call hooks conditionally
-- Don't mutate state directly
-- Don't forget to handle loading/error states
-- Don't hardcode values that should be configurable
-- Don't mix concerns (keep components focused)
-- Don't forget to add TypeScript types
-- Don't use `any` type (use `unknown` if needed)
-- Don't forget to handle edge cases (empty arrays, null values)
-
----
-
-## Quick Reference: Common Code Patterns
-
-### Word Status Priority
-```typescript
-// Priority: unmastered > in-progress > not-started > mastered
-const sorted = sortWordsByPriority(words);
-const next = selectNextWords(words, 3);
-```
-
-### Progress Calculation
-```typescript
-const mastered = words.filter(w => w.status === 'mastered').length;
-const total = words.length;
-const progress = Math.round((mastered / total) * 100);
-```
-
-### API Call with Token
-```typescript
-const token = auth.user?.access_token;
-if (!token) return;
-const data = await getAllProgress(token);
-```
-
-### Status-Based Rendering
-```typescript
-const getStatusClass = (status: WordStatus) => {
-  return `word-status-${status}`;
-};
-```
-
----
-
-## Additional Resources
-
-- **Detailed Documentation:** See `.sop/summary/` directory for comprehensive docs
-- **Adding Word Lists:** See `ADDING_NEW_WORD_LIST_GUIDE.md`
-- **Architecture:** See `.sop/summary/architecture.md`
-- **Components:** See `.sop/summary/components.md`
-- **API Reference:** See `.sop/summary/interfaces.md`
-
----
-
-*This document is optimized for AI coding assistants. For user-facing documentation, see README.md. For detailed technical documentation, see the `.sop/summary/` directory.*
-
+This guide provides the essential context for AI assistants to effectively help with development tasks in the Spelling Website project. For detailed technical specifications, refer to the individual documentation files in `.sop/summary/`.

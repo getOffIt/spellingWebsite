@@ -1,343 +1,276 @@
-# Components Documentation
+# Major Components #react #voice-tool
 
-## Component Hierarchy
+## Frontend Components #react
 
-```mermaid
-graph TD
-    App[App.tsx] --> Header[Header]
-    App --> Router[React Router]
-    Router --> ChallengesPage[ChallengesPage]
-    Router --> WordSelection[WordSelection]
-    Router --> CommonWordsSelection[CommonWordsSelection]
-    Router --> SpellingTest[SpellingTest]
-    Router --> ProfilePage[ProfilePage]
-    Router --> ApiTest[ApiTest]
-    Router --> ProtectedRoute[ProtectedRoute]
-    
-    WordSelection --> BaseWordSelection[BaseWordSelection]
-    CommonWordsSelection --> BaseWordSelection
-    BaseWordSelection --> Challenge[Challenge]
-    BaseWordSelection --> WordChip[WordChip]
-    
-    SpellingTest --> SpellingResults[SpellingResults]
-    SpellingTest --> useWord[useWord Hook]
-    
-    App --> AuthProvider[AuthProvider - react-oidc-context]
-    App --> ProgressProvider[ProgressProvider]
+### Core Application Components
+
+#### App.tsx
+**Purpose**: Main application component and routing orchestrator
+**Responsibilities**:
+- Route configuration and navigation
+- Authentication state management
+- Word selection state lifting
+- Protected route wrapping
+
+**Key State**:
+```typescript
+selectedList: {
+  words: string[];
+  type: 'single' | 'less_family';
+  testMode?: 'practice' | 'full_test';
+  passThreshold?: number;
+} | null
 ```
 
-## Core Components
-
-### App.tsx
-**Purpose:** Main application component with routing and state management
-
-**Responsibilities:**
-- Define all application routes
-- Manage selected word list state
-- Provide authentication context
-- Handle word selection callbacks
-
-**Key Features:**
-- Protected routes using `ProtectedRoute` wrapper
-- State management for selected words and test configuration
-- Navigation handling
-
-**Props:** None (root component)
-
-**State:**
-- `selectedList`: Current word list selection with type, test mode, and pass threshold
-
-**Routes:**
-- `/` - ChallengesPage (protected)
-- `/login` - Login page (unprotected)
-- `/word-selection` - WordSelection page (protected)
-- `/common-words-selection` - CommonWordsSelection page (protected)
-- `/spelling-test` - SpellingTest page (protected)
-- `/profile` - ProfilePage (protected)
-- `/api-test` - ApiTest page (protected)
-
-### Header.tsx
-**Purpose:** Application header with branding and user info
-
-**Responsibilities:**
-- Display application name/logo
-- Show authenticated user information
-- Provide navigation to profile
-
-**Features:**
-- Clickable logo to navigate home
-- User avatar (first letter of username)
-- Username display
-- Profile navigation
-
-**Props:** None (uses hooks for auth)
-
-**Dependencies:**
-- `react-oidc-context` for authentication
-- `react-router-dom` for navigation
-
-## Page Components
-
-### ChallengesPage.tsx
-**Purpose:** Landing page displaying available spelling challenges
-
-**Responsibilities:**
-- Display challenge cards with progress
-- Calculate progress for each challenge
-- Navigate to word selection pages
-
-**Features:**
-- Multiple challenge types (KS1-1, Common Words)
-- Progress visualization (percentage and word counts)
-- Status-based messaging (completed, close, good, steady, starting, beginning)
-- Clickable challenge cards
-
-**State:** None (derived from word progress)
-
-**Dependencies:**
-- `useWord` hook for word status
-- `YEAR1_WORDS`, `COMMON_WORDS` from data
-
-### WordSelection.tsx / CommonWordsSelection.tsx
-**Purpose:** Word selection pages for choosing words to practice
-
-**Implementation:** Both use `BaseWordSelection` component with different configurations
-
-**Features:**
-- Category-based word organization
-- Progress tracking per category
-- Word status indicators
-- Challenge integration
-
-### SpellingTest.tsx
-**Purpose:** Interactive spelling test interface
-
-**Responsibilities:**
-- Present words one at a time
-- Text-to-speech integration
-- Input handling and validation
-- Progress recording
-- Results display
-
-**Key Features:**
-- Two-stage testing for "less family" words (base word → full word)
-- Practice mode and full test mode
-- Pass threshold for full tests
-- Automatic word pronunciation
-- Keyboard navigation support
-
-**Props:**
-- `words`: Array of word strings
-- `listType`: 'single' | 'less_family'
-- `testMode`: 'practice' | 'full_test'
-- `passThreshold`: Optional percentage threshold
-- `onComplete`: Callback when test finishes
-
-**State:**
-- `step`: Current word index
-- `answers`: Array of user answers
-- `currentStage`: 'base' | 'full' (for less_family)
-- `showResults`: Boolean for results display
-- `done`: Test completion flag
-
-**Dependencies:**
-- `useWord` hook for each word
-- `ProgressProvider` for recording attempts
-- Browser SpeechSynthesis API
-
-### SpellingResults.tsx
-**Purpose:** Display spelling test results
-
-**Responsibilities:**
-- Show correct/incorrect answers
-- Display word statistics
-- Provide retry and practice options
-
-**Props:**
-- `words`: Array of tested words
-- `answers`: User's answers
-- `onPractice`: Callback for practice mode
-- `onRetry`: Callback for retry
-- `listType`: Word list type
-- `isBaseStageResults`: Boolean for two-stage tests
-
-### ProfilePage.tsx
-**Purpose:** User profile and settings page
-
-**Features:**
-- User information display
-- Progress statistics
+#### Header.tsx
+**Purpose**: Application navigation and user interface
+**Responsibilities**:
+- Navigation menu
+- User authentication status
 - Logout functionality
 
-### ApiTest.tsx
-**Purpose:** API testing and debugging page
+#### ProtectedRoute.tsx
+**Purpose**: Route guard for authenticated access
+**Responsibilities**:
+- Authentication verification
+- Redirect to login for unauthenticated users
+- Render protected content for authenticated users
 
-**Features:**
-- Test API endpoints
-- Display API responses
-- Debug authentication
+### Page Components
 
-## Reusable Components
+#### ChallengesPage
+**Purpose**: Main dashboard for spelling challenges
+**Responsibilities**:
+- Display available spelling challenges
+- Navigate to word selection
+- Show user progress
 
-### BaseWordSelection.tsx
-**Purpose:** Base component for word selection pages
+#### WordSelection & CommonWordsSelection
+**Purpose**: Word list selection interface
+**Responsibilities**:
+- Present word lists for selection
+- Configure test parameters
+- Pass selected words to spelling test
 
-**Responsibilities:**
-- Display words organized by category
-- Show progress per category
-- Handle word selection
-- Integrate challenge component
+#### SpellingTest
+**Purpose**: Core spelling test functionality
+**Responsibilities**:
+- Audio playback for word pronunciation
+- User input collection
+- Progress tracking
+- Results calculation
 
-**Key Features:**
-- Category grouping with progress bars
-- Word status indicators (mastered, in-progress, not-started)
-- Clickable categories to start tests
-- Challenge integration
-- Theme support
+**Key Props**:
+```typescript
+{
+  words: string[];
+  listType: 'single' | 'less_family';
+  testMode: 'practice' | 'full_test';
+  passThreshold?: number;
+  onComplete: () => void;
+}
+```
 
-**Props:**
-- `words`: Array of Word objects
-- `title`: Page title
-- `themeClass`: Optional CSS theme class
-- `wordFilter`: Optional filter function
-- `challengeConfig`: Optional challenge configuration
-- `onSelectWords`: Callback for word selection
+### Utility Components
 
-**State Management:**
-- Uses `useWord` hook for all words (consistent hook calls)
-- Memoized status maps for performance
-- Category grouping with maintained order
+#### BaseWordSelection.tsx
+**Purpose**: Shared word selection logic
+**Responsibilities**:
+- Common word selection patterns
+- Reusable selection interface
+- State management for word lists
 
-### Challenge.tsx
-**Purpose:** Gamified challenge display component
-
-**Responsibilities:**
-- Display challenge progress
-- Show motivational messages
-- Handle challenge actions (practice, full test)
-
-**Features:**
+#### Challenge.tsx
+**Purpose**: Individual challenge display component
+**Responsibilities**:
+- Challenge metadata display
 - Progress visualization
-- Dynamic motivation messages based on progress
-- Template variable replacement ({total}, {mastered}, {remaining})
-- Clickable motivation messages to start practice
-- Full test button with pass threshold
+- Challenge selection handling
 
-**Props:**
-- `wordStatuses`: Array of words with status
-- `config`: ChallengeConfig object
-- `onSelectWords`: Callback for word selection
-- `navigate`: Navigation function
+#### WordChip.tsx
+**Purpose**: Individual word display component
+**Responsibilities**:
+- Word visualization
+- Selection state indication
+- Click handling for word selection
 
-**Configuration:**
-- Customizable thresholds (close, good, steady, starting)
-- Customizable pass threshold (default 85%)
-- Theme class support
-- Motivation messages per status level
+## Voice Tool Components #voice-tool
 
-### WordChip.tsx
-**Purpose:** Individual word display component with status
+### Service Layer
 
-**Responsibilities:**
-- Display word with visual status indicator
-- Show status icon (✔︎, ✗, 🔄, ❔)
+#### ElevenLabsService
+**Purpose**: ElevenLabs API integration
+**Responsibilities**:
+- Voice generation requests
+- API rate limit handling
+- Error handling and retries
+- Voice quality validation
 
-**Props:**
-- `word`: Word object
-- `onClick`: Optional click handler
+#### AudioService
+**Purpose**: Audio file management
+**Responsibilities**:
+- Local audio caching
+- Playback functionality
+- File format validation
+- Audio quality assessment
 
-**Status Types:**
-- `mastered`: Green checkmark
-- `unmastered`: Red X
-- `in-progress`: Blue refresh icon
-- `not-started`: Gray question mark
+#### S3Service
+**Purpose**: AWS S3 integration
+**Responsibilities**:
+- Audio file uploads
+- Bucket management
+- Caching header configuration
+- Upload progress tracking
 
-### ProtectedRoute.tsx
-**Purpose:** Route guard for authentication
+#### ProgressService
+**Purpose**: State persistence and resume capability
+**Responsibilities**:
+- JSON-based progress tracking
+- Resume interrupted sessions
+- Status reporting
+- Error recovery
 
-**Responsibilities:**
-- Check authentication status
-- Redirect to login if not authenticated
-- Render children if authenticated
+### CLI Interface Components
 
-**Props:**
-- `children`: React node to render if authenticated
+#### BatchService
+**Purpose**: Batch audio generation orchestration
+**Responsibilities**:
+- Word list processing
+- Parallel generation coordination
+- Progress reporting
+- Error aggregation
 
-**Flow:**
-1. Check `auth.isAuthenticated`
-2. If false → redirect to `/login`
-3. If true → render children
+#### ReviewService
+**Purpose**: Human-in-the-loop review workflow
+**Responsibilities**:
+- Audio playback for review
+- Accept/reject decision handling
+- Alternative voice generation
+- Quality control workflow
+
+#### UploadService
+**Purpose**: S3 deployment coordination
+**Responsibilities**:
+- Batch upload orchestration
+- Upload verification
+- Metadata management
+- Deployment reporting
+
+### Configuration Components
+
+#### ConfigService
+**Purpose**: Environment and configuration management
+**Responsibilities**:
+- Environment variable loading
+- Default value management
+- Validation of required settings
+- Configuration export for services
 
 ## Component Relationships
 
+### Frontend Component Flow
 ```mermaid
-classDiagram
-    class App {
-        +selectedList
-        +handleSelectWords()
-        +handleReset()
-    }
-    
-    class BaseWordSelection {
-        +words: Word[]
-        +onSelectWords()
-        +challengeConfig
-    }
-    
-    class Challenge {
-        +wordStatuses
-        +config: ChallengeConfig
-        +onSelectWords()
-    }
-    
-    class SpellingTest {
-        +words: string[]
-        +listType
-        +testMode
-        +onComplete()
-    }
-    
-    class ProgressProvider {
-        +progress: ProgressData
-        +recordAttempt()
-        +getWordStats()
-    }
-    
-    class useWord {
-        +status
-        +attempts
-        +recordAttempt()
-    }
-    
-    App --> BaseWordSelection : uses
-    BaseWordSelection --> Challenge : contains
-    BaseWordSelection --> useWord : uses
-    SpellingTest --> useWord : uses
-    useWord --> ProgressProvider : depends on
-    Challenge --> SpellingTest : navigates to
+graph TD
+    App --> Header
+    App --> ProtectedRoute
+    ProtectedRoute --> ChallengesPage
+    ChallengesPage --> Challenge
+    ProtectedRoute --> WordSelection
+    WordSelection --> BaseWordSelection
+    BaseWordSelection --> WordChip
+    ProtectedRoute --> SpellingTest
 ```
 
-## Styling Approach
+### Voice Tool Service Dependencies
+```mermaid
+graph TD
+    CLI[Kiro CLI] --> BatchService
+    CLI --> ReviewService
+    CLI --> UploadService
+    
+    BatchService --> ElevenLabsService
+    BatchService --> ProgressService
+    
+    ReviewService --> AudioService
+    ReviewService --> ElevenLabsService
+    
+    UploadService --> S3Service
+    UploadService --> ProgressService
+    
+    ElevenLabsService --> ConfigService
+    S3Service --> ConfigService
+    AudioService --> ConfigService
+```
 
-- **Component-scoped CSS:** Each component/page has its own CSS file
-- **CSS Modules:** Not used (standard CSS files)
-- **Theme Classes:** Support for theme customization via `themeClass` prop
-- **Responsive Design:** Mobile-first approach with touch-friendly interfaces
+## Interface Contracts
 
-## Component Patterns
+### Frontend Component Props
 
-### 1. Hook-Based Data Fetching
-Components use custom hooks (`useWord`, `useProgressApi`) to fetch and manage data, keeping components focused on presentation.
+#### SpellingTest Props
+```typescript
+interface SpellingTestProps {
+  words: string[];
+  listType: 'single' | 'less_family';
+  testMode: 'practice' | 'full_test';
+  passThreshold?: number;
+  onComplete: () => void;
+}
+```
 
-### 2. Configuration-Driven Components
-Components like `BaseWordSelection` and `Challenge` accept configuration objects, making them reusable across different contexts.
+#### WordSelection Callback
+```typescript
+type OnSelectWords = (
+  words: string[],
+  type: 'single' | 'less_family',
+  testMode?: 'practice' | 'full_test',
+  passThreshold?: number
+) => void;
+```
 
-### 3. Status-Based Rendering
-Many components render differently based on word status (mastered, in-progress, not-started), providing visual feedback.
+### Voice Tool Service Interfaces
 
-### 4. Memoization for Performance
-Components use `useMemo` and `useRef` to optimize expensive computations and prevent unnecessary re-renders.
+#### Voice Generation Request
+```typescript
+interface VoiceRequest {
+  text: string;
+  voice: string;
+  wordId: string;
+  outputPath: string;
+}
+```
 
-### 5. Callback Prop Pattern
-Parent components pass callback functions to child components for handling user actions, maintaining unidirectional data flow.
+#### Progress State
+```typescript
+interface ProgressState {
+  completed: string[];
+  failed: string[];
+  pending: string[];
+  currentVoice: string;
+  lastUpdated: string;
+}
+```
 
+## Testing Components
+
+### Frontend Testing
+- **WordChip.test.tsx**: Component behavior testing
+- **React Testing Library**: Component rendering and interaction
+- **Vitest**: Test runner and assertions
+
+### Voice Tool Testing
+- **Unit Tests**: Service layer testing
+- **Integration Tests**: API integration validation
+- **CLI Tests**: Command interface testing
+
+## Error Handling Patterns
+
+### Frontend Error Handling
+- **Route Guards**: Authentication error handling
+- **Component Boundaries**: Error boundary components
+- **API Errors**: Graceful degradation for service failures
+
+### Voice Tool Error Handling
+- **Retry Logic**: Exponential backoff for API failures
+- **Graceful Degradation**: Continue processing on partial failures
+- **State Recovery**: Resume from last known good state
+- **User Feedback**: Clear error messages and recovery options
