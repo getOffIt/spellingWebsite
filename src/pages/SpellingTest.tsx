@@ -7,16 +7,21 @@ import FullTestResults from './FullTestResults';
 import CongratulationsPage from './CongratulationsPage';
 import { useWord } from '../hooks/useWord';
 import { useProgress } from '../contexts/ProgressProvider';
+import { VoiceService } from '../services/VoiceService';
 
 interface Word {
   word: string;
   sentence?: string; // Optional sentence for now, can be added later
 }
 
-function speak(text: string) {
-  window.speechSynthesis.cancel(); // Stop any ongoing speech
-  const utterance = new window.SpeechSynthesisUtterance(text);
-  window.speechSynthesis.speak(utterance);
+const voiceService = new VoiceService();
+
+async function speak(text: string) {
+  try {
+    await voiceService.speak(text);
+  } catch (error) {
+    console.warn('Voice playback failed:', error);
+  }
 }
 
 // Helper to derive base word from '-less' word

@@ -66,6 +66,12 @@ node --env-file=.env kiro-cli.js --reject word
 node --env-file=.env kiro-cli.js --list-voices word
 node --env-file=.env kiro-cli.js --choose word voice
 
+# Generate voice manifest
+npm run create-manifest > ../public/voices/voice-manifest.json
+
+# Deploy manifest to S3
+npm run deploy-manifest
+
 # Upload to S3
 node --env-file=.env kiro-cli.js --upload
 

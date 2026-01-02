@@ -8,6 +8,8 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "start": "node --env-file=.env dist/index.js",
+    "create-manifest": "node --env-file=.env --no-warnings generate-manifest.js",
+    "deploy-manifest": "node --env-file=.env deploy-manifest.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
