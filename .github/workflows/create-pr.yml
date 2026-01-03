@@ -30,7 +30,7 @@ jobs:
             const { data: existingPRs } = await github.rest.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head: branchName,
+              head: `${context.repo.owner}:${branchName}`,
               base: 'main',
               state: 'open'
             });
