@@ -9,6 +9,10 @@ A React-based spelling practice application with voice generation capabilities.
 3. Start development server: `npm run dev`
 4. Build for production: `npm run build`
 
+## Testing Workflow
+
+This line was added to test the automatic PR creation and reviewer assignment workflow.
+
 ## Documentation
 
 - **AGENTS.md** - AI assistant guide for development
