@@ -67,6 +67,14 @@ jobs:
                 labels: ['auto-generated', 'needs-review']
               });
               
+              // Assign reviewer
+              await github.rest.pulls.requestReviewers({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number,
+                reviewers: ['getOffIt']
+              });
+              
               console.log(`Created PR #${pr.number}: ${pr.title}`);
             } else {
               console.log('PR already exists for this branch');
