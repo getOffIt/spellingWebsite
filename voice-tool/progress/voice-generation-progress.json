@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "sessionId": "session_1767274313460",
   "startedAt": "2026-01-01T13:31:53.460Z",
-  "lastUpdatedAt": "2026-01-01T17:24:35.517Z",
+  "lastUpdatedAt": "2026-01-08T18:36:54.595Z",
   "totalWords": 220,
   "completedCount": 220,
   "failedCount": 0,
@@ -996,37 +996,38 @@
       "wordId": "i",
       "status": "completed",
       "generatedVoices": [
-        "dorothy"
+        "thomas"
       ],
       "s3Uploaded": false,
       "attempts": 0,
-      "voiceUsed": "dorothy",
-      "localAudioPath": "./audio-cache/dorothy/i.mp3",
-      "completedAt": "2026-01-01T17:16:18.150Z"
+      "voiceUsed": "thomas",
+      "localAudioPath": "./audio-cache/thomas/i.mp3",
+      "completedAt": "2026-01-08T18:33:19.871Z"
     },
     "the": {
       "wordId": "the",
       "status": "completed",
       "generatedVoices": [
-        "dorothy"
+        "eric"
       ],
       "s3Uploaded": false,
       "attempts": 0,
-      "voiceUsed": "dorothy",
-      "localAudioPath": "./audio-cache/dorothy/the.mp3",
-      "completedAt": "2026-01-01T17:16:18.702Z"
+      "voiceUsed": "eric",
+      "localAudioPath": "./audio-cache/eric/the.mp3",
+      "completedAt": "2026-01-08T18:36:54.594Z"
     },
     "no": {
       "wordId": "no",
       "status": "completed",
       "generatedVoices": [
-        "emily"
+        "emily",
+        "thomas"
       ],
       "s3Uploaded": false,
       "attempts": 0,
-      "voiceUsed": "rachel",
-      "localAudioPath": "./audio-cache/rachel/no.mp3",
-      "completedAt": "2026-01-01T17:23:38.297Z"
+      "voiceUsed": "thomas",
+      "localAudioPath": "./audio-cache/thomas/no.mp3",
+      "completedAt": "2026-01-08T18:28:11.347Z"
     },
     "put": {
       "wordId": "put",
@@ -1061,8 +1062,8 @@
       "s3Uploaded": false,
       "attempts": 0,
       "voiceUsed": "rachel",
-      "localAudioPath": "audio-cache/rachel/is.mp3",
-      "completedAt": "2026-01-01T15:14:06.079Z"
+      "localAudioPath": "./audio-cache/rachel/is.mp3",
+      "completedAt": "2026-01-08T18:28:19.445Z"
     },
     "to": {
       "wordId": "to",
@@ -1116,13 +1117,14 @@
       "wordId": "as",
       "status": "completed",
       "generatedVoices": [
-        "rachel"
+        "rachel",
+        "dorothy"
       ],
       "s3Uploaded": false,
       "attempts": 0,
-      "voiceUsed": "rachel",
-      "localAudioPath": "audio-cache/rachel/as.mp3",
-      "completedAt": "2026-01-01T16:44:32.989Z"
+      "voiceUsed": "dorothy",
+      "localAudioPath": "./audio-cache/dorothy/as.mp3",
+      "completedAt": "2026-01-08T18:28:32.419Z"
     },
     "his": {
       "wordId": "his",
@@ -1200,13 +1202,14 @@
       "wordId": "be",
       "status": "completed",
       "generatedVoices": [
-        "emily"
+        "emily",
+        "thomas"
       ],
       "s3Uploaded": false,
       "attempts": 0,
-      "voiceUsed": "rachel",
-      "localAudioPath": "./audio-cache/rachel/be.mp3",
-      "completedAt": "2026-01-01T17:23:50.373Z"
+      "voiceUsed": "thomas",
+      "localAudioPath": "./audio-cache/thomas/be.mp3",
+      "completedAt": "2026-01-08T18:29:14.301Z"
     },
     "push": {
       "wordId": "push",
@@ -1288,21 +1291,23 @@
       ],
       "s3Uploaded": false,
       "attempts": 0,
-      "voiceUsed": "dorothy",
-      "localAudioPath": "./audio-cache/dorothy/all.mp3",
-      "completedAt": "2026-01-01T17:23:57.496Z"
+      "voiceUsed": "rachel",
+      "localAudioPath": "./audio-cache/rachel/all.mp3",
+      "completedAt": "2026-01-08T18:29:18.965Z"
     },
     "are": {
       "wordId": "are",
       "status": "completed",
       "generatedVoices": [
-        "rachel"
+        "rachel",
+        "dorothy",
+        "emily"
       ],
       "s3Uploaded": false,
       "attempts": 0,
-      "voiceUsed": "rachel",
-      "localAudioPath": "audio-cache/rachel/are.mp3",
-      "completedAt": "2026-01-01T16:44:20.691Z"
+      "voiceUsed": "emily",
+      "localAudioPath": "./audio-cache/emily/are.mp3",
+      "completedAt": "2026-01-08T18:29:35.628Z"
     },
     "ball": {
       "wordId": "ball",
