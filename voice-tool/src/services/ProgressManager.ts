@@ -66,8 +66,7 @@ export class ProgressManager {
       status: 'completed',
       voiceUsed,
       localAudioPath: audioPath,
-      completedAt: new Date(),
-      s3Uploaded: false
+      completedAt: new Date()
     });
   }
 
@@ -201,7 +200,6 @@ export class ProgressManager {
       wordId,
       status: 'pending',
       generatedVoices: [],
-      s3Uploaded: false,
       attempts: 0
     };
   }

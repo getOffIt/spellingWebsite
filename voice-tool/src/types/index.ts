@@ -49,7 +49,6 @@ export interface WordProgress {
   voiceUsed?: string
   generatedVoices: string[]  // List of voices generated for this word
   localAudioPath?: string
-  s3Uploaded: boolean
   attempts: number
   lastError?: string
   completedAt?: Date
