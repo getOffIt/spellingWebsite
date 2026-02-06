@@ -122,8 +122,7 @@ export const YEAR1_WORDS: Word[] = [
 ];
 
 export const COMMON_WORDS: Word[] = [
-  // Common words 1 (first 6)
-  { id: 'i', text: 'I', year: 1, category: 'common words 1' },
+  // Common words 1 (first 5)
   { id: 'the', text: 'the', year: 1, category: 'common words 1' },
   { id: 'no', text: 'no', year: 1, category: 'common words 1' },
   { id: 'put', text: 'put', year: 1, category: 'common words 1' },
@@ -185,10 +184,8 @@ export const COMMON_WORDS: Word[] = [
   { id: 'their', text: 'their', year: 1, category: 'common words 8' },
   { id: 'a', text: 'a', year: 1, category: 'common words 8' },
 
-  // Common words 9 (5 words)
+  // Common words 9 (3 words)
   { id: 'people', text: 'people', year: 1, category: 'common words 9' },
-  { id: 'mr', text: 'Mr', year: 1, category: 'common words 9' },
-  { id: 'mrs', text: 'Mrs', year: 1, category: 'common words 9' },
   { id: 'your', text: 'your', year: 1, category: 'common words 9' },
   { id: 'ask', text: 'ask', year: 1, category: 'common words 9' },
 
@@ -300,8 +297,6 @@ export const YEAR2_WORDS: Word[] = [
   { id: 'again', text: 'again', year: 2, category: 'misc' },
   { id: 'half', text: 'half', year: 2, category: 'misc' },
   { id: 'money', text: 'money', year: 2, category: 'misc' },
-  { id: 'mr', text: 'Mr', year: 2, category: 'misc' },
-  { id: 'mrs', text: 'Mrs', year: 2, category: 'misc' },
   { id: 'parents', text: 'parents', year: 2, category: 'misc' },
   { id: 'christmas', text: 'Christmas', year: 2, category: 'misc' }
 ];
