@@ -12,6 +12,7 @@ interface BaseWordSelectionProps {
   themeClass?: string;
   wordFilter?: (word: Word) => boolean;
   challengeConfig?: ChallengeConfig;
+  masteryThreshold?: number; // default 3
   onSelectWords: (
     words: string[], 
     type: 'single' | 'less_family',
@@ -30,6 +31,7 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
   themeClass,
   wordFilter,
   challengeConfig,
+  masteryThreshold = 3,
   onSelectWords,
 }) => {
   const navigate = useNavigate();
@@ -63,12 +65,24 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
   }, [words, wordFilter]);
 
   // Build wordStatuses array for filtered words using the status map
+  // Override mastery status when masteryThreshold differs from default (3)
   const wordStatuses = useMemo(() => {
-    return filteredWords.map(word => ({
-      ...word,
-      status: statusMap.get(word.id)?.status || 'not-started',
-    }));
-  }, [filteredWords, statusMap]);
+    return filteredWords.map(word => {
+      const wordData = statusMap.get(word.id);
+      let status = wordData?.status || 'not-started';
+      if (masteryThreshold > 3 && wordData) {
+        // Recompute: the base provider marks mastered at streak >= 3,
+        // but we need streak >= masteryThreshold
+        const streak = wordData.streak ?? 0;
+        if (status === 'mastered' && streak < masteryThreshold) {
+          status = 'in-progress';
+        } else if (streak >= masteryThreshold) {
+          status = 'mastered';
+        }
+      }
+      return { ...word, status };
+    });
+  }, [filteredWords, statusMap, masteryThreshold]);
 
   // Calculate overall progress
   const totalWords = filteredWords.length;

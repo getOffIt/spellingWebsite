@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { YEAR1_WORDS, COMMON_WORDS } from '../data/words';
+import { YEAR1_WORDS, COMMON_WORDS, SPELLING_LIST_A, SPELLING_LIST_B } from '../data/words';
 import { useWord } from '../hooks/useWord';
 import './ChallengesPage.css';
 
@@ -19,6 +19,18 @@ const ChallengesPage: React.FC = () => {
   const commonWordsMastered = commonWordsStatusList.filter(status => status.status === 'mastered').length;
   const commonWordsTotalWords = COMMON_WORDS.length;
   const commonWordsProgress = Math.round((commonWordsMastered / commonWordsTotalWords) * 100);
+
+  // Calculate Spelling List A progress (threshold 10)
+  const listAStatusList = SPELLING_LIST_A.map(word => useWord(word.id));
+  const listAMastered = listAStatusList.filter(status => (status.streak ?? 0) >= 10).length;
+  const listATotalWords = SPELLING_LIST_A.length;
+  const listAProgress = Math.round((listAMastered / listATotalWords) * 100);
+
+  // Calculate Spelling List B progress (threshold 10)
+  const listBStatusList = SPELLING_LIST_B.map(word => useWord(word.id));
+  const listBMastered = listBStatusList.filter(status => (status.streak ?? 0) >= 10).length;
+  const listBTotalWords = SPELLING_LIST_B.length;
+  const listBProgress = Math.round((listBMastered / listBTotalWords) * 100);
 
   const challenges = [
     {
@@ -44,6 +56,30 @@ const ChallengesPage: React.FC = () => {
       route: '/common-words-selection',
       bgColor: 'linear-gradient(135deg, #1a0d2e 0%, #ff8c00 50%, #1a0d2e 100%)',
       borderColor: '#ff4500'
+    },
+    {
+      id: 'spelling-list-a',
+      title: "📝 Spelling Test — List A",
+      description: "Master all List A spelling words to earn £40! 10 correct in a row per word.",
+      progress: listAProgress,
+      masteredWords: listAMastered,
+      totalWords: listATotalWords,
+      status: listAProgress === 100 ? 'completed' : listAProgress > 75 ? 'close' : listAProgress > 50 ? 'good' : listAProgress > 25 ? 'steady' : listAProgress > 0 ? 'starting' : 'beginning',
+      route: '/spelling-list-a',
+      bgColor: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
+      borderColor: '#6D28D9'
+    },
+    {
+      id: 'spelling-list-b',
+      title: "📝 Spelling Test — List B",
+      description: "Master all List B spelling words to earn £40! 10 correct in a row per word.",
+      progress: listBProgress,
+      masteredWords: listBMastered,
+      totalWords: listBTotalWords,
+      status: listBProgress === 100 ? 'completed' : listBProgress > 75 ? 'close' : listBProgress > 50 ? 'good' : listBProgress > 25 ? 'steady' : listBProgress > 0 ? 'starting' : 'beginning',
+      route: '/spelling-list-b',
+      bgColor: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
+      borderColor: '#6D28D9'
     }
   ];
 

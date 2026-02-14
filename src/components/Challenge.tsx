@@ -4,7 +4,7 @@ import '../pages/WordSelection.css';
 // Default pass threshold for full challenge tests
 export const DEFAULT_PASS_THRESHOLD = 85;
 
-interface WordStatus {
+export interface WordStatus {
   id: string;
   text: string;
   year?: number;

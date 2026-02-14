@@ -1,4 +1,4 @@
-import { Word, YEAR1_WORDS, COMMON_WORDS } from '../data/words';
+import { Word, YEAR1_WORDS, COMMON_WORDS, SPELLING_LIST_A, SPELLING_LIST_B } from '../data/words';
 import { ChallengeConfig } from '../components/Challenge';
 
 /**
@@ -10,6 +10,7 @@ export interface WordSelectionConfig {
   themeClass?: string;
   wordFilter?: (word: Word) => boolean;
   challengeConfig?: ChallengeConfig;
+  masteryThreshold?: number; // default 3
 }
 
 /**
@@ -53,5 +54,40 @@ export const wordSelectionConfigs: Record<string, WordSelectionConfig> = {
       },
     },
   },
+  spellingListA: {
+    words: SPELLING_LIST_A,
+    title: '📝 Spelling Test — List A',
+    masteryThreshold: 10,
+    challengeConfig: {
+      title: '📝 Spelling Test — List A',
+      description: 'Master all {total} words to earn £40! (10 correct in a row per word)',
+      rewardText: '',
+      motivationMessages: {
+        complete: '🎉 AMAZING! 🎉\nYou\'ve earned your £40! 🤑',
+        close: '🔥 So close! Just {remaining} more words! 🔥',
+        good: '💪 Great progress! Keep going! 💪',
+        steady: '🚀 Steady progress! You\'re doing amazing! 🚀',
+        starting: '🌟 Off to a great start! Keep it up! 🌟',
+        beginning: '🎯 Ready to start earning that £40? Let\'s go! 🎯',
+      },
+    },
+  },
+  spellingListB: {
+    words: SPELLING_LIST_B,
+    title: '📝 Spelling Test — List B',
+    masteryThreshold: 10,
+    challengeConfig: {
+      title: '📝 Spelling Test — List B',
+      description: 'Master all {total} words to earn £40! (10 correct in a row per word)',
+      rewardText: '',
+      motivationMessages: {
+        complete: '🎉 AMAZING! 🎉\nYou\'ve earned your £40! 🤑',
+        close: '🔥 So close! Just {remaining} more words! 🔥',
+        good: '💪 Great progress! Keep going! 💪',
+        steady: '🚀 Steady progress! You\'re doing amazing! 🚀',
+        starting: '🌟 Off to a great start! Keep it up! 🌟',
+        beginning: '🎯 Ready to start earning that £40? Let\'s go! 🎯',
+      },
+    },
+  },
 };
-

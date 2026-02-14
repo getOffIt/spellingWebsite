@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import ChallengesPage from "./pages/ChallengesPage";
 import WordSelection from "./pages/WordSelection";
 import CommonWordsSelection from "./pages/CommonWordsSelection";
+import SpellingListASelection from "./pages/SpellingListASelection";
+import SpellingListBSelection from "./pages/SpellingListBSelection";
 import './App.css'
 import SpellingTest from './pages/SpellingTest'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -79,6 +81,22 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <CommonWordsSelection onSelectWords={handleSelectWords} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/spelling-list-a"
+            element={
+              <ProtectedRoute>
+                <SpellingListASelection onSelectWords={handleSelectWords} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/spelling-list-b"
+            element={
+              <ProtectedRoute>
+                <SpellingListBSelection onSelectWords={handleSelectWords} />
               </ProtectedRoute>
             }
           />

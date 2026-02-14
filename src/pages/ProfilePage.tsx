@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from 'react-oidc-context';
 import { useProgress } from '../contexts/ProgressProvider';
+import { SPELLING_LIST_A, SPELLING_LIST_B } from '../data/words';
 
 const signOutRedirect = (auth: ReturnType<typeof useAuth>) => {
   const clientId = "3ua09or8n2k4cqldeu3u8bv585";
@@ -337,6 +338,13 @@ export default function ProfilePage() {
   const profile = auth.user.profile;
   const username = profile['cognito:username'] || profile.email || profile.sub;
 
+  // Build set of word IDs with higher mastery threshold
+  const highThresholdIds = new Set([
+    ...SPELLING_LIST_A.map(w => w.id),
+    ...SPELLING_LIST_B.map(w => w.id),
+  ]);
+  const getMasteryThreshold = (wordId: string) => highThresholdIds.has(wordId) ? 10 : 3;
+
   // Calculate KPIs
   const wordIds = Object.keys(progress);
   const stats = wordIds.map(wordId => getWordStats(wordId));
@@ -347,9 +355,10 @@ export default function ProfilePage() {
   startOfWeek.setDate(today.getDate() - today.getDay());
   startOfWeek.setHours(0, 0, 0, 0);
 
-  // Calculate words mastered this week
-  const wordsMasteredThisWeek = stats.filter(stat => {
-    if (stat.status !== 'mastered') return false;
+  // Calculate words mastered this week (respecting per-word threshold)
+  const wordsMasteredThisWeek = stats.filter((stat, i) => {
+    const threshold = getMasteryThreshold(wordIds[i]);
+    if (stat.streak < threshold) return false;
     const lastSeen = stat.lastSeen ? new Date(stat.lastSeen) : null;
     return lastSeen && lastSeen >= startOfWeek;
   }).length;
@@ -371,6 +380,8 @@ export default function ProfilePage() {
     const attempts = progress[wordId] || [];
     if (attempts.length === 0) return;
     
+    const threshold = getMasteryThreshold(wordId);
+    
     // Track mastery and unmastery events chronologically
     let consecutiveCorrect = 0;
     let wasMastered = false;
@@ -382,8 +393,8 @@ export default function ProfilePage() {
       if (attempt.correct) {
         consecutiveCorrect++;
         
-        // Check if this attempt achieves mastery (3rd consecutive correct)
-        if (consecutiveCorrect === 3 && !wasMastered) {
+        // Check if this attempt achieves mastery
+        if (consecutiveCorrect === threshold && !wasMastered) {
           if (!dailyMasteredWords[attemptDate]) {
             dailyMasteredWords[attemptDate] = { mastered: [], unmastered: [], remastered: [] };
           }
@@ -392,7 +403,7 @@ export default function ProfilePage() {
         }
       } else {
         // Incorrect attempt - check if this breaks mastery
-        if (wasMastered && consecutiveCorrect >= 3) {
+        if (wasMastered && consecutiveCorrect >= threshold) {
           if (!dailyMasteredWords[attemptDate]) {
             dailyMasteredWords[attemptDate] = { mastered: [], unmastered: [], remastered: [] };
           }
@@ -497,7 +508,7 @@ export default function ProfilePage() {
           />
           <StatCard 
             title="Total Words Mastered" 
-            value={stats.filter(s => s.status === 'mastered').length} 
+            value={stats.filter((s, i) => s.streak >= getMasteryThreshold(wordIds[i])).length} 
             color="#2563eb"
           />
         </div>

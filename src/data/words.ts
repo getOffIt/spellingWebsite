@@ -301,4 +301,170 @@ export const YEAR2_WORDS: Word[] = [
   { id: 'christmas', text: 'Christmas', year: 2, category: 'misc' }
 ];
 
-export const ALL_WORDS = [...YEAR1_WORDS, ...COMMON_WORDS, ...YEAR2_WORDS] 
+export const SPELLING_LIST_A: Word[] = [
+  // tion-and-sion
+  { id: 'list-a-occasion', text: 'occasion', year: 2, category: 'tion-and-sion' },
+  { id: 'list-a-question', text: 'question', year: 2, category: 'tion-and-sion' },
+  { id: 'list-a-mention', text: 'mention', year: 2, category: 'tion-and-sion' },
+  { id: 'list-a-position', text: 'position', year: 2, category: 'tion-and-sion' },
+  { id: 'list-a-eight', text: 'eight', year: 2, category: 'tion-and-sion' },
+  { id: 'list-a-eighth', text: 'eighth', year: 2, category: 'tion-and-sion' },
+  { id: 'list-a-weight', text: 'weight', year: 2, category: 'tion-and-sion' },
+  { id: 'list-a-height', text: 'height', year: 2, category: 'tion-and-sion' },
+  { id: 'list-a-though', text: 'though', year: 2, category: 'tion-and-sion' },
+  { id: 'list-a-although', text: 'although', year: 2, category: 'tion-and-sion' },
+  { id: 'list-a-through', text: 'through', year: 2, category: 'tion-and-sion' },
+
+  // double-consonants
+  { id: 'list-a-february', text: 'February', year: 2, category: 'double-consonants' },
+  { id: 'list-a-interest', text: 'interest', year: 2, category: 'double-consonants' },
+  { id: 'list-a-address', text: 'address', year: 2, category: 'double-consonants' },
+  { id: 'list-a-appear', text: 'appear', year: 2, category: 'double-consonants' },
+  { id: 'list-a-difficult', text: 'difficult', year: 2, category: 'double-consonants' },
+  { id: 'list-a-grammar', text: 'grammar', year: 2, category: 'double-consonants' },
+  { id: 'list-a-opposite', text: 'opposite', year: 2, category: 'double-consonants' },
+  { id: 'list-a-occasionally', text: 'occasionally', year: 2, category: 'double-consonants' },
+  { id: 'list-a-describe', text: 'describe', year: 2, category: 'double-consonants' },
+  { id: 'list-a-extreme', text: 'extreme', year: 2, category: 'double-consonants' },
+  { id: 'list-a-guide', text: 'guide', year: 2, category: 'double-consonants' },
+  { id: 'list-a-surprise', text: 'surprise', year: 2, category: 'double-consonants' },
+
+  // s-as-c
+  { id: 'list-a-circle', text: 'circle', year: 2, category: 's-as-c' },
+  { id: 'list-a-exercise', text: 'exercise', year: 2, category: 's-as-c' },
+  { id: 'list-a-medicine', text: 'medicine', year: 2, category: 's-as-c' },
+  { id: 'list-a-sentence', text: 'sentence', year: 2, category: 's-as-c' },
+  { id: 'list-a-busy', text: 'busy', year: 2, category: 's-as-c' },
+  { id: 'list-a-early', text: 'early', year: 2, category: 's-as-c' },
+  { id: 'list-a-earth', text: 'earth', year: 2, category: 's-as-c' },
+  { id: 'list-a-heard', text: 'heard', year: 2, category: 's-as-c' },
+  { id: 'list-a-heart', text: 'heart', year: 2, category: 's-as-c' },
+  { id: 'list-a-learn', text: 'learn', year: 2, category: 's-as-c' },
+  { id: 'list-a-caught', text: 'caught', year: 2, category: 's-as-c' },
+
+  // cross-curricular
+  { id: 'list-a-answer', text: 'answer', year: 2, category: 'cross-curricular' },
+  { id: 'list-a-calendar', text: 'calendar', year: 2, category: 'cross-curricular' },
+  { id: 'list-a-experiment', text: 'experiment', year: 2, category: 'cross-curricular' },
+  { id: 'list-a-fruit', text: 'fruit', year: 2, category: 'cross-curricular' },
+  { id: 'list-a-group', text: 'group', year: 2, category: 'cross-curricular' },
+  { id: 'list-a-increase', text: 'increase', year: 2, category: 'cross-curricular' },
+  { id: 'list-a-length', text: 'length', year: 2, category: 'cross-curricular' },
+  { id: 'list-a-material', text: 'material', year: 2, category: 'cross-curricular' },
+  { id: 'list-a-minute', text: 'minute', year: 2, category: 'cross-curricular' },
+  { id: 'list-a-quarter', text: 'quarter', year: 2, category: 'cross-curricular' },
+  { id: 'list-a-remember', text: 'remember', year: 2, category: 'cross-curricular' },
+  { id: 'list-a-straight', text: 'straight', year: 2, category: 'cross-curricular' },
+
+  // homophones
+  { id: 'list-a-often', text: 'often', year: 2, category: 'homophones' },
+  { id: 'list-a-potatoes', text: 'potatoes', year: 2, category: 'homophones' },
+  { id: 'list-a-promise', text: 'promise', year: 2, category: 'homophones' },
+  { id: 'list-a-special', text: 'special', year: 2, category: 'homophones' },
+  { id: 'list-a-woman', text: 'woman', year: 2, category: 'homophones' },
+  { id: 'list-a-women', text: 'women', year: 2, category: 'homophones' },
+  { id: 'list-a-there', text: 'there', year: 2, category: 'homophones' },
+  { id: 'list-a-their', text: 'their', year: 2, category: 'homophones' },
+  { id: 'list-a-theyre', text: "they're", year: 2, category: 'homophones' },
+  { id: 'list-a-ball', text: 'ball', year: 2, category: 'homophones' },
+  { id: 'list-a-bawl', text: 'bawl', year: 2, category: 'homophones' },
+  { id: 'list-a-berry', text: 'berry', year: 2, category: 'homophones' },
+  { id: 'list-a-bury', text: 'bury', year: 2, category: 'homophones' },
+
+  // other-a
+  { id: 'list-a-brake', text: 'brake', year: 2, category: 'other-a' },
+  { id: 'list-a-break', text: 'break', year: 2, category: 'other-a' },
+  { id: 'list-a-fair', text: 'fair', year: 2, category: 'other-a' },
+  { id: 'list-a-fare', text: 'fare', year: 2, category: 'other-a' },
+  { id: 'list-a-great', text: 'great', year: 2, category: 'other-a' },
+  { id: 'list-a-grate', text: 'grate', year: 2, category: 'other-a' },
+  { id: 'list-a-groan', text: 'groan', year: 2, category: 'other-a' },
+  { id: 'list-a-grown', text: 'grown', year: 2, category: 'other-a' },
+  { id: 'list-a-here', text: 'here', year: 2, category: 'other-a' },
+  { id: 'list-a-hear', text: 'hear', year: 2, category: 'other-a' },
+  { id: 'list-a-heal', text: 'heal', year: 2, category: 'other-a' },
+  { id: 'list-a-heel', text: 'heel', year: 2, category: 'other-a' },
+  { id: 'list-a-hell', text: "he'll", year: 2, category: 'other-a' },
+  { id: 'list-a-knot', text: 'knot', year: 2, category: 'other-a' },
+  { id: 'list-a-not', text: 'not', year: 2, category: 'other-a' },
+];
+
+export const SPELLING_LIST_B: Word[] = [
+  // oor-letter-string
+  { id: 'list-b-door', text: 'door', year: 2, category: 'oor-letter-string' },
+  { id: 'list-b-floor', text: 'floor', year: 2, category: 'oor-letter-string' },
+  { id: 'list-b-poor', text: 'poor', year: 2, category: 'oor-letter-string' },
+  { id: 'list-b-break', text: 'break', year: 2, category: 'oor-letter-string' },
+  { id: 'list-b-great', text: 'great', year: 2, category: 'oor-letter-string' },
+  { id: 'list-b-steak', text: 'steak', year: 2, category: 'oor-letter-string' },
+  { id: 'list-b-could', text: 'could', year: 2, category: 'oor-letter-string' },
+  { id: 'list-b-should', text: 'should', year: 2, category: 'oor-letter-string' },
+  { id: 'list-b-would', text: 'would', year: 2, category: 'oor-letter-string' },
+
+  // unstressed-vowels
+  { id: 'list-b-beautiful', text: 'beautiful', year: 2, category: 'unstressed-vowels' },
+  { id: 'list-b-because', text: 'because', year: 2, category: 'unstressed-vowels' },
+  { id: 'list-b-every', text: 'every', year: 2, category: 'unstressed-vowels' },
+  { id: 'list-b-everybody', text: 'everybody', year: 2, category: 'unstressed-vowels' },
+  { id: 'list-b-people', text: 'people', year: 2, category: 'unstressed-vowels' },
+  { id: 'list-b-clothes', text: 'clothes', year: 2, category: 'unstressed-vowels' },
+  { id: 'list-b-improve', text: 'improve', year: 2, category: 'unstressed-vowels' },
+  { id: 'list-b-move', text: 'move', year: 2, category: 'unstressed-vowels' },
+  { id: 'list-b-prove', text: 'prove', year: 2, category: 'unstressed-vowels' },
+  { id: 'list-b-busy', text: 'busy', year: 2, category: 'unstressed-vowels' },
+
+  // sh-as-s
+  { id: 'list-b-sugar', text: 'sugar', year: 2, category: 'sh-as-s' },
+  { id: 'list-b-sure', text: 'sure', year: 2, category: 'sh-as-s' },
+  { id: 'list-b-cold', text: 'cold', year: 2, category: 'sh-as-s' },
+  { id: 'list-b-gold', text: 'gold', year: 2, category: 'sh-as-s' },
+  { id: 'list-b-hold', text: 'hold', year: 2, category: 'sh-as-s' },
+  { id: 'list-b-old', text: 'old', year: 2, category: 'sh-as-s' },
+  { id: 'list-b-told', text: 'told', year: 2, category: 'sh-as-s' },
+  { id: 'list-b-both', text: 'both', year: 2, category: 'sh-as-s' },
+  { id: 'list-b-most', text: 'most', year: 2, category: 'sh-as-s' },
+  { id: 'list-b-only', text: 'only', year: 2, category: 'sh-as-s' },
+
+  // ar-as-a
+  { id: 'list-b-after', text: 'after', year: 2, category: 'ar-as-a' },
+  { id: 'list-b-bath', text: 'bath', year: 2, category: 'ar-as-a' },
+  { id: 'list-b-class', text: 'class', year: 2, category: 'ar-as-a' },
+  { id: 'list-b-fast', text: 'fast', year: 2, category: 'ar-as-a' },
+  { id: 'list-b-father', text: 'father', year: 2, category: 'ar-as-a' },
+  { id: 'list-b-grass', text: 'grass', year: 2, category: 'ar-as-a' },
+  { id: 'list-b-last', text: 'last', year: 2, category: 'ar-as-a' },
+  { id: 'list-b-pass', text: 'pass', year: 2, category: 'ar-as-a' },
+  { id: 'list-b-past', text: 'past', year: 2, category: 'ar-as-a' },
+  { id: 'list-b-path', text: 'path', year: 2, category: 'ar-as-a' },
+  { id: 'list-b-plant', text: 'plant', year: 2, category: 'ar-as-a' },
+
+  // igh-as-i
+  { id: 'list-b-behind', text: 'behind', year: 2, category: 'igh-as-i' },
+  { id: 'list-b-child', text: 'child', year: 2, category: 'igh-as-i' },
+  { id: 'list-b-climb', text: 'climb', year: 2, category: 'igh-as-i' },
+  { id: 'list-b-find', text: 'find', year: 2, category: 'igh-as-i' },
+  { id: 'list-b-kind', text: 'kind', year: 2, category: 'igh-as-i' },
+  { id: 'list-b-mind', text: 'mind', year: 2, category: 'igh-as-i' },
+  { id: 'list-b-wild', text: 'wild', year: 2, category: 'igh-as-i' },
+  { id: 'list-b-any', text: 'any', year: 2, category: 'igh-as-i' },
+  { id: 'list-b-many', text: 'many', year: 2, category: 'igh-as-i' },
+  { id: 'list-b-who', text: 'who', year: 2, category: 'igh-as-i' },
+  { id: 'list-b-whole', text: 'whole', year: 2, category: 'igh-as-i' },
+
+  // other-b
+  { id: 'list-b-again', text: 'again', year: 2, category: 'other-b' },
+  { id: 'list-b-children', text: 'children', year: 2, category: 'other-b' },
+  { id: 'list-b-christmas', text: 'Christmas', year: 2, category: 'other-b' },
+  { id: 'list-b-even', text: 'even', year: 2, category: 'other-b' },
+  { id: 'list-b-eye', text: 'eye', year: 2, category: 'other-b' },
+  { id: 'list-b-half', text: 'half', year: 2, category: 'other-b' },
+  { id: 'list-b-hour', text: 'hour', year: 2, category: 'other-b' },
+  { id: 'list-b-money', text: 'money', year: 2, category: 'other-b' },
+  { id: 'list-b-mr', text: 'Mr', year: 2, category: 'other-b' },
+  { id: 'list-b-mrs', text: 'Mrs', year: 2, category: 'other-b' },
+  { id: 'list-b-parents', text: 'parents', year: 2, category: 'other-b' },
+  { id: 'list-b-pretty', text: 'pretty', year: 2, category: 'other-b' },
+  { id: 'list-b-water', text: 'water', year: 2, category: 'other-b' },
+];
+
+export const ALL_WORDS = [...YEAR1_WORDS, ...COMMON_WORDS, ...YEAR2_WORDS, ...SPELLING_LIST_A, ...SPELLING_LIST_B] 
