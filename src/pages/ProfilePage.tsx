@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from 'react-oidc-context';
 import { useProgress } from '../contexts/ProgressProvider';
-import { SPELLING_LIST_A, SPELLING_LIST_B } from '../data/words';
+import { getMasteryThreshold } from '../config/masteryThresholds';
 
 const signOutRedirect = (auth: ReturnType<typeof useAuth>) => {
   const clientId = "3ua09or8n2k4cqldeu3u8bv585";
@@ -338,14 +338,8 @@ export default function ProfilePage() {
   const profile = auth.user.profile;
   const username = profile['cognito:username'] || profile.email || profile.sub;
 
-  // Build set of word IDs with higher mastery threshold
-  const highThresholdIds = new Set([
-    ...SPELLING_LIST_A.map(w => w.id),
-    ...SPELLING_LIST_B.map(w => w.id),
-  ]);
-  const getMasteryThreshold = (wordId: string) => highThresholdIds.has(wordId) ? 10 : 3;
-
   // Calculate KPIs
+  // Mastery threshold is handled at the source (getWordStats uses getMasteryThreshold)
   const wordIds = Object.keys(progress);
   const stats = wordIds.map(wordId => getWordStats(wordId));
   
@@ -355,10 +349,9 @@ export default function ProfilePage() {
   startOfWeek.setDate(today.getDate() - today.getDay());
   startOfWeek.setHours(0, 0, 0, 0);
 
-  // Calculate words mastered this week (respecting per-word threshold)
-  const wordsMasteredThisWeek = stats.filter((stat, i) => {
-    const threshold = getMasteryThreshold(wordIds[i]);
-    if (stat.streak < threshold) return false;
+  // Calculate words mastered this week
+  const wordsMasteredThisWeek = stats.filter((stat) => {
+    if (stat.status !== 'mastered') return false;
     const lastSeen = stat.lastSeen ? new Date(stat.lastSeen) : null;
     return lastSeen && lastSeen >= startOfWeek;
   }).length;
@@ -508,7 +501,7 @@ export default function ProfilePage() {
           />
           <StatCard 
             title="Total Words Mastered" 
-            value={stats.filter((s, i) => s.streak >= getMasteryThreshold(wordIds[i])).length} 
+            value={stats.filter(s => s.status === 'mastered').length} 
             color="#2563eb"
           />
         </div>

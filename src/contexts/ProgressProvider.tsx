@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useAuth } from 'react-oidc-context';
 import { getAllProgress, putWordProgress, ProgressData as ApiProgressData } from '../hooks/useProgressApi';
+import { getMasteryThreshold } from '../config/masteryThresholds';
 
 // Each attempt is stored with date, correctness, and the user's attempt
 export type WordAttempt = {
@@ -113,9 +114,10 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       lastSeen = attemptsArr[attemptsArr.length - 1].date;
     }
     
+    const threshold = getMasteryThreshold(wordId);
     let status: WordStats['status'] = 'not-started';
     if (attemptsArr.length > 0) status = 'in-progress';
-    if (streak >= 3) status = 'mastered';
+    if (streak >= threshold) status = 'mastered';
     
     return {
       status,

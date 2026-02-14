@@ -21,7 +21,6 @@ const SpellingListBSelection: React.FC<SpellingListBSelectionProps> = ({ onSelec
       title={config.title}
       themeClass={config.themeClass}
       challengeConfig={config.challengeConfig}
-      masteryThreshold={config.masteryThreshold}
       onSelectWords={onSelectWords}
     />
   );

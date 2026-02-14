@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useProgress } from '../contexts/ProgressProvider'
 import { ALL_WORDS } from '../data/words'
+import { getMasteryThreshold } from '../config/masteryThresholds'
 
 export function useWord(wordId: string) {
   const { progress, recordAttempt, getWordStats } = useProgress();
@@ -20,18 +21,19 @@ export function useWord(wordId: string) {
     if (stats.status === 'mastered' || attempts.length === 0) return false;
     
     // Look through attempt history to see if word was ever mastered
+    const threshold = getMasteryThreshold(wordId);
     let consecutiveCorrect = 0;
     let hadMastery = false;
     
     for (let i = 0; i < attempts.length; i++) {
       if (attempts[i].correct) {
         consecutiveCorrect++;
-        if (consecutiveCorrect >= 3) {
+        if (consecutiveCorrect >= threshold) {
           hadMastery = true;
         }
       } else {
         // If we had mastery and now got an incorrect answer, this word was unmastered
-        if (hadMastery && consecutiveCorrect >= 3) {
+        if (hadMastery && consecutiveCorrect >= threshold) {
           return true;
         }
         consecutiveCorrect = 0;

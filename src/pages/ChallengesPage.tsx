@@ -20,15 +20,15 @@ const ChallengesPage: React.FC = () => {
   const commonWordsTotalWords = COMMON_WORDS.length;
   const commonWordsProgress = Math.round((commonWordsMastered / commonWordsTotalWords) * 100);
 
-  // Calculate Spelling List A progress (threshold 10)
+  // Calculate Spelling List A progress (threshold handled by useWord/getWordStats)
   const listAStatusList = SPELLING_LIST_A.map(word => useWord(word.id));
-  const listAMastered = listAStatusList.filter(status => (status.streak ?? 0) >= 10).length;
+  const listAMastered = listAStatusList.filter(status => status.status === 'mastered').length;
   const listATotalWords = SPELLING_LIST_A.length;
   const listAProgress = Math.round((listAMastered / listATotalWords) * 100);
 
-  // Calculate Spelling List B progress (threshold 10)
+  // Calculate Spelling List B progress
   const listBStatusList = SPELLING_LIST_B.map(word => useWord(word.id));
-  const listBMastered = listBStatusList.filter(status => (status.streak ?? 0) >= 10).length;
+  const listBMastered = listBStatusList.filter(status => status.status === 'mastered').length;
   const listBTotalWords = SPELLING_LIST_B.length;
   const listBProgress = Math.round((listBMastered / listBTotalWords) * 100);
 
