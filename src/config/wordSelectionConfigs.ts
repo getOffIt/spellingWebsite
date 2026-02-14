@@ -56,10 +56,10 @@ export const wordSelectionConfigs: Record<string, WordSelectionConfig> = {
   },
   spellingListA: {
     words: SPELLING_LIST_A,
-    title: '📝 Spelling Test — List A',
+    title: '📝 The Big Test 27th Feb — List A',
     masteryThreshold: 10,
     challengeConfig: {
-      title: '📝 Spelling Test — List A',
+      title: '📝 The Big Test 27th Feb — List A',
       description: 'Master all {total} words to earn £40! (10 correct in a row per word)',
       rewardText: '',
       motivationMessages: {
@@ -74,10 +74,10 @@ export const wordSelectionConfigs: Record<string, WordSelectionConfig> = {
   },
   spellingListB: {
     words: SPELLING_LIST_B,
-    title: '📝 Spelling Test — List B',
+    title: '📝 The Big Test 27th Feb — List B',
     masteryThreshold: 10,
     challengeConfig: {
-      title: '📝 Spelling Test — List B',
+      title: '📝 The Big Test 27th Feb — List B',
       description: 'Master all {total} words to earn £40! (10 correct in a row per word)',
       rewardText: '',
       motivationMessages: {

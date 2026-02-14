@@ -59,7 +59,7 @@ const ChallengesPage: React.FC = () => {
     },
     {
       id: 'spelling-list-a',
-      title: "📝 Spelling Test — List A",
+      title: "📝 The Big Test 27th Feb — List A",
       description: "Master all List A spelling words to earn £40! 10 correct in a row per word.",
       progress: listAProgress,
       masteredWords: listAMastered,
@@ -71,7 +71,7 @@ const ChallengesPage: React.FC = () => {
     },
     {
       id: 'spelling-list-b',
-      title: "📝 Spelling Test — List B",
+      title: "📝 The Big Test 27th Feb — List B",
       description: "Master all List B spelling words to earn £40! 10 correct in a row per word.",
       progress: listBProgress,
       masteredWords: listBMastered,
