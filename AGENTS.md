@@ -15,35 +15,42 @@ The Spelling Website is a React-based educational application with an integrated
 - **Testing**: Vitest, React Testing Library
 - **Build**: Vite for frontend, TypeScript compiler for voice tool
 
-### Recent Development Focus
-The **voice-tool directory** contains the most recent development work:
-- ElevenLabs API integration for voice generation
-- Batch processing with human-in-the-loop review
-- AWS S3 deployment automation
-- Kiro CLI agent compatibility
+### Recent Development Focus (Jan-Feb 2026)
+- **Voice Integration**: VoiceService in frontend with MP3 manifest lookup + TTS fallback
+- **Word Database Expansion**: ~470 words across 5 lists (Year 1, Common, Year 2, List A, List B)
+- **DRY Architecture**: Centralized mastery thresholds and configuration-driven word selection pages
+- **Voice Manifest Pipeline**: Scripts for generating, deploying, and validating voice manifests
+- **CI/CD**: Auto PR creation workflow with reviewer assignment
 
 ## Directory Structure and File Organization
 
 ```
 spellingWebsite/
 ├── src/                          # React frontend application
-│   ├── App.tsx                   # Main app component with routing
+│   ├── App.tsx                   # Main app component with 6 protected routes
 │   ├── components/               # Reusable UI components
 │   │   ├── Header.tsx           # Navigation and auth status
 │   │   ├── ProtectedRoute.tsx   # Route guard component
-│   │   ├── BaseWordSelection.tsx # Shared word selection logic
-│   │   ├── Challenge.tsx        # Individual challenge display
+│   │   ├── BaseWordSelection.tsx # Shared word selection logic (config-driven)
+│   │   ├── Challenge.tsx        # Gamification with progress & motivation messages
 │   │   └── WordChip.tsx         # Word display component
 │   ├── pages/                   # Page-level components
-│   │   ├── ChallengesPage.tsx   # Main dashboard
-│   │   ├── WordSelection.tsx    # Word list selection
-│   │   ├── SpellingTest.tsx     # Core spelling test functionality
-│   │   ├── ProfilePage.tsx      # User profile management
+│   │   ├── ChallengesPage.tsx   # Dashboard for 4 challenge types
+│   │   ├── WordSelection.tsx    # Year 1 word selection
+│   │   ├── CommonWordsSelection.tsx # Common words selection
+│   │   ├── SpellingListASelection.tsx # Spelling List A (NEW)
+│   │   ├── SpellingListBSelection.tsx # Spelling List B (NEW)
+│   │   ├── SpellingTest.tsx     # Core spelling test with VoiceService
+│   │   ├── ProfilePage.tsx      # User profile with analytics
 │   │   └── Login.tsx            # Authentication page
-│   ├── contexts/                # React contexts for state
-│   ├── hooks/                   # Custom React hooks
+│   ├── services/                # Frontend service layer
+│   │   └── VoiceService.ts     # MP3 manifest + TTS fallback (NEW)
+│   ├── contexts/                # React contexts (ProgressProvider)
+│   ├── hooks/                   # Custom hooks (useWord with dynamic thresholds)
 │   ├── config/                  # Configuration management
-│   ├── data/                    # Data models and constants
+│   │   ├── masteryThresholds.ts # Centralized mastery thresholds (NEW)
+│   │   └── wordSelectionConfigs.ts # Config-driven word selection pages
+│   ├── data/                    # Data models (~470 words across 5 lists)
 │   └── utils/                   # Utility functions
 ├── voice-tool/                  # Voice generation system
 │   ├── src/
@@ -59,12 +66,20 @@ spellingWebsite/
 │   │   ├── config/              # Configuration management
 │   │   └── cli/                 # CLI interfaces
 │   ├── kiro-cli.js             # AI agent interface (Kiro CLI)
+│   ├── generate-manifest.js    # Build voice manifest from S3 (NEW)
+│   ├── deploy-manifest.js      # Deploy manifest to S3 (NEW)
+│   ├── check-missing-files.js  # Validate manifest consistency (NEW)
+│   ├── upload-approved-only.js # Selective S3 upload (NEW)
 │   ├── real-words.ts           # Production word list (220+ words)
 │   ├── test-5-words.ts         # Quick test word list
 │   ├── progress/               # State persistence files
 │   └── audio-cache/            # Generated audio files
 ├── public/                     # Static assets
+│   └── voices/
+│       └── voice-manifest.json # Word ID → CDN audio URL mapping (NEW)
+├── infrastructure/             # Private git submodule (NEW)
 ├── lambdas/                    # AWS Lambda functions
+├── .github/workflows/          # CI/CD (auto PR creation)
 └── scripts/                    # Build and deployment scripts
 ```
 
@@ -94,7 +109,8 @@ export default function ComponentName({ prop1, prop2 }: Props) {
 #### State Management Patterns
 - **Local State**: `useState` for component-specific state
 - **Lifted State**: Pass state up to parent components (see App.tsx word selection)
-- **Context**: React Context for authentication (OIDC context)
+- **Context**: React Context for authentication (OIDC) and progress tracking (ProgressProvider)
+- **Configuration**: Centralized configs drive word selection pages (`wordSelectionConfigs`) and mastery thresholds (`getMasteryThreshold`)
 - **Props Down, Events Up**: Standard React data flow pattern
 
 #### Route Protection Pattern
@@ -152,6 +168,8 @@ node --env-file=.env kiro-cli.js --command [args]
 - **Environment Variables**: Build-time injection via Vite
 - **OIDC Config**: Authentication provider configuration
 - **API Endpoints**: Configurable base URLs
+- **Mastery Thresholds**: `src/config/masteryThresholds.ts` - DEFAULT_THRESHOLD=3, List A/B=10
+- **Word Selection Configs**: `src/config/wordSelectionConfigs.ts` - Drives all 4 word selection pages with titles, themes, filters, challenge configs
 
 ### Voice Tool Configuration
 ```typescript
@@ -176,8 +194,15 @@ WORDS_FILE=./real-words.ts  # or ./test-5-words.ts for testing
 ### AWS S3 Integration
 - **Upload Pattern**: Direct upload with proper caching headers
 - **File Structure**: `voices/{voice_name}/{word_id}.mp3`
-- **CDN Delivery**: Public read access for audio playback
+- **CDN Delivery**: Public read access via `https://spellingninjas.com/voices/...`
 - **Batch Operations**: Parallel uploads with progress tracking
+- **Voice Manifest**: JSON file mapping word IDs to CDN URLs, deployed to S3
+
+### Voice Playback (Frontend)
+- **VoiceService** (`src/services/VoiceService.ts`): Singleton audio playback service
+- **Strategy**: MP3-first (lookup in voice manifest) with browser TTS fallback
+- **Manifest**: Lazy-loaded from `/voices/voice-manifest.json` on first use
+- **Audio**: Single `HTMLAudioElement` instance, Promise-based API
 
 ### OIDC Authentication
 - **Flow**: Authorization Code Flow with PKCE
@@ -236,16 +261,27 @@ node --env-file=.env kiro-cli.js --status
 5. Add unit tests
 
 ### Modifying Word Lists
-- **Development**: Use `test-5-words.ts` for quick testing
-- **Production**: Modify `real-words.ts` for production word list
-- **Format**: Flat array of strings, no nested structures
+- **Frontend Words**: Modify `src/data/words.ts` - Word type: `{ id, text, year: 1|2, category }`
+- **Voice Tool Words**: Use `test-5-words.ts` for quick testing, `real-words.ts` for production
+- **Word Lists**: YEAR1_WORDS (~122), COMMON_WORDS (~82), YEAR2_WORDS (~94), SPELLING_LIST_A (~90), SPELLING_LIST_B (~76)
+- **Word IDs**: `id` equals display text for all words (e.g. `id: 'door', text: 'door'`); progress is keyed by word text and shared across lists
+
+### Adding a New Word Selection Page
+1. Add word list to `src/data/words.ts` following existing `Word` type pattern
+2. Add config to `src/config/wordSelectionConfigs.ts` with words, title, theme, challenge config
+3. Create thin wrapper page in `src/pages/` (delegates to `BaseWordSelection`)
+4. Add route in `App.tsx` wrapped with `ProtectedRoute`
+5. Add challenge card in `ChallengesPage.tsx`
+6. If different mastery threshold needed, update `src/config/masteryThresholds.ts`
 
 ### Voice Generation Workflow
 1. **Generate**: `--batch` command processes all missing words
 2. **Review**: `--play word` to listen to generated audio
 3. **Accept/Reject**: `--accept word` or `--reject word` to control quality
 4. **Alternative Voices**: Rejection automatically tries next voice in chain
-5. **Deploy**: `--upload` command deploys approved audio to S3
+5. **Upload**: `upload-approved-only.js` uploads completed audio to S3
+6. **Manifest**: `generate-manifest.js` builds manifest from S3, `deploy-manifest.js` deploys it
+7. **Validate**: `check-missing-files.js` ensures consistency between manifest and progress
 
 ## Error Handling Guidelines
 
@@ -265,7 +301,8 @@ node --env-file=.env kiro-cli.js --status
 ### Frontend Performance
 - **Code Splitting**: Vite handles automatic route-based splitting
 - **Bundle Size**: Current core bundle ~82KB gzipped
-- **Audio Caching**: Browser caching of S3-delivered audio files
+- **Audio Caching**: Browser caching of CDN-delivered audio files
+- **Voice Manifest**: Lazy-loaded once on first voice playback
 - **Lazy Loading**: Route-based component lazy loading
 
 ### Voice Tool Performance
@@ -292,13 +329,16 @@ node --env-file=.env kiro-cli.js --status
 ### Effective Patterns
 1. **Context Files**: Add `.sop/summary/index.md` to context for comprehensive project understanding
 2. **Specific Documentation**: Reference individual files in `.sop/summary/` for detailed information
-3. **Recent Changes**: Focus on `voice-tool/` directory for latest development work
+3. **Recent Changes**: Focus on `src/config/`, `src/services/`, and `src/pages/` for latest frontend work
 4. **Testing**: Use `test-5-words.ts` for quick development cycles
 
 ### Common Questions and Answers
 
 **Q: How do I add a new spelling word?**
-A: Add to `real-words.ts` array, then run `--batch` to generate audio
+A: Add to `src/data/words.ts` (appropriate list), run voice-tool `--batch` to generate audio, then update manifest
+
+**Q: How do I add a new word list/challenge?**
+A: Add words to `words.ts`, add config to `wordSelectionConfigs.ts`, create wrapper page, add route in `App.tsx`, add card to `ChallengesPage.tsx`. Update `masteryThresholds.ts` if needed.
 
 **Q: How do I test voice generation quickly?**
 A: Use `WORDS_FILE=./test-5-words.ts node --env-file=.env kiro-cli.js --batch`
@@ -309,8 +349,14 @@ A: Create component in `src/pages/`, add route in `App.tsx`, wrap with `Protecte
 **Q: How do I handle authentication in new components?**
 A: Use `useAuth()` hook from react-oidc-context, wrap routes with `ProtectedRoute`
 
-**Q: How do I modify the voice generation workflow?**
-A: Edit services in `voice-tool/src/services/`, update CLI interface in `kiro-cli.js`
+**Q: How do I modify mastery thresholds?**
+A: Edit `src/config/masteryThresholds.ts` - adjust `DEFAULT_THRESHOLD` or add word IDs to high-threshold sets
+
+**Q: How does voice playback work?**
+A: VoiceService loads `/voices/voice-manifest.json` once, looks up word IDs to get CDN URLs, plays MP3. Falls back to browser TTS if no MP3 found.
+
+**Q: How do I deploy new voice audio?**
+A: `upload-approved-only.js` → `generate-manifest.js` → `deploy-manifest.js` → `check-missing-files.js`
 
 ## Troubleshooting Common Issues
 
@@ -324,6 +370,7 @@ A: Edit services in `voice-tool/src/services/`, update CLI interface in `kiro-cl
 - **Authentication Loops**: Check OIDC provider configuration
 - **Route Access Issues**: Verify `ProtectedRoute` wrapping
 - **Build Failures**: Check TypeScript errors and dependency versions
-- **Audio Not Playing**: Verify S3 URLs and CORS configuration
+- **Audio Not Playing**: Check voice manifest loaded correctly, verify CDN URLs accessible, check browser TTS fallback
+- **Mastery Not Tracking**: Check `getMasteryThreshold()` returns expected value for the word (id/text), verify `ProgressProvider` is wrapping the component tree
 
 This guide provides the essential context for AI assistants to effectively help with development tasks in the Spelling Website project. For detailed technical specifications, refer to the individual documentation files in `.sop/summary/`.

@@ -76,24 +76,26 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
   // Add a new attempt for a word and refresh from API
   const recordAttempt = async (wordId: string, correct: boolean, attempt: string) => {
-    if (!token) return;
+    if (!token) {
+      return;
+    }
 
     const newAttempt = { date: new Date().toISOString(), correct, attempt };
-    
+
     try {
       // Send the new attempt to the API and get back the complete progress
       const completeProgress = await putWordProgress(token, wordId, [newAttempt]);
-      
+
       // Transform the returned array to object keyed by wordId
       const progressByWord: ProgressData = {};
       (completeProgress as any[]).forEach(item => {
         progressByWord[item.wordId] = item.progress;
       });
-      
+
       // Update the local state with the complete progress from the API
       setProgress(progressByWord);
     } catch (err) {
-      console.error('Failed to record attempt:', err);
+      console.error('[ProgressProvider] Failed to record attempt:', err);
       // Optionally show an error message to the user
     }
   };
@@ -103,22 +105,22 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     const attemptsArr = progress[wordId] || [];
     let streak = 0;
     let lastSeen: string | null = null;
-    
+
     // Calculate streak (consecutive correct answers from the end)
     for (let i = attemptsArr.length - 1; i >= 0; i--) {
       if (attemptsArr[i].correct) streak++;
       else break;
     }
-    
+
     if (attemptsArr.length > 0) {
       lastSeen = attemptsArr[attemptsArr.length - 1].date;
     }
-    
+
     const threshold = getMasteryThreshold(wordId);
     let status: WordStats['status'] = 'not-started';
     if (attemptsArr.length > 0) status = 'in-progress';
     if (streak >= threshold) status = 'mastered';
-    
+
     return {
       status,
       attempts: attemptsArr.length,

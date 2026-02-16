@@ -142,6 +142,13 @@
 **Usage**: Local caching, file validation, temporary storage
 **Performance**: Streaming for large audio files
 
+### AWS SDK v3 (Voice Tool)
+**Package**: `@aws-sdk/client-s3`
+**Purpose**: Direct S3 operations for manifest deployment
+**Usage**: Used in `deploy-manifest.js` and `generate-manifest.js`
+**Region**: eu-west-2
+**Bucket**: spellmatereact
+
 ## Dependency Analysis
 
 ### Version Compatibility Matrix

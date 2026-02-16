@@ -231,23 +231,30 @@ flowchart TD
 
 ## Data Flow Workflows
 
-### Audio Playback Data Flow
+### Audio Playback Data Flow (Updated with VoiceService)
 ```mermaid
 sequenceDiagram
     participant U as User
-    participant R as React App
-    participant S as S3 Storage
-    participant B as Browser Audio
+    participant ST as SpellingTest
+    participant VS as VoiceService
+    participant M as Voice Manifest
+    participant CDN as CDN/S3
+    participant TTS as Browser TTS
     
-    U->>R: Click Play Audio
-    R->>S: Request Audio File
-    S-->>R: Audio File (MP3)
-    R->>B: Load Audio Data
-    B-->>R: Audio Ready
-    R->>B: Play Audio
-    B->>U: Audio Output
-    U->>R: Audio Complete
-    R->>R: Enable Next Action
+    U->>ST: Start Test / Next Word
+    ST->>VS: speak(word)
+    VS->>M: Load manifest (lazy, once)
+    M-->>VS: Word → URL mapping
+    VS->>VS: Look up word in manifest
+    
+    alt MP3 Available
+        VS->>CDN: Fetch audio file
+        CDN-->>VS: MP3 data
+        VS->>U: Play audio
+    else MP3 Not Found
+        VS->>TTS: speechSynthesis.speak(word)
+        TTS->>U: TTS audio output
+    end
 ```
 
 ### Progress Persistence Flow
@@ -297,25 +304,40 @@ flowchart TD
     O --> P[Display Results to User]
 ```
 
-### CI/CD Workflow
+### CI/CD Workflow (Updated with Auto-PR)
 ```mermaid
 flowchart TD
-    A[Code Push] --> B[Run Tests]
-    B --> C{Tests Pass?}
-    C -->|No| D[Notify Developer]
-    C -->|Yes| E[Build Application]
-    E --> F{Build Success?}
-    F -->|No| D
-    F -->|Yes| G[Deploy to Staging]
-    G --> H[Run Integration Tests]
-    H --> I{Tests Pass?}
-    I -->|No| D
-    I -->|Yes| J[Deploy to Production]
-    J --> K[Health Check]
-    K --> L{Health OK?}
-    L -->|No| M[Rollback]
-    L -->|Yes| N[Deployment Complete]
-    M --> D
+    A[Code Push to Branch] --> B{Is Main Branch?}
+    B -->|Yes| C[Run Tests & Build]
+    B -->|No| D[Auto-Create PR]
+    D --> E[Assign Reviewer]
+    E --> F[Add Labels]
+    F --> C
+    C --> G{Tests Pass?}
+    G -->|No| H[Notify Developer]
+    G -->|Yes| I[Build Application]
+    I --> J{Build Success?}
+    J -->|No| H
+    J -->|Yes| K[Deploy]
+```
+
+### Voice Manifest Deployment Workflow (NEW)
+```mermaid
+flowchart TD
+    A[Generate Audio via Batch] --> B[Human Review & Approve]
+    B --> C[upload-approved-only.js]
+    C --> D[Upload MP3s to S3]
+    D --> E[generate-manifest.js]
+    E --> F[Scan S3 for all audio files]
+    F --> G[Build voice-manifest.json]
+    G --> H[deploy-manifest.js]
+    H --> I[Upload manifest to S3]
+    I --> J[check-missing-files.js]
+    J --> K[Validate consistency]
+    K --> L{All consistent?}
+    L -->|Yes| M[Deployment Complete]
+    L -->|No| N[Fix mismatches]
+    N --> C
 ```
 
 ## Monitoring and Maintenance Workflows

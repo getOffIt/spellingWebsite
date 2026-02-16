@@ -38,7 +38,7 @@ This index provides AI assistants with comprehensive metadata about the Spelling
 **Purpose**: Data structures and models
 **Contains**: TypeScript interfaces, data schemas, state shapes
 **Use for**: Understanding data flow and structure
-**Key Topics**: Word lists, voice configurations, user state, progress tracking
+**Key Topics**: Word lists (id === text, progress shared across lists), voice configurations, user state, progress tracking
 
 ### 🔄 workflows.md
 **Purpose**: Key processes and workflows
@@ -93,16 +93,30 @@ Each documentation section includes metadata tags for targeted retrieval:
 4. **Refer to review_notes.md** if information seems incomplete
 5. **Focus on the voice-tool directory** for recent changes and new functionality
 
-## Recent Changes Focus
-Recent development work includes:
-- **Progress API Documentation**: Comprehensive documentation of the progress tracking system
-- **Voice Tool Integration**: ElevenLabs API integration with batch audio generation
-- **Enhanced Error Handling**: Improved error handling in voice generation workflow
-- **AWS Configuration Updates**: Updated region configuration to eu-west-2
-- **Documentation Streamlining**: Removed outdated planning documents and improved AGENTS.md
+## Recent Changes Focus (Updated Feb 2026)
+Recent development work (Jan-Feb 2026) includes:
+- **Voice Integration**: VoiceService in frontend with MP3 manifest lookup and TTS fallback
+- **Voice Manifest Pipeline**: Scripts for generating, deploying, and validating voice manifests
+- **Word Database Expansion**: ~470 words across 5 lists (Year 1, Common, Year 2, List A, List B)
+- **Spelling List A & B**: New curriculum lists with higher mastery thresholds (10 consecutive correct)
+- **DRY Mastery Thresholds**: Centralized threshold configuration via `getMasteryThreshold()`
+- **Configuration-Driven UI**: Word selection pages driven by centralized `wordSelectionConfigs`
+- **CI/CD Improvements**: Auto PR creation workflow with reviewer assignment
+- **Infrastructure Submodule**: Private git submodule for infrastructure configuration
 
-## Progress API Quick Reference
-For questions about user progress tracking:
+## Quick Reference: New Features
+
+### Voice Playback System
+- **VoiceService**: `src/services/VoiceService.ts` - MP3-first with TTS fallback
+- **Voice Manifest**: `public/voices/voice-manifest.json` - word ID → CDN URL mapping
+- **Manifest Pipeline**: `voice-tool/generate-manifest.js` → `deploy-manifest.js` → `check-missing-files.js`
+
+### Word Lists & Mastery
+- **Word Data**: `src/data/words.ts` - ~470 words in YEAR1_WORDS, COMMON_WORDS, YEAR2_WORDS, SPELLING_LIST_A, SPELLING_LIST_B
+- **Mastery Config**: `src/config/masteryThresholds.ts` - MASTERY_THRESHOLD=10 for all words
+- **Selection Config**: `src/config/wordSelectionConfigs.ts` - Drives all 4 word selection pages
+
+### Progress System
 - **API Endpoints**: See PROGRESS_API.md → API Endpoints section
 - **Data Models**: See PROGRESS_API.md → Data Models section  
 - **State Management**: See PROGRESS_API.md → State Management section

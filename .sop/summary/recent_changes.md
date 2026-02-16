@@ -1,98 +1,129 @@
 # Recent Changes Summary
 
 ## Update Overview
-Documentation updated based on recent commits since December 22, 2024.
+Documentation updated to include changes through February 2026. Latest: Word ID simplification (id === text, no list-a-/list-b- prefixes; progress shared across lists).
 
 ## Key Changes Identified
 
-### Progress API System Analysis
-- **Lambda Function**: `/lambdas/progress.js` - Node.js 22 Lambda handling GET/PUT progress endpoints
-- **Frontend Integration**: React Context-based progress management with `ProgressProvider`
-- **Data Flow**: Complete user progress tracking from DynamoDB through Lambda to React components
-- **Authentication**: Cognito JWT integration for secure user identification
+### 1. Voice Integration (Jan 2) - Major Feature
+The largest change set, introducing full voice playback in the frontend and infrastructure submodule support.
 
-### Voice Tool Enhancements
-- **Error Handling**: Improved error handling in voice generation workflow
-- **Path Management**: Enhanced path handling and progress management in voice generation scripts
-- **AWS Integration**: Updated AWS region configuration from us-west-1 to eu-west-2
-- **Documentation**: Streamlined AGENTS.md and removed outdated voice planning documents
+- **VoiceService** (`src/services/VoiceService.ts`): New singleton service for audio playback
+  - Lazy-loads voice manifest from `/voices/voice-manifest.json`
+  - MP3-first playback with browser TTS fallback
+  - Manages single `HTMLAudioElement` instance
+  - Promise-based async API (`speak()`, `playMP3()`, `stop()`)
+- **Voice Manifest** (`public/voices/voice-manifest.json`): Maps ~220 word IDs to CDN audio URLs
+  - Format: `{ "wordId": "https://spellingninjas.com/voices/{voice}/{wordId}.mp3" }`
+  - Primarily uses "dorothy" voice
+- **Infrastructure Submodule**: Added as private git submodule (`.gitmodules`)
+- **SpellingTest Integration**: Now uses VoiceService for speech instead of raw browser TTS
 
-### Recent Commits Analysis
-1. **d708b60**: Streamlined AGENTS.md and removed outdated voice planning documents
-2. **b92c326**: Updated ESLint configuration and improved error handling in voice generation
-3. **3aed322**: Improved path handling and progress management in voice generation scripts
-4. **8d7f0c3**: Excluded voice files from S3 deployment
-5. **3be986f**: Enhanced voice generation workflow and documentation
+### 2. Voice Tool Utilities (Jan 2-9) - New Scripts
+New operational scripts for voice pipeline management:
 
-## Documentation Updates Made
+- **generate-manifest.js**: Scans S3 bucket, builds manifest JSON from existing audio files
+- **deploy-manifest.js**: Deploys voice manifest to S3 with proper cache headers (AWS SDK v3)
+- **check-missing-files.js**: Validates consistency between voice manifest and progress tracking
+- **upload-approved-only.js**: Uploads only `completed`-status voice files to S3 via AWS CLI
 
-### New Documentation
-- **PROGRESS_API.md**: Comprehensive documentation of the progress tracking system including:
-  - Architecture diagrams with Mermaid
-  - Complete API endpoint documentation
-  - Data models and TypeScript interfaces
-  - State management patterns
-  - Integration examples
-  - Error handling strategies
+### 3. CI/CD Workflow Improvements (Jan 3)
+- **create-pr.yml**: GitHub Actions workflow for automatic PR creation on branch push
+  - Prevents duplicate PRs
+  - Adds labels (`auto-generated`, `needs-review`)
+  - Assigns reviewer (`getOffIt`)
 
-### Updated Documentation
-- **index.md**: Added Progress API quick reference section
-- **Recent Changes**: Updated focus areas to include Progress API documentation
+### 4. Word Database Expansion (Jan 8 - Feb 14)
+Major expansion of the word database:
 
-## Components Analyzed
+- **Spelling List A** (~90 words): tion/sion patterns, double consonants, homophones
+- **Spelling List B** (~76 words): oor patterns, unstressed vowels
+- **Word Removals**: Removed "I", "Mr", "Mrs" from word database
+- **Total Words**: `ALL_WORDS` now contains ~470 words (up from ~220)
+- **Word Types**: `Word` type with `{ id, text, year: 1|2, category }`
+- **Word IDs**: All words use `id === text` (no list-a-/list-b- prefixes); progress keyed by word text and shared across lists
 
-### Progress System Components
-- **ProgressProvider**: React Context managing global progress state
-- **useProgressApi**: HTTP client functions for API communication
-- **useProgress**: Hook providing progress context to components
-- **useWord**: Enhanced word hook with progress statistics
-- **Lambda Function**: AWS Lambda handling backend progress operations
+### 5. DRY Mastery Thresholds (Feb 14) - Architecture Improvement
+Centralized mastery threshold configuration:
 
-### Integration Points
-- **Authentication**: react-oidc-context integration
-- **State Management**: Context-based progress tracking
-- **API Communication**: RESTful progress endpoints
-- **Database**: DynamoDB with efficient query patterns
+- **masteryThresholds.ts** (`src/config/`): Single source of truth for thresholds
+  - Single `MASTERY_THRESHOLD = 10` (consecutive correct answers) for all words
+  - `getMasteryThreshold(wordId)` function
+- **ProgressProvider** updated to use `getMasteryThreshold()` instead of hardcoded values
+- **useWord hook** updated to use dynamic thresholds for mastery detection
 
-## Architecture Insights
+### 8. Word ID Simplification (Feb 2026)
+Unified word identity so progress and UI stay in sync across all lists:
 
-### Progress API Data Flow
-1. **Authentication**: JWT tokens from Cognito
-2. **Frontend State**: React Context manages local progress state
-3. **API Layer**: RESTful endpoints for progress operations
-4. **Backend Processing**: Lambda functions handle business logic
-5. **Data Persistence**: DynamoDB stores user progress with efficient querying
+- **words.ts**: Removed `list-a-` and `list-b-` prefixes; for all words `id` equals display text (e.g. `id: 'door', text: 'door'`). Special cases kept where display differs (e.g. `id: "they're"`, `id: 'February'`).
+- **Selection flow**: `selectNextWords()` (wordSelection.ts) and Challenge return `w.text`; SpellingTest receives and uses word strings throughout (no ID-to-text resolution).
+- **Progress**: Stored and looked up by word text; progress for the same word is shared across lists (e.g. "people" in Common Words shows amber on List B too).
+- **Fix**: Resolved Spelling List B (and List A) words staying gray after spelling by aligning identity to word text everywhere.
 
-### Key Design Patterns
-- **Context Pattern**: Global state management for progress data
-- **Hook Pattern**: Reusable progress logic across components
-- **API-First Updates**: All progress changes go through backend API
-- **Statistics Calculation**: Client-side computation of progress statistics
+### 6. New Pages & Configuration (Feb 14)
+- **SpellingListASelection** (`src/pages/`): Thin wrapper around `BaseWordSelection` for List A
+- **SpellingListBSelection** (`src/pages/`): Same pattern for List B
+- **wordSelectionConfigs.ts**: Centralized configuration for all 4 word selection pages
+  - Each config includes: words, title, theme, filters, challenge config, mastery threshold
+  - Challenge configs define title, description, reward text, motivation messages
 
-## Recommendations
+### 7. ChallengesPage Enhancement (Feb 14)
+- Now displays 4 challenge types: KS1-1, Common Words, List A, List B
+- Per-challenge progress bars with mastered/total counts
+- Status tiers: `completed`, `close`, `good`, `steady`, `starting`, `beginning`
+- Navigation to corresponding word selection pages
+- Motivation messages based on progress thresholds
 
-### Immediate Improvements
-1. Add retry logic for failed progress updates
-2. Consider progress data caching strategies
+## Recent Commits Analysis
+1. **2b11e7b** (Feb 14): DRY: single source of truth for mastery thresholds
+2. **8884f91** (Feb 14): Rename spelling sections to 'The Big Test 27th Feb'
+3. **a195b49** (Feb 14): Add Spelling Test Lists A & B (half-term homework, £40 each)
+4. **5c52218** (Feb 6): Remove I, Mr, and Mrs from word database
+5. **db1aa6a** (Jan 9): Fixed missing files issues after last upload
+6. **05bc3da** (Jan 9): Updating words - upload-approved-only script
+7. **e9e1e53** (Jan 8): Updating words - manifest and progress updates
+8. **6ac1232** (Jan 3): Revert "test workflow pr"
+9. **8dfa959** (Jan 3): Test workflow PR
+10. **cf5ab27** (Jan 3): Add automatic reviewer assignment to createPR workflow
+11. **196f455** (Jan 3): Fix createPR workflow head parameter format
+12. **739f931** (Jan 2): Update create-manifest script to output to public directory
+13. **8a72147** (Jan 2): Resolve submodule conflict and update infrastructure
+14. **635b150** (Jan 2): Update infrastructure submodule with voice serving options
+15. **9590769** (Jan 2): Voice integration (major PR #57)
+16. **93ddafb** (Jan 2): Integrate VoiceService for improved speech functionality
+17. **dcdf4c9** (Jan 2): Add infrastructure as private git submodule
 
-### Long-term Enhancements
-1. Progress analytics and insights dashboard
-2. Real-time progress sharing features
-3. Data archiving for historical attempts
-4. Multi-region deployment considerations
+## Files Modified (36 files, +1633/-81 lines)
 
-## Files Modified in Recent Changes
-- `.sop/planning-elevenlabs-voices/` (removed outdated planning documents)
-- `.sop/summary/` (updated documentation files)
-- `AGENTS.md` (streamlined content)
-- Voice tool configuration and error handling improvements
-- ESLint configuration updates
+### New Files
+- `src/services/VoiceService.ts` - Frontend voice playback service
+- `src/config/masteryThresholds.ts` - Centralized mastery thresholds
+- `src/pages/SpellingListASelection.tsx` - Spelling List A page
+- `src/pages/SpellingListBSelection.tsx` - Spelling List B page
+- `public/voices/voice-manifest.json` - Voice manifest data
+- `voice-tool/check-missing-files.js` - Manifest validation script
+- `voice-tool/upload-approved-only.js` - Selective S3 upload script
+- `voice-tool/deploy-manifest.js` - Manifest S3 deployment
+- `voice-tool/generate-manifest.js` - Manifest generation from S3
+- `PROGRESS_API.md` - Progress API documentation
+- `.sop/voice-manifest-planning/` - Voice manifest planning docs
+
+### Significantly Modified Files
+- `src/data/words.ts` (+177 lines) - Added Spelling Lists A & B
+- `src/config/wordSelectionConfigs.ts` - Added List A/B configs
+- `src/pages/ChallengesPage.tsx` - Enhanced dashboard with 4 challenges
+- `src/App.tsx` - Added routes for List A & B
+- `src/contexts/ProgressProvider.tsx` - Dynamic mastery thresholds
+- `src/hooks/useWord.ts` - Dynamic threshold support
+- `.github/workflows/create-pr.yml` - Auto reviewer assignment
 
 ## Impact Assessment
-The recent changes primarily focused on:
-1. **Documentation Quality**: Improved and streamlined documentation
-2. **Error Handling**: Enhanced robustness in voice generation
-3. **Configuration Management**: Updated AWS regions and ESLint rules
-4. **Code Organization**: Removed outdated planning documents
+The changes represent two major development phases:
+1. **Voice Integration (Jan)**: Complete audio pipeline from generation to frontend playback
+2. **Curriculum Expansion (Feb)**: Doubled word database, added configurable challenges, improved architecture
 
-The Progress API system represents a mature, well-architected solution for user progress tracking with proper authentication, state management, and data persistence patterns.
+Key architectural improvements:
+- **Configuration-driven UI**: Word selection pages driven by centralized configs
+- **DRY Principle**: Mastery thresholds extracted to single source of truth
+- **Component Composition**: Thin wrapper pages delegating to BaseWordSelection
+- **Service Layer**: VoiceService isolates audio concerns from UI components

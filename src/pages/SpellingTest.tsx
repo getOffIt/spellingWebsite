@@ -197,12 +197,10 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
 
   if (showPractice && testMode === 'practice') {
     // Filter incorrect words from the completed stage
-    // Only show practice in practice mode, not in full_test mode
     const incorrectWords = wordsForResultsOrPractice.filter((word, idx) =>
       answersForResultsOrPractice[idx].trim().toLowerCase() !== word.toLowerCase()
     );
 
-    // Pass the filtered incorrect words (which are strings) to PracticePage
     return <PracticePage 
       words={incorrectWords} 
       onComplete={onComplete}
@@ -231,12 +229,12 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
     // For practice mode, use existing SpellingResults
     return (
       <SpellingResults
-        words={wordsForSpellingResults.map(word => ({ word, sentence: '' }))} // Pass the relevant word objects
-        answers={answersForResultsOrPractice} // Use answers from the last attempted stage
+        words={wordsForSpellingResults.map(word => ({ word, sentence: '' }))}
+        answers={answersForResultsOrPractice}
         onPractice={() => setShowPractice(true)}
         onRetry={handleRetry}
-        listType={listType} // Pass the list type
-        isBaseStageResults={listType === 'less_family' && currentStage === 'base'} // Indicate if these are base word results for less_family
+        listType={listType}
+        isBaseStageResults={listType === 'less_family' && currentStage === 'base'}
       />
     );
   }

@@ -4,7 +4,39 @@
 
 ### Word and List Structures
 
-#### Word List Configuration
+#### Word Type (actual implementation)
+```typescript
+type Word = {
+  id: string;
+  text: string;
+  year: 1 | 2;
+  category: string;
+}
+```
+
+#### Word Lists (src/data/words.ts)
+- **YEAR1_WORDS**: ~122 words (double consonants, digraphs, suffixes, vowel digraphs, two-syllable)
+- **COMMON_WORDS**: ~82 common words in 12 categories
+- **YEAR2_WORDS**: ~94 words (suffixes like -less, -ies, comparatives, misc)
+- **SPELLING_LIST_A**: ~90 words (tion/sion, double consonants, homophones)
+- **SPELLING_LIST_B**: ~76 words (oor patterns, unstressed vowels)
+- **ALL_WORDS**: Combined array (~470 words total)
+
+For all lists, **word identity**: `id` equals display text (e.g. `id: 'door', text: 'door'`). Progress is keyed by this word text and shared across lists when the same word appears in multiple lists.
+
+#### Word Selection Configuration (NEW)
+```typescript
+interface WordSelectionConfig {
+  words: Word[];
+  title: string;
+  themeClass?: string;
+  wordFilter?: (word: Word) => boolean;
+  challengeConfig?: ChallengeConfig;
+  masteryThreshold?: number;
+}
+```
+
+#### Word List Selection State
 ```typescript
 interface WordListConfig {
   words: string[];
@@ -95,26 +127,47 @@ interface TestResult {
 }
 ```
 
-#### Progress Tracking
+#### Progress Tracking (actual implementation)
 ```typescript
-interface UserProgress {
-  userId: string;
-  completedLists: string[];
-  currentStreak: number;
-  longestStreak: number;
-  totalWordsLearned: number;
-  averageScore: number;
-  lastActivity: string;
-  achievements: Achievement[];
+// ProgressProvider context types
+type ProgressData = Record<string, WordAttempt[]>; // wordId → attempts array
+
+interface WordAttempt {
+  date: string;
+  correct: boolean;
+  attempt: string;
 }
 
-interface Achievement {
-  id: string;
-  name: string;
-  description: string;
-  unlockedAt: string;
-  category: 'streak' | 'score' | 'completion' | 'special';
+interface WordStats {
+  status: 'not-started' | 'in-progress' | 'mastered';
+  attempts: number;
+  streak: number; // consecutive correct (reverse iteration)
+  lastSeen: string;
 }
+```
+
+#### Mastery Thresholds (NEW - src/config/masteryThresholds.ts)
+```typescript
+const MASTERY_THRESHOLD = 10; // Consecutive correct answers for all words
+function getMasteryThreshold(wordId: string): number;
+```
+
+#### Challenge Configuration (NEW)
+```typescript
+interface ChallengeConfig {
+  title: string;
+  description: string;
+  rewardText: string;
+  motivationMessages: Record<string, string>; // threshold → message template
+}
+// Template variables: {remaining}, {total}, {mastered}
+```
+
+#### Voice Manifest (NEW - public/voices/voice-manifest.json)
+```typescript
+// Simple key-value mapping
+type VoiceManifest = Record<string, string>;
+// Example: { "cat": "https://spellingninjas.com/voices/dorothy/cat.mp3" }
 ```
 
 ## Voice Tool Data Models #voice-tool

@@ -37,24 +37,34 @@ graph TD
     App --> Header
     App --> ProtectedRoute
     ProtectedRoute --> ChallengesPage
-    ProtectedRoute --> WordSelection
+    ProtectedRoute --> WordSelection["WordSelection (Year 1)"]
     ProtectedRoute --> CommonWordsSelection
+    ProtectedRoute --> SpellingListASelection
+    ProtectedRoute --> SpellingListBSelection
     ProtectedRoute --> SpellingTest
     ProtectedRoute --> ProfilePage
-    ProtectedRoute --> ApiTest
     App --> Login
 ```
 
 ### State Management Pattern
 - **Local State**: React useState for component-specific state
 - **Authentication State**: OIDC Context for user authentication
+- **Progress State**: ProgressProvider context for word-level progress tracking (API-backed)
 - **Word Selection State**: Lifted state in App component
 - **Test Progress**: Local state in SpellingTest component
+- **Configuration State**: Centralized configs in `src/config/` (wordSelectionConfigs, masteryThresholds)
 
 ### Routing Architecture
 - **Protected Routes**: All main functionality behind authentication
 - **Route Guards**: ProtectedRoute component wraps authenticated pages
 - **Navigation Flow**: Login → Challenges → Word Selection → Spelling Test
+- **Routes**: `/` (Challenges), `/word-selection` (Year 1), `/common-words-selection`, `/spelling-list-a`, `/spelling-list-b`, `/spelling-test`
+
+### Configuration-Driven Architecture (NEW)
+- **Word Selection Configs**: Centralized `wordSelectionConfigs` object drives all 4 word selection pages
+- **Mastery Thresholds**: Single source of truth via `getMasteryThreshold()` (MASTERY_THRESHOLD = 10 for all words)
+- **Challenge Configs**: Per-challenge metadata (title, description, reward text, motivation messages)
+- **Component Composition**: Thin wrapper pages (SpellingListASelection, SpellingListBSelection) delegate to BaseWordSelection
 
 ## Voice Tool Architecture #voice-tool
 
@@ -91,7 +101,7 @@ sequenceDiagram
     React App->>User: Render Content/Redirect
 ```
 
-### Voice Generation Flow #workflow
+### Voice Generation & Playback Flow #workflow
 ```mermaid
 sequenceDiagram
     CLI->>ElevenLabs: Generate Audio
@@ -99,7 +109,10 @@ sequenceDiagram
     CLI->>Human: Review Audio
     Human-->>CLI: Accept/Reject
     CLI->>S3: Upload Approved Audio
-    React App->>S3: Fetch Audio for Playback
+    CLI->>S3: Deploy Voice Manifest
+    React App->>S3: Fetch Voice Manifest (once)
+    React App->>CDN: Fetch Audio via Manifest URL
+    Note over React App: Falls back to browser TTS if MP3 unavailable
 ```
 
 ## Data Flow Architecture #data
@@ -107,8 +120,9 @@ sequenceDiagram
 ### Frontend Data Flow
 - **Props Down**: Data flows down through component hierarchy
 - **Events Up**: User interactions bubble up through callbacks
-- **Context**: Authentication state shared via React Context
-- **Local Storage**: Minimal use for user preferences
+- **Context**: Authentication state (OIDC) and Progress state (ProgressProvider) shared via React Context
+- **Voice Manifest**: Lazy-loaded JSON manifest maps word IDs to CDN audio URLs
+- **Configuration**: Centralized configs drive word selection pages and mastery thresholds
 
 ### Voice Tool Data Flow
 - **File-based State**: JSON files for progress persistence

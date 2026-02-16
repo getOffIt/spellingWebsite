@@ -7,7 +7,7 @@
 #### App.tsx
 **Purpose**: Main application component and routing orchestrator
 **Responsibilities**:
-- Route configuration and navigation
+- Route configuration and navigation (6 protected routes)
 - Authentication state management
 - Word selection state lifting
 - Protected route wrapping
@@ -21,6 +21,14 @@ selectedList: {
   passThreshold?: number;
 } | null
 ```
+
+**Routes**:
+- `/` → ChallengesPage
+- `/word-selection` → Year 1 words
+- `/common-words-selection` → Common words
+- `/spelling-list-a` → Spelling List A
+- `/spelling-list-b` → Spelling List B
+- `/spelling-test` → Test page (requires selectedList, redirects if empty)
 
 #### Header.tsx
 **Purpose**: Application navigation and user interface
@@ -39,26 +47,33 @@ selectedList: {
 ### Page Components
 
 #### ChallengesPage
-**Purpose**: Main dashboard for spelling challenges
+**Purpose**: Main dashboard for all spelling challenges
 **Responsibilities**:
-- Display available spelling challenges
-- Navigate to word selection
-- Show user progress
+- Display 4 challenge types: KS1-1, Common Words, List A, List B
+- Calculate per-challenge progress using `useWord` hook
+- Show progress bars with mastered/total counts
+- Display status tiers: `completed`, `close`, `good`, `steady`, `starting`, `beginning`
+- Show motivation messages based on progress thresholds
+- Navigate to corresponding word selection pages
 
-#### WordSelection & CommonWordsSelection
-**Purpose**: Word list selection interface
+#### WordSelection, CommonWordsSelection, SpellingListASelection & SpellingListBSelection
+**Purpose**: Word list selection interfaces (configuration-driven)
 **Responsibilities**:
-- Present word lists for selection
+- Present word lists grouped by category
 - Configure test parameters
 - Pass selected words to spelling test
+- SpellingListASelection and SpellingListBSelection are thin wrappers around `BaseWordSelection` using `wordSelectionConfigs`
 
 #### SpellingTest
-**Purpose**: Core spelling test functionality
+**Purpose**: Core spelling test functionality with VoiceService integration
 **Responsibilities**:
-- Audio playback for word pronunciation
-- User input collection
-- Progress tracking
-- Results calculation
+- Audio playback via VoiceService (MP3 manifest lookup with TTS fallback)
+- User input collection with auto-speak on step change
+- Two-stage flow for `less_family` type (base words first, then full words)
+- Progress tracking via `useWord` hooks and `recordAttempt`
+- Results calculation and retry support
+- Skip button with 3-second delay
+- Mobile-friendly input focus scrolling
 
 **Key Props**:
 ```typescript
@@ -74,18 +89,26 @@ selectedList: {
 ### Utility Components
 
 #### BaseWordSelection.tsx
-**Purpose**: Shared word selection logic
+**Purpose**: Shared word selection logic with category grouping
 **Responsibilities**:
-- Common word selection patterns
-- Reusable selection interface
-- State management for word lists
+- Calls `useWord` for all words upfront (consistent hook calls)
+- Groups words by category, preserving order
+- Shows overall and per-category progress bars with mastery status
+- Clickable categories launch tests with `selectNextWords()` utility
+- Supports optional `Challenge` component overlay
+- Status icons with CSS classes (`not-started`, `in-progress`, `mastered`)
+- Uses refs to memoize status map and avoid unnecessary re-renders
 
 #### Challenge.tsx
-**Purpose**: Individual challenge display component
+**Purpose**: Gamification component with progress tracking and motivation messages
 **Responsibilities**:
-- Challenge metadata display
-- Progress visualization
-- Challenge selection handling
+- Displays progress bar with mastered/total counts
+- Motivation messages based on configurable thresholds
+- Template variable replacement: `{remaining}`, `{total}`, `{mastered}`
+- Clickable motivation messages launch practice with in-progress words
+- "Take Full Challenge Test" button for full test mode
+- Auto-detects `less_family` type if any words end with 'less'
+- `DEFAULT_PASS_THRESHOLD = 85`
 
 #### WordChip.tsx
 **Purpose**: Individual word display component
@@ -93,6 +116,33 @@ selectedList: {
 - Word visualization
 - Selection state indication
 - Click handling for word selection
+
+### Frontend Services
+
+#### VoiceService (NEW)
+**Purpose**: Audio playback with manifest-based MP3 lookup and TTS fallback
+**Responsibilities**:
+- Lazy-loads voice manifest from `/voices/voice-manifest.json` on first use
+- Looks up word IDs in manifest to find CDN audio URLs
+- Falls back to browser `speechSynthesis` TTS if MP3 not available
+- Manages a single `HTMLAudioElement` instance
+- Promise-based async API: `speak(word)`, `playMP3(url)`, `stop()`
+- Stops both audio element and TTS on `stop()`
+
+### Configuration Components (NEW)
+
+#### masteryThresholds.ts
+**Purpose**: Single source of truth for mastery threshold
+**Exports**:
+- `getMasteryThreshold(wordId: string): number` — Returns MASTERY_THRESHOLD (10) for all words
+- `MASTERY_THRESHOLD = 10`
+
+#### wordSelectionConfigs.ts
+**Purpose**: Centralized configuration for all word selection pages
+**Exports**:
+- `WordSelectionConfig` interface
+- `wordSelectionConfigs` record mapping config keys to configs
+- Each config includes: words, title, theme, filters, challenge config, mastery threshold
 
 ## Voice Tool Components #voice-tool
 
@@ -156,6 +206,39 @@ selectedList: {
 - Metadata management
 - Deployment reporting
 
+### Operational Scripts (NEW)
+
+#### generate-manifest.js
+**Purpose**: Scans S3 bucket to build voice manifest JSON
+**Responsibilities**:
+- Lists all objects in S3 with `voices/` prefix
+- Extracts word IDs from `.mp3` filenames
+- Builds manifest mapping wordId → CDN URL (`https://spellingninjas.com/{key}`)
+- Outputs JSON to stdout (designed for piping to file)
+
+#### deploy-manifest.js
+**Purpose**: Deploys voice manifest to S3 for public access
+**Responsibilities**:
+- Reads local manifest from `../public/voices/voice-manifest.json`
+- Uploads to S3 at `voices/voice-manifest.json`
+- Sets content type and cache headers (`max-age=3600`)
+- Uses AWS SDK v3
+
+#### check-missing-files.js
+**Purpose**: Validates consistency between voice manifest and progress tracking
+**Responsibilities**:
+- Compares voice assignments between manifest and progress files
+- Reports mismatches and missing entries
+- Provides actionable recommendations
+
+#### upload-approved-only.js
+**Purpose**: Uploads only approved voice files to S3
+**Responsibilities**:
+- Filters progress file for `status === 'completed'` words
+- Validates local file existence before upload
+- Uploads via AWS CLI (`aws s3 cp`)
+- Shows progress reporting and voice distribution analytics
+
 ### Configuration Components
 
 #### ConfigService
@@ -175,10 +258,18 @@ graph TD
     App --> ProtectedRoute
     ProtectedRoute --> ChallengesPage
     ChallengesPage --> Challenge
-    ProtectedRoute --> WordSelection
+    ProtectedRoute --> WordSelection["WordSelection (Year 1)"]
+    ProtectedRoute --> CommonWordsSelection
+    ProtectedRoute --> SpellingListASelection
+    ProtectedRoute --> SpellingListBSelection
     WordSelection --> BaseWordSelection
+    CommonWordsSelection --> BaseWordSelection
+    SpellingListASelection --> BaseWordSelection
+    SpellingListBSelection --> BaseWordSelection
     BaseWordSelection --> WordChip
+    BaseWordSelection --> Challenge
     ProtectedRoute --> SpellingTest
+    SpellingTest --> VoiceService
 ```
 
 ### Voice Tool Service Dependencies

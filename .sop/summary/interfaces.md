@@ -50,9 +50,29 @@ Response: Audio file (MP3)
 }
 ```
 
-#### Access Pattern
+#### Access Patterns
 ```
+# Direct S3 access
 https://spellmatereact.s3.eu-west-2.amazonaws.com/voices/{voice_name}/{word_id}.mp3
+
+# CDN access (used in voice manifest)
+https://spellingninjas.com/voices/{voice_name}/{word_id}.mp3
+```
+
+### Voice Manifest API (NEW) #react
+**Purpose**: Maps word IDs to pre-generated MP3 audio URLs
+**Location**: `/voices/voice-manifest.json` (served statically)
+**Format**: `Record<string, string>` mapping wordId → CDN URL
+**Usage**: Loaded lazily by VoiceService on first `speak()` call
+
+### VoiceService Interface (NEW) #react
+**Purpose**: Frontend audio playback with MP3-first, TTS-fallback strategy
+```typescript
+class VoiceService {
+  speak(word: string): Promise<void>;   // MP3 lookup → TTS fallback
+  playMP3(url: string): Promise<void>;  // Direct MP3 playback
+  stop(): void;                         // Stop both audio & TTS
+}
 ```
 
 ### OIDC Authentication API #react
@@ -86,6 +106,22 @@ interface WordSelectionProps {
     passThreshold?: number
   ) => void;
 }
+```
+
+#### Progress Context Interface (actual implementation)
+```typescript
+interface ProgressContextType {
+  progress: ProgressData;
+  loading: boolean;
+  recordAttempt: (wordId: string, correct: boolean, attempt: string) => Promise<void>;
+  getWordStats: (wordId: string) => WordStats;
+}
+```
+
+#### Mastery Threshold Interface (NEW)
+```typescript
+function getMasteryThreshold(wordId: string): number;
+// Returns MASTERY_THRESHOLD (10) for all words
 ```
 
 #### Spelling Test Interface

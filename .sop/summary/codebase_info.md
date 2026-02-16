@@ -24,21 +24,33 @@
 ## Key Components
 
 ### Main Application
-- `src/App.tsx` - Main application component
-- `src/components/` - Reusable UI components
-- `src/pages/` - Page-level components
-- `src/contexts/` - React contexts for state management
-- `src/hooks/` - Custom React hooks
-- `src/config/` - Configuration management
-- `src/data/` - Data models and constants
+- `src/App.tsx` - Main application component with 6 protected routes
+- `src/components/` - Reusable UI components (BaseWordSelection, Challenge, WordChip, Header, ProtectedRoute)
+- `src/pages/` - Page-level components (ChallengesPage, WordSelection, CommonWordsSelection, SpellingListASelection, SpellingListBSelection, SpellingTest, ProfilePage)
+- `src/contexts/` - React contexts (ProgressProvider for API-backed progress tracking)
+- `src/hooks/` - Custom hooks (useWord with dynamic mastery thresholds)
+- `src/config/` - Configuration (masteryThresholds, wordSelectionConfigs)
+- `src/services/` - Service layer (VoiceService for MP3/TTS audio)
+- `src/data/` - Data models (~470 words across 5 lists)
 - `src/utils/` - Utility functions
 
 ### Voice Tool
 - `src/` - TypeScript source code
 - `kiro-cli.js` - AI agent interface
 - `real-words.ts` - Production word list (220+ words)
+- `generate-manifest.js` - Builds voice manifest from S3
+- `deploy-manifest.js` - Deploys manifest to S3
+- `check-missing-files.js` - Validates manifest consistency
+- `upload-approved-only.js` - Selective S3 upload for approved audio
 - `progress/` - State persistence for voice generation
 - `audio-cache/` - Generated audio files
+
+### Static Assets
+- `public/voices/voice-manifest.json` - Maps ~220 word IDs to CDN audio URLs
+
+### Infrastructure
+- `infrastructure/` - Private git submodule for infrastructure configuration
+- `.github/workflows/` - CI/CD workflows (create-pr.yml with auto reviewer assignment)
 
 ## Dependencies
 
@@ -63,7 +75,9 @@
 - **File Organization**: Feature-based directory structure
 
 ## Recent Focus Areas
-- Voice tool development and integration
-- ElevenLabs API integration
-- AWS S3 deployment automation
-- AI agent compatibility (Kiro CLI)
+- Voice integration into frontend (VoiceService, voice manifest)
+- Word database expansion (~470 words across 5 lists including Spelling List A & B)
+- DRY refactoring (centralized mastery thresholds, configuration-driven word selection pages)
+- Voice manifest pipeline (generate, deploy, validate scripts)
+- CI/CD improvements (auto PR creation with reviewer assignment)
+- Infrastructure as git submodule

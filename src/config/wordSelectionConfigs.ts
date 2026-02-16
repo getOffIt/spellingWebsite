@@ -10,7 +10,6 @@ export interface WordSelectionConfig {
   themeClass?: string;
   wordFilter?: (word: Word) => boolean;
   challengeConfig?: ChallengeConfig;
-  masteryThreshold?: number; // default 3
 }
 
 /**
@@ -23,7 +22,7 @@ export const wordSelectionConfigs: Record<string, WordSelectionConfig> = {
     wordFilter: (word: Word) => !word.category.startsWith('adding'),
     challengeConfig: {
       title: '🏆 KS1-1 Challenge! 🏆',
-      description: 'Master all {total} words to earn £50!',
+      description: 'Master all {total} words to earn £50! (10 correct in a row per word)',
       rewardText: '',
       motivationMessages: {
         complete: '🎉 CONGRATULATIONS! 🎉\nYou\'ve earned your £50! 🤑',
@@ -41,7 +40,7 @@ export const wordSelectionConfigs: Record<string, WordSelectionConfig> = {
     themeClass: 'common-words-page',
     challengeConfig: {
       title: '🎃 Spooky Common Words Challenge 👻',
-      description: 'Master all spooky common words!',
+      description: 'Master all spooky common words! (10 correct in a row per word)',
       rewardText: '',
       themeClass: 'spooky-challenge',
       motivationMessages: {
@@ -57,7 +56,6 @@ export const wordSelectionConfigs: Record<string, WordSelectionConfig> = {
   spellingListA: {
     words: SPELLING_LIST_A,
     title: '📝 The Big Test 27th Feb — List A',
-    masteryThreshold: 10,
     challengeConfig: {
       title: '📝 The Big Test 27th Feb — List A',
       description: 'Master all {total} words to earn £40! (10 correct in a row per word)',
@@ -75,7 +73,6 @@ export const wordSelectionConfigs: Record<string, WordSelectionConfig> = {
   spellingListB: {
     words: SPELLING_LIST_B,
     title: '📝 The Big Test 27th Feb — List B',
-    masteryThreshold: 10,
     challengeConfig: {
       title: '📝 The Big Test 27th Feb — List B',
       description: 'Master all {total} words to earn £40! (10 correct in a row per word)',

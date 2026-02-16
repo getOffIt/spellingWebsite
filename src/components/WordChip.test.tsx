@@ -4,6 +4,12 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import '@testing-library/jest-dom'
 import WordChip from './WordChip'
 import { ProgressProvider } from '../contexts/ProgressProvider'
+import { useAuth } from 'react-oidc-context';
+import * as useProgressApi from '../hooks/useProgressApi';
+
+// Mock dependencies
+vi.mock('react-oidc-context');
+vi.mock('../hooks/useProgressApi');
 
 describe('WordChip', () => {
   const mockWord = {
@@ -14,7 +20,19 @@ describe('WordChip', () => {
   }
 
   beforeEach(() => {
-    localStorage.clear()
+    vi.clearAllMocks();
+
+    // Mock useAuth to return authenticated user
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        profile: { sub: 'test-user' },
+        access_token: 'test-token',
+      },
+      isLoading: false,
+    } as any);
+
+    // Mock API to return empty progress by default
+    vi.mocked(useProgressApi.getAllProgress).mockResolvedValue([]);
   })
 
   it('shows grey ❔ on first render', () => {
