@@ -32,7 +32,36 @@ const ChallengesPage: React.FC = () => {
   const listBTotalWords = SPELLING_LIST_B.length;
   const listBProgress = Math.round((listBMastered / listBTotalWords) * 100);
 
-  const challenges = [
+  // Current focus challenge
+  const currentChallenges = [
+    {
+      id: 'spelling-list-b',
+      title: "📝 The Big Test 27th Feb — List B",
+      description: "Master all List B spelling words to earn £40! 10 correct in a row per word.",
+      progress: listBProgress,
+      masteredWords: listBMastered,
+      totalWords: listBTotalWords,
+      status: listBProgress === 100 ? 'completed' : listBProgress > 75 ? 'close' : listBProgress > 50 ? 'good' : listBProgress > 25 ? 'steady' : listBProgress > 0 ? 'starting' : 'beginning',
+      route: '/spelling-list-b',
+      bgColor: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
+      borderColor: '#6D28D9'
+    }
+  ];
+
+  // Other available challenges
+  const otherChallenges = [
+    {
+      id: 'spelling-list-a',
+      title: "📝 The Big Test 27th Feb — List A",
+      description: "Master all List A spelling words to earn £40! 10 correct in a row per word.",
+      progress: listAProgress,
+      masteredWords: listAMastered,
+      totalWords: listATotalWords,
+      status: listAProgress === 100 ? 'completed' : listAProgress > 75 ? 'close' : listAProgress > 50 ? 'good' : listAProgress > 25 ? 'steady' : listAProgress > 0 ? 'starting' : 'beginning',
+      route: '/spelling-list-a',
+      bgColor: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
+      borderColor: '#6D28D9'
+    },
     {
       id: 'leo-ks1-challenge',
       title: "Leo's £50 KS1-1 Challenge",
@@ -56,30 +85,6 @@ const ChallengesPage: React.FC = () => {
       route: '/common-words-selection',
       bgColor: 'linear-gradient(135deg, #1a0d2e 0%, #ff8c00 50%, #1a0d2e 100%)',
       borderColor: '#ff4500'
-    },
-    {
-      id: 'spelling-list-a',
-      title: "📝 The Big Test 27th Feb — List A",
-      description: "Master all List A spelling words to earn £40! 10 correct in a row per word.",
-      progress: listAProgress,
-      masteredWords: listAMastered,
-      totalWords: listATotalWords,
-      status: listAProgress === 100 ? 'completed' : listAProgress > 75 ? 'close' : listAProgress > 50 ? 'good' : listAProgress > 25 ? 'steady' : listAProgress > 0 ? 'starting' : 'beginning',
-      route: '/spelling-list-a',
-      bgColor: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
-      borderColor: '#6D28D9'
-    },
-    {
-      id: 'spelling-list-b',
-      title: "📝 The Big Test 27th Feb — List B",
-      description: "Master all List B spelling words to earn £40! 10 correct in a row per word.",
-      progress: listBProgress,
-      masteredWords: listBMastered,
-      totalWords: listBTotalWords,
-      status: listBProgress === 100 ? 'completed' : listBProgress > 75 ? 'close' : listBProgress > 50 ? 'good' : listBProgress > 25 ? 'steady' : listBProgress > 0 ? 'starting' : 'beginning',
-      route: '/spelling-list-b',
-      bgColor: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
-      borderColor: '#6D28D9'
     }
   ];
 
@@ -100,51 +105,111 @@ const ChallengesPage: React.FC = () => {
     <div className="challenges-page-container">
       <h1 className="challenges-page-title">Spelling Challenges</h1>
       <p className="challenges-page-subtitle">Choose a challenge to begin your spelling journey!</p>
-      
-      <div className="challenges-grid">
-        {challenges.map((challenge) => (
-          <div
-            key={challenge.id}
-            className={`challenge-card ${getStatusClass(challenge.status)}`}
-            style={{ 
-              background: challenge.bgColor,
-              borderColor: challenge.borderColor 
-            }}
-            onClick={() => navigate(challenge.route)}
-          >
-            <div className="challenge-card-header">
-              <h2 className="challenge-card-title">{challenge.title}</h2>
-              <p className="challenge-card-description">{challenge.description}</p>
-            </div>
 
-            <div className="challenge-card-progress">
-              <div className="challenge-progress-bar">
-                <div 
-                  className="challenge-progress-fill"
-                  style={{ width: `${challenge.progress}%` }}
-                />
+      {/* Current Focus Section */}
+      <div className="challenges-section">
+        <h2 className="challenges-section-title">🎯 Current Focus</h2>
+        <div className="challenges-grid">
+          {currentChallenges.map((challenge) => (
+            <div
+              key={challenge.id}
+              className={`challenge-card ${getStatusClass(challenge.status)}`}
+              style={{
+                background: challenge.bgColor,
+                borderColor: challenge.borderColor
+              }}
+              onClick={() => navigate(challenge.route)}
+            >
+              <div className="challenge-card-header">
+                <h2 className="challenge-card-title">{challenge.title}</h2>
+                <p className="challenge-card-description">{challenge.description}</p>
               </div>
-              <div className="challenge-progress-stats">
-                <span className="challenge-progress-percentage">{challenge.progress}%</span>
-                <span className="challenge-progress-words">
-                  {challenge.masteredWords}/{challenge.totalWords} words
-                </span>
-              </div>
-            </div>
 
-            <div className="challenge-card-motivation">
-              <div className={`challenge-motivation-message challenge-motivation-${challenge.status}`}>
-                {getStatusMessage(challenge.status, challenge.progress)}
+              <div className="challenge-card-progress">
+                <div className="challenge-progress-bar">
+                  <div
+                    className="challenge-progress-fill"
+                    style={{ width: `${challenge.progress}%` }}
+                  />
+                </div>
+                <div className="challenge-progress-stats">
+                  <span className="challenge-progress-percentage">{challenge.progress}%</span>
+                  <span className="challenge-progress-words">
+                    {challenge.masteredWords}/{challenge.totalWords} words
+                  </span>
+                </div>
+              </div>
+
+              <div className="challenge-card-motivation">
+                <div className={`challenge-motivation-message challenge-motivation-${challenge.status}`}>
+                  {getStatusMessage(challenge.status, challenge.progress)}
+                </div>
+              </div>
+
+              <div className="challenge-card-action">
+                <button className="challenge-start-button">
+                  {challenge.progress > 0 ? 'Continue Challenge' : 'Start Challenge'}
+                </button>
               </div>
             </div>
+          ))}
+        </div>
+      </div>
 
-            <div className="challenge-card-action">
-              <button className="challenge-start-button">
-                {challenge.progress > 0 ? 'Continue Challenge' : 'Start Challenge'}
-              </button>
+      {/* Divider */}
+      <div className="challenges-divider">
+        <div className="divider-line"></div>
+        <span className="divider-text">Other Challenges</span>
+        <div className="divider-line"></div>
+      </div>
+
+      {/* Other Challenges Section */}
+      <div className="challenges-section challenges-section-other">
+        <div className="challenges-grid">
+          {otherChallenges.map((challenge) => (
+            <div
+              key={challenge.id}
+              className={`challenge-card ${getStatusClass(challenge.status)}`}
+              style={{
+                background: challenge.bgColor,
+                borderColor: challenge.borderColor
+              }}
+              onClick={() => navigate(challenge.route)}
+            >
+              <div className="challenge-card-header">
+                <h2 className="challenge-card-title">{challenge.title}</h2>
+                <p className="challenge-card-description">{challenge.description}</p>
+              </div>
+
+              <div className="challenge-card-progress">
+                <div className="challenge-progress-bar">
+                  <div
+                    className="challenge-progress-fill"
+                    style={{ width: `${challenge.progress}%` }}
+                  />
+                </div>
+                <div className="challenge-progress-stats">
+                  <span className="challenge-progress-percentage">{challenge.progress}%</span>
+                  <span className="challenge-progress-words">
+                    {challenge.masteredWords}/{challenge.totalWords} words
+                  </span>
+                </div>
+              </div>
+
+              <div className="challenge-card-motivation">
+                <div className={`challenge-motivation-message challenge-motivation-${challenge.status}`}>
+                  {getStatusMessage(challenge.status, challenge.progress)}
+                </div>
+              </div>
+
+              <div className="challenge-card-action">
+                <button className="challenge-start-button">
+                  {challenge.progress > 0 ? 'Continue Challenge' : 'Start Challenge'}
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       <div className="challenges-coming-soon">

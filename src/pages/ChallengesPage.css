@@ -28,6 +28,54 @@
   font-weight: 600;
 }
 
+.challenges-section {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.challenges-section-title {
+  color: #1e40af;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 1px 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+.challenges-section-other {
+  opacity: 0.85;
+}
+
+.challenges-section-other:hover {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.challenges-divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 3rem 0;
+  gap: 1rem;
+}
+
+.divider-line {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #94a3b8 50%, transparent 100%);
+}
+
+.divider-text {
+  color: #64748b;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0 1rem;
+  white-space: nowrap;
+}
+
 .challenges-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
