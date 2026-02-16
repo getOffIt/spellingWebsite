@@ -1,9 +1,11 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Word } from '../data/words';
 import { useWord } from '../hooks/useWord';
 import { selectNextWords } from '../utils/wordSelection';
 import Challenge, { ChallengeConfig } from './Challenge';
+import AudioLesson from './AudioLesson';
+import { getLessonForCategory } from '../data/categoryLessons';
 import '../pages/WordSelection.css';
 
 interface BaseWordSelectionProps {
@@ -33,6 +35,7 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
   onSelectWords,
 }) => {
   const navigate = useNavigate();
+  const [activeLessonCategory, setActiveLessonCategory] = useState<string | null>(null);
 
   // Call hooks for ALL words first (must be consistent number of hook calls)
   // This ensures we always call the same number of hooks regardless of filtering
@@ -135,6 +138,15 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
     navigate('/spelling-test');
   };
 
+  const handleLearnClick = (category: string, event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent category click
+    setActiveLessonCategory(category);
+  };
+
+  const handleCloseLesson = () => {
+    setActiveLessonCategory(null);
+  };
+
   const containerClass = themeClass 
     ? `word-selection-container ${themeClass}`
     : 'word-selection-container';
@@ -172,6 +184,7 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
       <div className="word-selection-categories">
         {categories.map(([category, categoryWords]) => {
           const catProgress = getCategoryProgress(category);
+          const lesson = getLessonForCategory(category);
           return (
             <div
               key={category}
@@ -180,10 +193,22 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
               style={{ cursor: 'pointer' }}
             >
               <div className="word-selection-category-header">
-                <h2 className="word-selection-category-title">{category}</h2>
+                <div className="word-selection-category-title-row">
+                  <h2 className="word-selection-category-title">{category}</h2>
+                  {lesson && (
+                    <button
+                      className="word-selection-learn-button"
+                      onClick={(e) => handleLearnClick(category, e)}
+                      title="Learn the spelling rule"
+                    >
+                      <span className="learn-icon">🎓</span>
+                      <span className="learn-text">Learn Rule</span>
+                    </button>
+                  )}
+                </div>
                 <div className="word-selection-category-progress">
                   <div className="word-selection-progress-bar">
-                    <div 
+                    <div
                       className="word-selection-progress-fill"
                       style={{ width: `${catProgress.percentage}%` }}
                     />
@@ -210,6 +235,13 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
           );
         })}
       </div>
+
+      {activeLessonCategory && getLessonForCategory(activeLessonCategory) && (
+        <AudioLesson
+          lesson={getLessonForCategory(activeLessonCategory)!}
+          onClose={handleCloseLesson}
+        />
+      )}
     </div>
   );
 };
