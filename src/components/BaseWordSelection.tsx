@@ -39,7 +39,7 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
 
   // Call hooks for ALL words first (must be consistent number of hook calls)
   // This ensures we always call the same number of hooks regardless of filtering
-  const allWordsStatusList = words.map(word => useWord(word.id));
+  const allWordsStatusList = words.map(word => useWord(word.text));
 
   // Track previous statuses to detect actual changes (not just array reference changes)
   const prevStatusesRef = useRef<string>('');
@@ -52,7 +52,7 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
   if (prevStatusesRef.current !== currentStatusesString || words.length !== statusMapRef.current.size) {
     const map = new Map<string, ReturnType<typeof useWord>>();
     words.forEach((word, index) => {
-      map.set(word.id, allWordsStatusList[index]);
+      map.set(word.text, allWordsStatusList[index]);
     });
     statusMapRef.current = map;
     prevStatusesRef.current = currentStatusesString;
@@ -70,7 +70,7 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
   const wordStatuses = useMemo(() => {
     return filteredWords.map(word => ({
       ...word,
-      status: statusMap.get(word.id)?.status || 'not-started',
+      status: statusMap.get(word.text)?.status || 'not-started',
     }));
   }, [filteredWords, statusMap]);
 
@@ -235,11 +235,11 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
                 </div>
               </div>
               <div className="word-selection-words-list">
-                {wordStatuses.filter(w => categoryWords.some(ww => ww.id === w.id)).map(word => {
+                {wordStatuses.filter(w => categoryWords.some(ww => ww.text === w.text)).map(word => {
                   const status = word.status;
                   return (
                     <span
-                      key={word.id}
+                      key={word.text}
                       className={`word-selection-word ${status}`}
                     >
                       {getStatusIcon(status)} {word.text}

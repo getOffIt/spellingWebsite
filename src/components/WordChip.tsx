@@ -9,7 +9,7 @@ interface WordChipProps {
 }
 
 const WordChip: React.FC<WordChipProps> = ({ word, onClick }) => {
-  const { status, text } = useWord(word.id)
+  const { status, text } = useWord(word.text)
 
   const getStatusIcon = () => {
     switch (status) {

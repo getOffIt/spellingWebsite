@@ -13,7 +13,6 @@ vi.mock('../hooks/useProgressApi');
 
 describe('WordChip', () => {
   const mockWord = {
-    id: 'test-word',
     text: 'test',
     year: 1,
     category: 'common'
@@ -56,7 +55,7 @@ describe('WordChip', () => {
     
     // Simulate quiz completion with mastery
     const { useWord } = require('../hooks/useWord')
-    const word = useWord(mockWord.id)
+    const word = useWord(mockWord.text)
     word.setStatus('mastered')
     
     expect(screen.getByText('✔︎')).toBeInTheDocument()
@@ -74,7 +73,7 @@ describe('WordChip', () => {
     fireEvent.click(chip)
     
     const { useWord } = require('../hooks/useWord')
-    const word = useWord(mockWord.id)
+    const word = useWord(mockWord.text)
     word.setStatus('mastered')
     
     unmount()

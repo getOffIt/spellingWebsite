@@ -9,25 +9,25 @@ const ChallengesPage: React.FC = () => {
 
   // Calculate KS1-1 progress for Leo's challenge
   const ks1Words = YEAR1_WORDS.filter(word => !word.category.startsWith('adding'));
-  const ks1WordsStatusList = ks1Words.map(word => useWord(word.id));
+  const ks1WordsStatusList = ks1Words.map(word => useWord(word.text));
   const ks1MasteredWords = ks1WordsStatusList.filter(status => status.status === 'mastered').length;
   const ks1TotalWords = ks1Words.length;
   const ks1Progress = Math.round((ks1MasteredWords / ks1TotalWords) * 100);
 
   // Calculate Common Words progress
-  const commonWordsStatusList = COMMON_WORDS.map(word => useWord(word.id));
+  const commonWordsStatusList = COMMON_WORDS.map(word => useWord(word.text));
   const commonWordsMastered = commonWordsStatusList.filter(status => status.status === 'mastered').length;
   const commonWordsTotalWords = COMMON_WORDS.length;
   const commonWordsProgress = Math.round((commonWordsMastered / commonWordsTotalWords) * 100);
 
   // Calculate Spelling List A progress (threshold handled by useWord/getWordStats)
-  const listAStatusList = SPELLING_LIST_A.map(word => useWord(word.id));
+  const listAStatusList = SPELLING_LIST_A.map(word => useWord(word.text));
   const listAMastered = listAStatusList.filter(status => status.status === 'mastered').length;
   const listATotalWords = SPELLING_LIST_A.length;
   const listAProgress = Math.round((listAMastered / listATotalWords) * 100);
 
   // Calculate Spelling List B progress
-  const listBStatusList = SPELLING_LIST_B.map(word => useWord(word.id));
+  const listBStatusList = SPELLING_LIST_B.map(word => useWord(word.text));
   const listBMastered = listBStatusList.filter(status => status.status === 'mastered').length;
   const listBTotalWords = SPELLING_LIST_B.length;
   const listBProgress = Math.round((listBMastered / listBTotalWords) * 100);

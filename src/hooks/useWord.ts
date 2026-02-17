@@ -6,10 +6,10 @@ import { getMasteryThreshold } from '../config/masteryThresholds'
 export function useWord(wordId: string) {
   const { progress, recordAttempt, getWordStats } = useProgress();
   const word = useMemo(() => {
-    const foundWord = ALL_WORDS.find(w => w.id === wordId);
+    const foundWord = ALL_WORDS.find(w => w.text === wordId);
     if (!foundWord) {
-      console.warn(`Word with id "${wordId}" not found in ALL_WORDS`);
-      return { id: wordId, text: wordId, year: 1 as const, category: 'unknown' };
+      console.warn(`Word "${wordId}" not found in ALL_WORDS`);
+      return { text: wordId, year: 1 as const, category: 'unknown' };
     }
     return foundWord;
   }, [wordId]);

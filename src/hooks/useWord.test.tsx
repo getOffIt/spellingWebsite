@@ -13,8 +13,8 @@ vi.mock('./useProgressApi');
 // Mock word data
 vi.mock('../data/words', () => ({
   ALL_WORDS: [
-    { id: 'test-word-1', text: 'apple', year: 1, category: 'fruit' },
-    { id: 'test-word-2', text: 'banana', year: 1, category: 'fruit' },
+    { text: 'apple', year: 1, category: 'fruit' },
+    { text: 'banana', year: 1, category: 'fruit' },
   ],
 }));
 
@@ -43,10 +43,9 @@ describe('useWord', () => {
   );
 
   it('returns word data with not-started status for new word', async () => {
-    const { result } = renderHook(() => useWord('test-word-1'), { wrapper });
+    const { result } = renderHook(() => useWord('apple'), { wrapper });
 
     await waitFor(() => {
-      expect(result.current.id).toBe('test-word-1');
       expect(result.current.text).toBe('apple');
       expect(result.current.status).toBe('not-started');
       expect(result.current.streak).toBe(0);
@@ -62,10 +61,10 @@ describe('useWord', () => {
     ];
 
     vi.mocked(useProgressApi.getAllProgress).mockResolvedValue([
-      { wordId: 'test-word-1', progress: attempts },
+      { wordId: 'apple', progress: attempts },
     ]);
 
-    const { result } = renderHook(() => useWord('test-word-1'), { wrapper });
+    const { result } = renderHook(() => useWord('apple'), { wrapper });
 
     await waitFor(() => {
       expect(result.current.status).toBe('in-progress');
@@ -82,10 +81,10 @@ describe('useWord', () => {
     }));
 
     vi.mocked(useProgressApi.getAllProgress).mockResolvedValue([
-      { wordId: 'test-word-1', progress: attempts },
+      { wordId: 'apple', progress: attempts },
     ]);
 
-    const { result } = renderHook(() => useWord('test-word-1'), { wrapper });
+    const { result } = renderHook(() => useWord('apple'), { wrapper });
 
     await waitFor(() => {
       expect(result.current.status).toBe('mastered');
@@ -105,10 +104,10 @@ describe('useWord', () => {
     ];
 
     vi.mocked(useProgressApi.getAllProgress).mockResolvedValue([
-      { wordId: 'test-word-1', progress: attempts },
+      { wordId: 'apple', progress: attempts },
     ]);
 
-    const { result } = renderHook(() => useWord('test-word-1'), { wrapper });
+    const { result } = renderHook(() => useWord('apple'), { wrapper });
 
     await waitFor(() => {
       expect(result.current.status).toBe('unmastered');
@@ -133,10 +132,10 @@ describe('useWord', () => {
     ];
 
     vi.mocked(useProgressApi.getAllProgress).mockResolvedValue([
-      { wordId: 'test-word-1', progress: attempts },
+      { wordId: 'apple', progress: attempts },
     ]);
 
-    const { result } = renderHook(() => useWord('test-word-1'), { wrapper });
+    const { result } = renderHook(() => useWord('apple'), { wrapper });
 
     await waitFor(() => {
       expect(result.current.status).toBe('unmastered');
@@ -161,10 +160,10 @@ describe('useWord', () => {
     ];
 
     vi.mocked(useProgressApi.getAllProgress).mockResolvedValue([
-      { wordId: 'test-word-1', progress: attempts },
+      { wordId: 'apple', progress: attempts },
     ]);
 
-    const { result } = renderHook(() => useWord('test-word-1'), { wrapper });
+    const { result } = renderHook(() => useWord('apple'), { wrapper });
 
     await waitFor(() => {
       expect(result.current.status).toBe('mastered');
@@ -184,10 +183,10 @@ describe('useWord', () => {
     ];
 
     vi.mocked(useProgressApi.getAllProgress).mockResolvedValue([
-      { wordId: 'test-word-1', progress: attempts },
+      { wordId: 'apple', progress: attempts },
     ]);
 
-    const { result } = renderHook(() => useWord('test-word-1'), { wrapper });
+    const { result } = renderHook(() => useWord('apple'), { wrapper });
 
     await waitFor(() => {
       expect(result.current.status).toBe('in-progress');
