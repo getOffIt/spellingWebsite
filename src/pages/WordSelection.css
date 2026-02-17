@@ -270,6 +270,7 @@
   flex-direction: column;
   align-items: center;
   min-width: 0;
+  overflow: hidden;
 }
 
 .word-selection-category-header {
@@ -282,9 +283,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
   margin-bottom: 0.15rem;
   position: relative;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  padding: 0.15rem 0.2rem;
 }
 
 .word-selection-category-title {
@@ -292,6 +296,10 @@
   font-size: 1.05rem;
   margin: 0;
   font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .word-selection-learn-button {
