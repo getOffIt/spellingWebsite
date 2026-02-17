@@ -201,8 +201,8 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
               style={{ cursor: 'pointer' }}
             >
               <div className="word-selection-category-header">
-                <div className="word-selection-category-title-row">
-                  <h2 className="word-selection-category-title">{category}</h2>
+                <h2 className="word-selection-category-title">{category}</h2>
+                <div className="word-selection-category-actions">
                   <button
                     className="word-selection-learn-button"
                     onClick={(e) => handleTestClick(category, e)}

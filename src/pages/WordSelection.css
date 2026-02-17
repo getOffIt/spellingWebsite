@@ -279,27 +279,23 @@
   text-align: center;
 }
 
-.word-selection-category-title-row {
+.word-selection-category-title {
+  color: #1e40af;
+  font-size: 1.05rem;
+  margin: 0 0 0.15rem 0;
+  font-weight: bold;
+  text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.word-selection-category-actions {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
   margin-bottom: 0.15rem;
-  position: relative;
-  flex-wrap: nowrap;
-  overflow: hidden;
-  padding: 0.15rem 0.2rem;
-}
-
-.word-selection-category-title {
-  color: #1e40af;
-  font-size: 1.05rem;
-  margin: 0;
-  font-weight: bold;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  min-width: 0;
 }
 
 .word-selection-learn-button {
