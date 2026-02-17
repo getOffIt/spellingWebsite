@@ -117,33 +117,33 @@ export class FileManager {
 
   async prepareApprovedFiles(): Promise<ApprovedFile[]> {
     const approvedFiles: ApprovedFile[] = [];
-    
+
     try {
-      const voiceDirs = await readdir(this.audioDir);
-      
-      for (const voice of voiceDirs) {
+      const entries = await readdir(this.audioDir);
+
+      for (const voice of entries) {
         const voiceDir = join(this.audioDir, voice);
-        const files = await readdir(voiceDir);
-        
-        for (const file of files) {
-          if (file.endsWith('.mp3')) {
-            const wordId = file.replace('.mp3', '');
-            const localPath = join(voiceDir, file);
-            const s3Key = `${this.s3KeyPrefix}/${voice}/${file}`;
-            
-            approvedFiles.push({
-              wordId,
-              voiceUsed: voice,
-              localPath,
-              s3Key
-            });
+        try {
+          const dirStat = await stat(voiceDir);
+          if (!dirStat.isDirectory()) continue; // skip .DS_Store etc.
+
+          const files = await readdir(voiceDir);
+          for (const file of files) {
+            if (file.endsWith('.mp3')) {
+              const wordId = file.replace('.mp3', '');
+              const localPath = join(voiceDir, file);
+              const s3Key = `${this.s3KeyPrefix}/${voice}/${file}`;
+              approvedFiles.push({ wordId, voiceUsed: voice, localPath, s3Key });
+            }
           }
+        } catch {
+          // skip unreadable entries
         }
       }
     } catch {
-      // Directory might not exist
+      // audio-cache directory doesn't exist yet
     }
-    
+
     return approvedFiles;
   }
 

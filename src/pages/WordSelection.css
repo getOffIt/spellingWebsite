@@ -341,29 +341,7 @@
   display: none;
 }
 
-/* Tooltip on hover */
-.word-selection-learn-button::after {
-  content: 'Learn the rule';
-  position: absolute;
-  bottom: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1f2937;
-  color: white;
-  padding: 0.35rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-  z-index: 10;
-  font-weight: 600;
-}
-
-.word-selection-learn-button:hover::after {
-  opacity: 1;
-}
+/* Tooltips handled by native title attribute on each button */
 
 @media (max-width: 768px) {
   .word-selection-learn-button {
@@ -372,11 +350,6 @@
     font-size: 1rem;
   }
 
-  .word-selection-learn-button::after {
-    bottom: -28px;
-    font-size: 0.7rem;
-    padding: 0.3rem 0.5rem;
-  }
 }
 
 .word-selection-category-progress {
