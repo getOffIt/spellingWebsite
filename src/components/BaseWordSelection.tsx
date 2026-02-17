@@ -138,6 +138,14 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
     navigate('/spelling-test');
   };
 
+  const handleTestClick = (category: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    const wordList = categoryToWordStatuses[category] || [];
+    const allWords = wordList.map(w => w.text);
+    onSelectWords(allWords, 'single', 'full_test');
+    navigate('/spelling-test');
+  };
+
   const handleLearnClick = (category: string, event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent category click
     setActiveLessonCategory(category);
@@ -195,6 +203,14 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
               <div className="word-selection-category-header">
                 <div className="word-selection-category-title-row">
                   <h2 className="word-selection-category-title">{category}</h2>
+                  <button
+                    className="word-selection-learn-button"
+                    onClick={(e) => handleTestClick(category, e)}
+                    title="Test all words in this category"
+                  >
+                    <span className="learn-icon">📝</span>
+                    <span className="learn-text">Test</span>
+                  </button>
                   {lesson && (
                     <button
                       className="word-selection-learn-button"
