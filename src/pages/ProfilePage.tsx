@@ -65,7 +65,7 @@ const DailyActivityCalendar = ({ dailyActivity, progress }: {
       marginTop: '1rem'
     }}>
       <h3 style={{ color: '#4B5563', marginBottom: '1rem' }}>Daily Activity</h3>
-      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'space-between', overflowX: 'auto', paddingBottom: '0.25rem' }}>
         {last7Days.map((date, index) => {
           const dateStr = date.toISOString().split('T')[0];
           const activity = dailyActivity[dateStr] || 0;
@@ -79,7 +79,8 @@ const DailyActivityCalendar = ({ dailyActivity, progress }: {
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '0.5rem',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                flexShrink: 0
               }}
               onClick={() => setSelectedDate(selectedDate === dateStr ? null : dateStr)}
             >
@@ -178,7 +179,7 @@ const ActivityCalendar = ({ dailyMasteredWords, progress }: {
       marginTop: '1rem'
     }}>
       <h3 style={{ color: '#4B5563', marginBottom: '1rem' }}>Daily Word Status Changes</h3>
-      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'space-between', overflowX: 'auto', paddingBottom: '0.25rem' }}>
         {last7Days.map((date, index) => {
           const dateStr = date.toISOString().split('T')[0];
           const wordsData = getWordsForDate(dateStr);
@@ -195,7 +196,8 @@ const ActivityCalendar = ({ dailyMasteredWords, progress }: {
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '0.5rem',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                flexShrink: 0
               }}
               onClick={() => setSelectedDate(selectedDate === dateStr ? null : dateStr)}
             >
