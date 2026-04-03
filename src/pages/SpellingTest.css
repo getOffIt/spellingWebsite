@@ -211,6 +211,92 @@ html, body {
   }
 }
 
+/* Streak Indicator */
+.streak-indicator-overlay {
+  justify-content: center;
+  gap: 0;
+}
+
+.streak-celebration {
+  font-size: 5rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  animation: streak-bounce 0.5s ease-out;
+}
+
+.streak-correct-icon,
+.streak-wrong-icon {
+  font-size: 4rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  animation: streak-bounce 0.4s ease-out;
+}
+
+.streak-mastered-text {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #16a34a;
+  text-align: center;
+  margin-bottom: 0.8rem;
+  text-shadow: 0 2px 8px #bbf7d0;
+}
+
+.streak-circles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 0.8rem auto 0.5rem auto;
+  max-width: 340px;
+}
+
+.streak-circle {
+  font-size: 1.8rem;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.streak-circle.filled {
+  color: #22c55e;
+}
+
+.streak-circle.empty {
+  color: #d1d5db;
+}
+
+.streak-label {
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 0.7rem;
+}
+
+.streak-label.correct {
+  color: #16a34a;
+}
+
+.streak-label.wrong {
+  color: #b45309;
+}
+
+.streak-label.mastered {
+  color: #16a34a;
+  font-size: 1.6rem;
+}
+
+.streak-tap-hint {
+  margin-top: 2rem;
+  color: #6b7280;
+  font-size: 1rem;
+  text-align: center;
+}
+
+@keyframes streak-bounce {
+  0% { transform: scale(0.7); opacity: 0.4; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 @media (max-width: 600px) {
   .spelling-title {
     font-size: 1.5rem;

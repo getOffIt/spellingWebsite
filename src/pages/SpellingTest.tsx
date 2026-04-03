@@ -8,6 +8,7 @@ import CongratulationsPage from './CongratulationsPage';
 import { useWord } from '../hooks/useWord';
 import { useProgress } from '../contexts/ProgressProvider';
 import { VoiceService } from '../services/VoiceService';
+import { getMasteryThreshold } from '../config/masteryThresholds';
 
 interface Word {
   word: string;
@@ -74,6 +75,27 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
   const inputRef = useRef<HTMLInputElement>(null);
   const inputContainerRef = useRef<HTMLDivElement>(null);
 
+  // Streak indicator state
+  interface StreakInfo {
+    streak: number;
+    threshold: number;
+    isCorrect: boolean;
+  }
+  const [streakInfo, setStreakInfo] = useState<StreakInfo | null>(null);
+  const pendingAdvanceRef = useRef<(() => void) | null>(null);
+  const streakTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const executeAdvance = () => {
+    if (streakTimerRef.current) {
+      clearTimeout(streakTimerRef.current);
+      streakTimerRef.current = null;
+    }
+    const action = pendingAdvanceRef.current;
+    pendingAdvanceRef.current = null;
+    setStreakInfo(null);
+    if (action) action();
+  };
+
   // Check if the words for the current stage are all correct
   const areCurrentStageWordsCorrect = answers.every((ans, idx) => 
     ans.trim().toLowerCase() === wordsForCurrentStage[idx].toLowerCase()
@@ -119,38 +141,55 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
   const advanceToNextWord = (userAttempt: string) => {
     const currentWord = wordsForCurrentStage[step];
     const isCorrect = userAttempt.trim().toLowerCase() === currentWord.toLowerCase();
-    const { recordAttempt } = (currentStage === 'base' && listType === 'less_family')
+    const hook = (currentStage === 'base' && listType === 'less_family')
       ? baseWordHooks[currentWord]
       : wordHooks[currentWord];
-    recordAttempt(currentWord, isCorrect, userAttempt);
+    hook.recordAttempt(currentWord, isCorrect, userAttempt);
 
-    if (step === wordsForCurrentStage.length - 1) {
-      if (currentStage === 'base' && listType === 'less_family') {
-        if (testMode === 'full_test') {
-          setCurrentStage('full');
-          setStep(0);
-          setAnswers(Array(words.length).fill(''));
-        } else if (areCurrentStageWordsCorrect) {
-          setCurrentStage('full');
-          setStep(0);
-          setAnswers(Array(words.length).fill(''));
-        } else {
-          setShowResults(true);
-        }
-      } else {
-        if (areCurrentStageWordsCorrect) {
+    // Compute new streak locally (recordAttempt is async, can't wait for state update)
+    const newStreak = isCorrect ? hook.streak + 1 : 0;
+    const threshold = getMasteryThreshold(currentWord);
+
+    // Capture all values needed for the advance action
+    const capturedStep = step;
+    const capturedStage = currentStage;
+    const capturedAreCorrect = areCurrentStageWordsCorrect;
+    const capturedWordsLength = wordsForCurrentStage.length;
+
+    const doAdvance = () => {
+      if (capturedStep === capturedWordsLength - 1) {
+        if (capturedStage === 'base' && listType === 'less_family') {
           if (testMode === 'full_test') {
-            setShowResults(true);
+            setCurrentStage('full');
+            setStep(0);
+            setAnswers(Array(words.length).fill(''));
+          } else if (capturedAreCorrect) {
+            setCurrentStage('full');
+            setStep(0);
+            setAnswers(Array(words.length).fill(''));
           } else {
-            setDone(true);
+            setShowResults(true);
           }
         } else {
-          setShowResults(true);
+          if (capturedAreCorrect) {
+            if (testMode === 'full_test') {
+              setShowResults(true);
+            } else {
+              setDone(true);
+            }
+          } else {
+            setShowResults(true);
+          }
         }
+      } else {
+        setStep(capturedStep + 1);
       }
-    } else {
-      setStep(step + 1);
-    }
+    };
+
+    // Show streak indicator, then auto-advance after 1.5s
+    pendingAdvanceRef.current = doAdvance;
+    setStreakInfo({ streak: newStreak, threshold, isCorrect });
+    streakTimerRef.current = setTimeout(executeAdvance, 1500);
   };
 
   const handleNext = () => {
@@ -240,6 +279,43 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
   }
 
   const currentWord = wordsForCurrentStage[step];
+
+  if (streakInfo) {
+    const { streak, threshold, isCorrect } = streakInfo;
+    const isMastered = streak >= threshold;
+    const circles = Array.from({ length: threshold }, (_, i) => i < streak);
+    return (
+      <div
+        className="spelling-test-container streak-indicator-overlay"
+        style={{ minHeight: '100vh', overflowY: 'auto', WebkitOverflowScrolling: 'touch', cursor: 'pointer' }}
+        onClick={executeAdvance}
+      >
+        {isMastered ? (
+          <>
+            <div className="streak-celebration">🎉</div>
+            <div className="streak-mastered-text">Mastered!</div>
+          </>
+        ) : isCorrect ? (
+          <div className="streak-correct-icon">✅</div>
+        ) : (
+          <div className="streak-wrong-icon">❌</div>
+        )}
+        <div className="streak-circles">
+          {circles.map((filled, i) => (
+            <span key={i} className={filled ? 'streak-circle filled' : 'streak-circle empty'}>●</span>
+          ))}
+        </div>
+        {isMastered ? (
+          <div className="streak-label mastered">Mastered! 🎉</div>
+        ) : isCorrect ? (
+          <div className="streak-label correct">{streak}/{threshold} correct in a row!</div>
+        ) : (
+          <div className="streak-label wrong">Try again 💪 {streak}/{threshold}</div>
+        )}
+        <div className="streak-tap-hint">Tap to continue</div>
+      </div>
+    );
+  }
 
   return (
     <div className="spelling-test-container" style={{ minHeight: '100vh', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
