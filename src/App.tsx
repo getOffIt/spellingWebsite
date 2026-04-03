@@ -31,7 +31,12 @@ export default function App() {
     testMode: 'practice' | 'full_test' = 'practice',
     passThreshold?: number
   ) => {
-    setSelectedList({ words, type, testMode, passThreshold })
+    // Shuffle word order for practice mode to prevent restart cherry-picking
+    // Full test mode keeps original order (deterministic for fairness)
+    const shuffled = testMode === 'practice'
+      ? [...words].sort(() => Math.random() - 0.5)
+      : words;
+    setSelectedList({ words: shuffled, type, testMode, passThreshold })
   }
 
   const handleReset = () => {
