@@ -6,6 +6,7 @@ import { selectNextWords } from '../utils/wordSelection';
 import Challenge, { ChallengeConfig } from './Challenge';
 import AudioLesson from './AudioLesson';
 import { getLessonForCategory } from '../data/categoryLessons';
+import { getWordTip } from '../data/wordTips';
 import '../pages/WordSelection.css';
 
 interface BaseWordSelectionProps {
@@ -36,6 +37,8 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
 }) => {
   const navigate = useNavigate();
   const [activeLessonCategory, setActiveLessonCategory] = useState<string | null>(null);
+  const [expandedTip, setExpandedTip] = useState<string | null>(null);
+  const tipAudioRef = React.useRef<HTMLAudioElement | null>(null);
 
   // Call hooks for ALL words first (must be consistent number of hook calls)
   // This ensures we always call the same number of hooks regardless of filtering
@@ -241,16 +244,59 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
                   const streak = wordData?.streak ?? 0;
                   const threshold = 10; // mastery threshold
                   const showStreak = status === 'in-progress' && streak > 0;
+                  const tip = getWordTip(word.text);
+                  const showTipIcon = tip && (status === 'in-progress' || status === 'not-started') && status !== 'mastered';
+                  const isExpanded = expandedTip === word.text;
                   return (
-                    <span
-                      key={word.text}
-                      className={`word-selection-word ${status}`}
-                    >
-                      {getStatusIcon(status)} {word.text}
-                      {showStreak && (
-                        <span className="word-selection-streak">{streak}/{threshold}</span>
+                    <div key={word.text} className="word-selection-word-row">
+                      <span
+                        className={`word-selection-word ${status}`}
+                      >
+                        {getStatusIcon(status)} {word.text}
+                        {showStreak && (
+                          <span className="word-selection-streak">{streak}/{threshold}</span>
+                        )}
+                        {showTipIcon && (
+                          <button
+                            className={`word-tip-button ${isExpanded ? 'active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (isExpanded) {
+                                setExpandedTip(null);
+                                if (tipAudioRef.current) {
+                                  tipAudioRef.current.pause();
+                                  tipAudioRef.current = null;
+                                }
+                              } else {
+                                setExpandedTip(word.text);
+                              }
+                            }}
+                            title="Spelling tip"
+                          >
+                            💡
+                          </button>
+                        )}
+                      </span>
+                      {isExpanded && tip && (
+                        <div className="word-tip-expanded" onClick={(e) => e.stopPropagation()}>
+                          <p className="word-tip-text">{tip.tip}</p>
+                          <button
+                            className="word-tip-play"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (tipAudioRef.current) {
+                                tipAudioRef.current.pause();
+                              }
+                              const audio = new Audio(tip.audioFile);
+                              tipAudioRef.current = audio;
+                              audio.play();
+                            }}
+                          >
+                            🔊 Listen
+                          </button>
+                        </div>
                       )}
-                    </span>
+                    </div>
                   );
                 })}
               </div>
