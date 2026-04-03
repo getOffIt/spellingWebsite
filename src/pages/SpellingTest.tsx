@@ -280,42 +280,12 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
 
   const currentWord = wordsForCurrentStage[step];
 
-  if (streakInfo) {
-    const { streak, threshold, isCorrect } = streakInfo;
-    const isMastered = streak >= threshold;
-    const circles = Array.from({ length: threshold }, (_, i) => i < streak);
-    return (
-      <div
-        className="spelling-test-container streak-indicator-overlay"
-        style={{ minHeight: '100vh', overflowY: 'auto', WebkitOverflowScrolling: 'touch', cursor: 'pointer' }}
-        onClick={executeAdvance}
-      >
-        {isMastered ? (
-          <>
-            <div className="streak-celebration">🎉</div>
-            <div className="streak-mastered-text">Mastered!</div>
-          </>
-        ) : isCorrect ? (
-          <div className="streak-correct-icon">✅</div>
-        ) : (
-          <div className="streak-wrong-icon">❌</div>
-        )}
-        <div className="streak-circles">
-          {circles.map((filled, i) => (
-            <span key={i} className={filled ? 'streak-circle filled' : 'streak-circle empty'}>●</span>
-          ))}
-        </div>
-        {isMastered ? (
-          <div className="streak-label mastered">Mastered! 🎉</div>
-        ) : isCorrect ? (
-          <div className="streak-label correct">{streak}/{threshold} correct in a row!</div>
-        ) : (
-          <div className="streak-label wrong">Try again 💪 {streak}/{threshold}</div>
-        )}
-        <div className="streak-tap-hint">Tap to continue</div>
-      </div>
-    );
-  }
+  // Get current word's existing streak for inline display (before any new attempt)
+  const currentWordHook = (currentStage === 'base' && listType === 'less_family')
+    ? baseWordHooks[currentWord]
+    : wordHooks[currentWord];
+  const currentStreak = currentWordHook?.streak ?? 0;
+  const currentThreshold = getMasteryThreshold(currentWord);
 
   return (
     <div className="spelling-test-container" style={{ minHeight: '100vh', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
@@ -326,7 +296,34 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
       <button className="spelling-listen-btn" onClick={() => speak(currentWord)}>
         🔊 Listen to the word
       </button>
-      {/* Removed sentence display as requested previously */}
+
+      {/* Inline streak indicator */}
+      {streakInfo ? (
+        <div className={`streak-inline ${streakInfo.isCorrect ? 'correct' : 'wrong'}${streakInfo.streak >= streakInfo.threshold ? ' mastered' : ''}`} onClick={executeAdvance}>
+          <div className="streak-circles">
+            {Array.from({ length: streakInfo.threshold }, (_, i) => (
+              <span key={i} className={i < streakInfo.streak ? 'streak-circle filled' : 'streak-circle empty'}>●</span>
+            ))}
+          </div>
+          {streakInfo.streak >= streakInfo.threshold ? (
+            <div className="streak-label">Mastered! 🎉</div>
+          ) : streakInfo.isCorrect ? (
+            <div className="streak-label">{streakInfo.streak}/{streakInfo.threshold} correct in a row!</div>
+          ) : (
+            <div className="streak-label">Try again 💪 {streakInfo.streak}/{streakInfo.threshold}</div>
+          )}
+        </div>
+      ) : currentStreak > 0 && currentWordHook?.status !== 'mastered' ? (
+        <div className="streak-inline current">
+          <div className="streak-circles">
+            {Array.from({ length: currentThreshold }, (_, i) => (
+              <span key={i} className={i < currentStreak ? 'streak-circle filled' : 'streak-circle empty'}>●</span>
+            ))}
+          </div>
+          <div className="streak-label">{currentStreak}/{currentThreshold}</div>
+        </div>
+      ) : null}
+
       <div ref={inputContainerRef}>
         <input
           ref={inputRef}

@@ -237,12 +237,19 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
               <div className="word-selection-words-list">
                 {wordStatuses.filter(w => categoryWords.some(ww => ww.text === w.text)).map(word => {
                   const status = word.status;
+                  const wordData = statusMap.get(word.text);
+                  const streak = wordData?.streak ?? 0;
+                  const threshold = 10; // mastery threshold
+                  const showStreak = status === 'in-progress' && streak > 0;
                   return (
                     <span
                       key={word.text}
                       className={`word-selection-word ${status}`}
                     >
                       {getStatusIcon(status)} {word.text}
+                      {showStreak && (
+                        <span className="word-selection-streak">{streak}/{threshold}</span>
+                      )}
                     </span>
                   );
                 })}
