@@ -34,7 +34,7 @@ BEAUTIFUL — you might want to write "butiful," but it starts B-E-A-U-T-I-F-U-L
 
 BECAUSE — it's not "becoz!" The middle is A-U-S-E.
 
-PEOPLE — sounds like "pee-pul" but it's spelled P-E-O-P-L-E with an O hiding in there.
+PEOPLE — sounds like "pee-pul" but it's spelled P-E-O-P-L-E with an O hiding in there. Here's a trick to remember: People Eat Oranges — P-E-O! That O is hiding right in the middle, between the P-E and the P-L-E. Say it in chunks: PE-O-PLE. Once you spot that sneaky O, you'll never forget it!
 
 CLOTHES — be careful, it's not "close!" There's a T-H in the middle.
 
@@ -116,7 +116,7 @@ WHO and WHOLE — the W is silent! You say "hoo" and "hole," and the W-H at the 
 
 AGAIN — it sounds like "uh-gen" but starts with A-G-A-I-N.
 
-CHILDREN — this is the plural of "child." Don't forget the R-E-N at the end.
+CHILDREN — this is the plural of "child," and it's one of those words where you need to hear every part. Break it into two chunks: CHIL and DREN. Start with the word CHILD that you already know — C-H-I-L-D — then swap that D for D-R-E-N. CHIL-DREN. Say it slowly: "chil... dren." Don't skip letters — every one matters! C-H-I-L-D-R-E-N.
 
 CHRISTMAS — there's a silent T hiding in there! C-H-R-I-S-T-M-A-S. Think "Christ" plus "mas."
 
@@ -136,7 +136,7 @@ PARENTS — don't forget the second A! P-A-R-E-N-T-S.
 
 PRETTY — the E sounds like "ih" — "pritty" — but it's spelled with an E: P-R-E-T-T-Y.
 
-WATER — W-A-T-E-R. The A says "or" — that's the tricky bit!`,
+WATER — W-A-T-E-R. This word trips people up because the A makes an unexpected sound — it says "or" like in "war." The trick is to split it into two easy chunks: WA-TER. Say "wah" then "ter." W-A, then T-E-R. Don't jumble the letters — just two chunks: WA... TER. Think of it this way: you WA-sh with WA-TER — both start with W-A!`,
     examples: ['again', 'children', 'Christmas', 'even', 'eye', 'half', 'hour', 'money', 'Mr', 'Mrs', 'parents', 'pretty', 'water'],
     audioFile: '/audio/lessons/other-b.mp3'
   }

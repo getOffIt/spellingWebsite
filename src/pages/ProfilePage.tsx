@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import { useAuth } from 'react-oidc-context';
 import { useProgress } from '../contexts/ProgressProvider';
-import { getMasteryThreshold } from '../config/masteryThresholds';
+import { ALL_WORDS } from '../data/words';
+import {
+  buildDailyActivity,
+  buildDailyMasteredWords,
+  buildWordsByCategory,
+  getDateKey,
+  getTodayProgressSummary,
+} from './profileProgressSummary';
 
 const signOutRedirect = (auth: ReturnType<typeof useAuth>) => {
   const clientId = "3ua09or8n2k4cqldeu3u8bv585";
@@ -358,79 +365,16 @@ export default function ProfilePage() {
     return lastSeen && lastSeen >= startOfWeek;
   }).length;
 
-  // Calculate daily activity
-  const dailyActivity: { [key: string]: number } = {};
-  wordIds.forEach(wordId => {
-    const attempts = progress[wordId] || [];
-    attempts.forEach(attempt => {
-      const date = attempt.date.split('T')[0];
-      dailyActivity[date] = (dailyActivity[date] || 0) + 1;
-    });
-  });
-
-  // Calculate daily mastered and unmastered words
-  const dailyMasteredWords: { [key: string]: { mastered: string[], unmastered: string[], remastered: string[] } } = {};
-  
-  wordIds.forEach(wordId => {
-    const attempts = progress[wordId] || [];
-    if (attempts.length === 0) return;
-    
-    const threshold = getMasteryThreshold(wordId);
-    
-    // Track mastery and unmastery events chronologically
-    let consecutiveCorrect = 0;
-    let wasMastered = false;
-    
-    for (let i = 0; i < attempts.length; i++) {
-      const attempt = attempts[i];
-      const attemptDate = attempt.date.split('T')[0];
-      
-      if (attempt.correct) {
-        consecutiveCorrect++;
-        
-        // Check if this attempt achieves mastery
-        if (consecutiveCorrect === threshold && !wasMastered) {
-          if (!dailyMasteredWords[attemptDate]) {
-            dailyMasteredWords[attemptDate] = { mastered: [], unmastered: [], remastered: [] };
-          }
-          dailyMasteredWords[attemptDate].mastered.push(wordId);
-          wasMastered = true;
-        }
-      } else {
-        // Incorrect attempt - check if this breaks mastery
-        if (wasMastered && consecutiveCorrect >= threshold) {
-          if (!dailyMasteredWords[attemptDate]) {
-            dailyMasteredWords[attemptDate] = { mastered: [], unmastered: [], remastered: [] };
-          }
-          // Only add if not already in the unmastered list for this date
-          if (!dailyMasteredWords[attemptDate].unmastered.includes(wordId)) {
-            dailyMasteredWords[attemptDate].unmastered.push(wordId);
-          }
-          wasMastered = false;
-        }
-        consecutiveCorrect = 0;
-      }
-    }
-  });
-
-  // Post-process to handle same-day re-masteries
-  Object.keys(dailyMasteredWords).forEach(date => {
-    const dayData = dailyMasteredWords[date];
-    
-    // Find words that appear in both mastered and unmastered lists for the same day
-    const remastered = dayData.mastered.filter(wordId => 
-      dayData.unmastered.includes(wordId)
-    );
-    
-    if (remastered.length > 0) {
-      // Move these words to the remastered list
-      dayData.remastered = remastered;
-      
-      // Remove them from both mastered and unmastered lists to avoid double counting
-      dayData.mastered = dayData.mastered.filter(wordId => !remastered.includes(wordId));
-      dayData.unmastered = dayData.unmastered.filter(wordId => !remastered.includes(wordId));
-    }
-  });
+  const dailyActivity = buildDailyActivity(progress);
+  const dailyMasteredWords = buildDailyMasteredWords(progress);
+  const wordsByCategory = buildWordsByCategory(ALL_WORDS);
+  const todaySummary = getTodayProgressSummary(
+    progress,
+    dailyActivity,
+    dailyMasteredWords,
+    wordsByCategory,
+    getDateKey(today)
+  );
 
   // Calculate current streak
   let currentStreak = 0;
@@ -483,6 +427,41 @@ export default function ProfilePage() {
 
         <div style={{ marginBottom: '2rem' }}>
           <h3 style={{ color: '#4B5563', marginBottom: '1rem' }}>Welcome, {String(username || '')}</h3>
+        </div>
+
+        <div style={{
+          background: '#F9FAFB',
+          border: '1px solid #E5E7EB',
+          borderRadius: '10px',
+          padding: '1.25rem',
+          marginBottom: '2rem'
+        }}>
+          <h3 style={{ color: '#111827', marginTop: 0, marginBottom: '1rem' }}>Today</h3>
+          <div style={{ display: 'grid', gap: '0.75rem' }}>
+            <div style={{ color: '#374151' }}>
+              <strong>3 words green today:</strong>{' '}
+              <span style={{ color: todaySummary.metThreeGreenTarget ? '#059669' : '#DC2626', fontWeight: 700 }}>
+                {todaySummary.metThreeGreenTarget ? '✅' : '❌'}
+              </span>
+            </div>
+            <div style={{ color: '#374151' }}><strong>Words green today:</strong> {todaySummary.greenWordsToday}</div>
+            <div style={{ color: '#374151' }}><strong>Attempts today:</strong> {todaySummary.attemptsToday}</div>
+            <div style={{ color: '#374151' }}>
+              <strong>Mini tests today:</strong>{' '}
+              {todaySummary.miniTestsToday.length > 0 ? todaySummary.miniTestsToday.join(', ') : 'none'}
+            </div>
+            <div style={{ color: '#374151' }}>
+              <strong>Remastered today:</strong>{' '}
+              {todaySummary.remasteredToday.length > 0
+                ? `${todaySummary.remasteredToday.length} (${todaySummary.remasteredToday.join(', ')})`
+                : 'none'}
+            </div>
+            {todaySummary.bonusGreenWords > 0 && (
+              <div style={{ color: '#059669', fontWeight: 600 }}>
+                +{todaySummary.bonusGreenWords} extra green word{todaySummary.bonusGreenWords === 1 ? '' : 's'}
+              </div>
+            )}
+          </div>
         </div>
 
         <div style={{ 
