@@ -186,10 +186,8 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
       }
     };
 
-    // Show streak indicator, then auto-advance after 1.5s
-    pendingAdvanceRef.current = doAdvance;
-    setStreakInfo({ streak: newStreak, threshold, isCorrect });
-    streakTimerRef.current = setTimeout(executeAdvance, 1500);
+    // Advance immediately (no delay)
+    doAdvance();
   };
 
   const handleNext = () => {
