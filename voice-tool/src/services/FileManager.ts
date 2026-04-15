@@ -1,6 +1,7 @@
 import { writeFile, readFile, mkdir, unlink, readdir, stat } from 'fs/promises';
 import { join } from 'path';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import type { CompletedWord } from '../types/index.js';
 
 export interface ApprovedFile {
   wordId: string;
@@ -115,36 +116,63 @@ export class FileManager {
     }
   }
 
-  async prepareApprovedFiles(): Promise<ApprovedFile[]> {
+  async prepareApprovedFiles(completedWords: CompletedWord[]): Promise<ApprovedFile[]> {
     const approvedFiles: ApprovedFile[] = [];
 
-    try {
-      const entries = await readdir(this.audioDir);
-
-      for (const voice of entries) {
-        const voiceDir = join(this.audioDir, voice);
-        try {
-          const dirStat = await stat(voiceDir);
-          if (!dirStat.isDirectory()) continue; // skip .DS_Store etc.
-
-          const files = await readdir(voiceDir);
-          for (const file of files) {
-            if (file.endsWith('.mp3')) {
-              const wordId = file.replace('.mp3', '');
-              const localPath = join(voiceDir, file);
-              const s3Key = `${this.s3KeyPrefix}/${voice}/${file}`;
-              approvedFiles.push({ wordId, voiceUsed: voice, localPath, s3Key });
-            }
-          }
-        } catch {
-          // skip unreadable entries
-        }
+    for (const completedWord of completedWords) {
+      const localPath = await this.resolveApprovedAudioPath(completedWord);
+      if (!localPath) {
+        console.log(
+          `⚠️  Skipping ${completedWord.wordId}: approved audio file not found for ${completedWord.voiceUsed}`
+        );
+        continue;
       }
-    } catch {
-      // audio-cache directory doesn't exist yet
+
+      approvedFiles.push({
+        wordId: completedWord.wordId,
+        voiceUsed: completedWord.voiceUsed,
+        localPath,
+        s3Key: this.getS3Key(completedWord.wordId, completedWord.voiceUsed)
+      });
     }
 
     return approvedFiles;
+  }
+
+  private async resolveApprovedAudioPath(completedWord: CompletedWord): Promise<string | null> {
+    const expectedPath = join(this.audioDir, completedWord.voiceUsed, `${completedWord.wordId}.mp3`);
+    const candidatePaths = new Set<string>([
+      expectedPath,
+      completedWord.audioPath
+    ]);
+
+    if (completedWord.audioPath.startsWith('./')) {
+      candidatePaths.add(completedWord.audioPath.slice(2));
+    } else {
+      candidatePaths.add(`./${completedWord.audioPath}`);
+    }
+
+    for (const candidatePath of candidatePaths) {
+      if (!this.matchesApprovedSelection(candidatePath, completedWord)) {
+        continue;
+      }
+
+      try {
+        const fileStats = await stat(candidatePath);
+        if (fileStats.isFile()) {
+          return candidatePath;
+        }
+      } catch {
+        // Continue looking for a matching approved path.
+      }
+    }
+
+    return null;
+  }
+
+  private matchesApprovedSelection(filePath: string, completedWord: CompletedWord): boolean {
+    const normalizedPath = filePath.replace(/\\/g, '/');
+    return normalizedPath.endsWith(`/${completedWord.voiceUsed}/${completedWord.wordId}.mp3`);
   }
 
   async getAudioCacheStats(): Promise<{ totalFiles: number; totalSize: number; voiceBreakdown: Record<string, number> }> {
