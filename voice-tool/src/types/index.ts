@@ -33,7 +33,7 @@ export interface CompletedWord {
   wordId: string
   voiceUsed: string
   audioPath: string
-  completedAt: Date
+  completedAt?: Date
 }
 
 export interface ProgressState {

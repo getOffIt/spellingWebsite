@@ -199,7 +199,8 @@ export class CommandModeHandler {
     try {
       console.log('📤 Preparing S3 upload...');
       
-      const approvedFiles = await this.fileManager.prepareApprovedFiles();
+      await this.progressManager.loadProgress();
+      const approvedFiles = await this.fileManager.prepareApprovedFiles(this.progressManager.getCompletedWords());
       
       if (approvedFiles.length === 0) {
         return {
