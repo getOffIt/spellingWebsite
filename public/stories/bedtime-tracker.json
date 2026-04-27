@@ -1,0 +1,544 @@
+{
+  "description": "Tracks Leo's bedtime story rotation. When Antoine says 'Create bedtime stories' in the bedtime stories group, send the queued story audio immediately.",
+  "group": "120363408070402164@g.us",
+  "rotation": [
+    "diamond-sword",
+    "one-block",
+    "hogwarts"
+  ],
+  "nextIndex": 0,
+  "queue": [
+    {
+      "series": "diamond-sword",
+      "book": 40,
+      "title": "The Diamond Sword Chronicles \u2014 Book 40",
+      "file": "stories/diamond-sword-book40.md",
+      "audioFile": "audio/diamond-sword-book40.mp3"
+    },
+    {
+      "series": "one-block",
+      "book": 39,
+      "title": "One Block Adventures \u2014 Book 39",
+      "file": "stories/one-block-book39.md",
+      "audioFile": "audio/one-block-book39.mp3"
+    },
+    {
+      "series": "hogwarts",
+      "book": 34,
+      "title": "Hogwarts Mysteries \u2014 Book 34",
+      "file": "stories/hogwarts-book34.md",
+      "audioFile": "audio/hogwarts-book34.mp3"
+    }
+  ],
+  "played": [
+    {
+      "series": "diamond-sword",
+      "book": 16,
+      "title": "The Bridge Builder",
+      "playedAt": "2026-07-10"
+    },
+    {
+      "series": "one-block",
+      "book": 15,
+      "title": "The Island That Dreamed",
+      "playedAt": "2026-07-10"
+    },
+    {
+      "series": "hogwarts",
+      "book": 10,
+      "title": "The Map That Moved",
+      "playedAt": "2026-07-10"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 17,
+      "title": "The Upside-Down Mine",
+      "playedAt": "2026-03-09"
+    },
+    {
+      "series": "one-block",
+      "book": 16,
+      "title": "The Song Collector",
+      "playedAt": "2026-03-09"
+    },
+    {
+      "series": "hogwarts",
+      "book": 11,
+      "title": "The Ink That Remembered",
+      "playedAt": "2026-03-09"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 18,
+      "title": "The Village That Forgot",
+      "playedAt": "2026-03-10"
+    },
+    {
+      "series": "one-block",
+      "book": 17,
+      "title": "The Colour That Was Missing",
+      "playedAt": "2026-03-10"
+    },
+    {
+      "series": "hogwarts",
+      "book": 12,
+      "title": "The Room That Listened",
+      "playedAt": "2026-03-10"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 19,
+      "title": "The Sound at the Bottom of the Well",
+      "playedAt": "2026-03-11"
+    },
+    {
+      "series": "one-block",
+      "book": 18,
+      "title": "The Block That Made a Shadow",
+      "playedAt": "2026-03-11"
+    },
+    {
+      "series": "hogwarts",
+      "book": 13,
+      "title": "The Student Who Wasn't There",
+      "playedAt": "2026-03-11"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 20,
+      "title": "The Map That Drew Itself",
+      "playedAt": "2026-03-13"
+    },
+    {
+      "series": "one-block",
+      "book": 19,
+      "title": "The Island That Heard Music",
+      "playedAt": "2026-03-13"
+    },
+    {
+      "series": "hogwarts",
+      "book": 14,
+      "title": "The Painting That Stepped Out",
+      "playedAt": "2026-03-13"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 21,
+      "title": "The Clock That Counted Backwards",
+      "playedAt": "2026-03-15"
+    },
+    {
+      "series": "one-block",
+      "book": 20,
+      "title": "The Light That Learned to Bend",
+      "playedAt": "2026-03-15"
+    },
+    {
+      "series": "hogwarts",
+      "book": 15,
+      "title": "The Door That Only Opened Inward",
+      "playedAt": "2026-03-15"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 22,
+      "title": "The Well That Whispered Names",
+      "playedAt": "2026-07-14"
+    },
+    {
+      "series": "one-block",
+      "book": 21,
+      "title": "The Island That Grew Upside Down",
+      "playedAt": "2026-07-14"
+    },
+    {
+      "series": "hogwarts",
+      "book": 16,
+      "title": "The Staircase That Remembered Its Steps",
+      "playedAt": "2026-07-14"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 23,
+      "title": "The Forest That Grew Indoors",
+      "playedAt": "2026-03-17"
+    },
+    {
+      "series": "one-block",
+      "book": 22,
+      "title": "The Storm That Stayed",
+      "playedAt": "2026-03-17"
+    },
+    {
+      "series": "hogwarts",
+      "book": 17,
+      "title": "The Library That Whispered Back",
+      "playedAt": "2026-03-17"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 24,
+      "title": "The Lantern That Remembered the Dark",
+      "playedAt": "2026-03-19"
+    },
+    {
+      "series": "one-block",
+      "book": 23,
+      "title": "The Island That Sang Back",
+      "playedAt": "2026-03-19"
+    },
+    {
+      "series": "hogwarts",
+      "book": 18,
+      "title": "The Window That Showed Tomorrow's Weather Inside",
+      "playedAt": "2026-03-19"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 25,
+      "title": "The Rain That Fell Upwards",
+      "playedAt": "2026-03-24"
+    },
+    {
+      "series": "one-block",
+      "book": 24,
+      "title": "The Tide That Carried Colours",
+      "playedAt": "2026-03-24"
+    },
+    {
+      "series": "hogwarts",
+      "book": 19,
+      "title": "The Clock That Ticked Backwards for the Right Reasons",
+      "playedAt": "2026-03-24"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 26,
+      "title": "The Bridge That Built Itself",
+      "playedAt": "2026-07-15"
+    },
+    {
+      "series": "one-block",
+      "book": 25,
+      "title": "The Island That Learned to Float",
+      "playedAt": "2026-07-15"
+    },
+    {
+      "series": "hogwarts",
+      "book": 20,
+      "title": "The Garden That Grew Between the Stones",
+      "playedAt": "2026-07-15"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 27,
+      "title": "The Stars That Fell Gently",
+      "playedAt": "2026-07-15"
+    },
+    {
+      "series": "one-block",
+      "book": 26,
+      "title": "The Rain That Remembered",
+      "playedAt": "2026-07-15"
+    },
+    {
+      "series": "hogwarts",
+      "book": 21,
+      "title": "The Echoes in the Empty Classroom",
+      "playedAt": "2026-07-15"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 28,
+      "title": "The River That Ran Backwards",
+      "playedAt": "2026-07-16"
+    },
+    {
+      "series": "one-block",
+      "book": 27,
+      "title": "The Tide That Told Stories",
+      "playedAt": "2026-07-16"
+    },
+    {
+      "series": "hogwarts",
+      "book": 22,
+      "title": "The Fireplace That Told Jokes",
+      "playedAt": "2026-07-16"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 29,
+      "title": "The Fog That Came to Listen",
+      "playedAt": "2026-03-28"
+    },
+    {
+      "series": "one-block",
+      "book": 28,
+      "title": "The Shadow That Stayed",
+      "playedAt": "2026-03-28"
+    },
+    {
+      "series": "hogwarts",
+      "book": 23,
+      "title": "The Clock Tower's Secret Hour",
+      "playedAt": "2026-03-28"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 30,
+      "title": "The Valley That Remembered",
+      "playedAt": "2026-04-01"
+    },
+    {
+      "series": "one-block",
+      "book": 29,
+      "title": "The Song the Island Knew",
+      "playedAt": "2026-04-01"
+    },
+    {
+      "series": "hogwarts",
+      "book": 24,
+      "title": "The Library's Lost Room",
+      "playedAt": "2026-04-01"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 31,
+      "title": "The Bridge That Listened",
+      "playedAt": "2026-04-03"
+    },
+    {
+      "series": "one-block",
+      "book": 30,
+      "title": "The Light That Came Home",
+      "playedAt": "2026-04-03"
+    },
+    {
+      "series": "hogwarts",
+      "book": 25,
+      "title": "The Stairs That Chose You",
+      "playedAt": "2026-04-03"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 32,
+      "title": "The Garden That Grew Overnight",
+      "audioFile": "audio/diamond-sword-book32.mp3",
+      "playedAt": "2026-04-05"
+    },
+    {
+      "series": "one-block",
+      "book": 31,
+      "title": "The Shell That Held the Sea",
+      "audioFile": "audio/one-block-book31.mp3",
+      "playedAt": "2026-04-05"
+    },
+    {
+      "series": "hogwarts",
+      "book": 26,
+      "title": "The Portrait That Couldn't Remember",
+      "audioFile": "audio/hogwarts-book26.mp3",
+      "playedAt": "2026-04-05"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 33,
+      "title": "The Cave That Learned to Echo",
+      "playedAt": "2026-04-07"
+    },
+    {
+      "series": "one-block",
+      "book": 32,
+      "title": "The Boat That Followed the Stars",
+      "playedAt": "2026-04-07"
+    },
+    {
+      "series": "hogwarts",
+      "book": 27,
+      "title": "The Door That Waited",
+      "playedAt": "2026-04-07"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 34,
+      "title": "The Path That Lit Itself",
+      "file": "stories/diamond-sword-book34.md",
+      "audioFile": "audio/diamond-sword-book34.mp3",
+      "playedAt": "2026-04-10"
+    },
+    {
+      "series": "one-block",
+      "book": 33,
+      "title": "The Kite That Knew the Wind",
+      "file": "stories/one-block-book33.md",
+      "audioFile": "audio/one-block-book33.mp3",
+      "playedAt": "2026-04-10"
+    },
+    {
+      "series": "hogwarts",
+      "book": 28,
+      "title": "The Bench That Nobody Built",
+      "file": "stories/hogwarts-book28.md",
+      "audioFile": "audio/hogwarts-book28.mp3",
+      "playedAt": "2026-04-10"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 35,
+      "title": "The Compass That Pointed to Help",
+      "audioFile": "audio/diamond-sword-book35.mp3",
+      "playedAt": "2026-04-13"
+    },
+    {
+      "series": "one-block",
+      "book": 34,
+      "title": "The Wind Harp on the Cliff",
+      "audioFile": "audio/one-block-book34.mp3",
+      "playedAt": "2026-04-13"
+    },
+    {
+      "series": "hogwarts",
+      "book": 29,
+      "title": "The Hook That Always Held a Scarf",
+      "audioFile": "audio/hogwarts-book29.mp3",
+      "playedAt": "2026-04-13"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 36,
+      "title": "The Blanket That Made Room",
+      "file": "stories/diamond-sword-book36.md",
+      "audioFile": "audio/diamond-sword-book36.mp3",
+      "playedAt": "2026-04-16"
+    },
+    {
+      "series": "one-block",
+      "book": 35,
+      "title": "The Pool That Kept the Sky",
+      "file": "stories/one-block-book35.md",
+      "audioFile": "audio/one-block-book35.mp3",
+      "playedAt": "2026-04-16"
+    },
+    {
+      "series": "hogwarts",
+      "book": 30,
+      "title": "The Lake That Remembered Evenings",
+      "file": "stories/hogwarts-book30.md",
+      "audioFile": "audio/hogwarts-book30.mp3",
+      "playedAt": "2026-04-16"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 37,
+      "title": "The Welcome Mat That Learned Names",
+      "file": "stories/diamond-sword-book37.md",
+      "audioFile": null,
+      "playedAt": "2026-04-16"
+    },
+    {
+      "series": "one-block",
+      "book": 36,
+      "title": "The Pebble Spiral That Counted Breaths",
+      "file": "stories/one-block-book36.md",
+      "audioFile": null,
+      "playedAt": "2026-04-16"
+    },
+    {
+      "series": "hogwarts",
+      "book": 31,
+      "title": "The Bookmark That Found the Right Page",
+      "file": "stories/hogwarts-book31.md",
+      "audioFile": null,
+      "playedAt": "2026-04-16"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 38,
+      "title": "The Little Lantern That Collected Moonlight",
+      "playedAt": "2026-04-25"
+    },
+    {
+      "series": "one-block",
+      "book": 37,
+      "title": "The Island of Quiet Bells",
+      "playedAt": "2026-04-25"
+    },
+    {
+      "series": "hogwarts",
+      "book": 32,
+      "title": "The Lanterns in the Greenhouse Glass",
+      "playedAt": "2026-04-25"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 39,
+      "title": "The Orchard of Paper Birds",
+      "playedAt": "2026-04-26"
+    },
+    {
+      "series": "one-block",
+      "book": 38,
+      "title": "The Orchard That Shared Its Shade",
+      "playedAt": "2026-04-26"
+    },
+    {
+      "series": "hogwarts",
+      "book": 33,
+      "title": "The Teacups That Knew the Stars",
+      "playedAt": "2026-04-26"
+    },
+    {
+      "series": "diamond-sword",
+      "book": 40,
+      "title": "The Lanterns Beneath the Hill",
+      "file": "stories/diamond-sword-book40.md",
+      "audioFile": "audio/diamond-sword-book40.mp3",
+      "playedAt": "2026-04-27"
+    },
+    {
+      "series": "one-block",
+      "book": 39,
+      "title": "The Hollow of Little Lanterns",
+      "file": "stories/one-block-book39.md",
+      "audioFile": "audio/one-block-book39.mp3",
+      "playedAt": "2026-04-27"
+    },
+    {
+      "series": "hogwarts",
+      "book": 34,
+      "title": "The Lanterns Under the Water Ceiling",
+      "file": "stories/hogwarts-book34.md",
+      "audioFile": "audio/hogwarts-book34.mp3",
+      "playedAt": "2026-04-27"
+    }
+  ],
+  "nextToGenerate": {
+    "diamond-sword": 41,
+    "one-block": 40,
+    "hogwarts": 35
+  },
+  "notes": "Keyword trigger (WhatsApp group): When Antoine says 'Create bedtime stories' (case-insensitive): 1) Send all 3 queued audio stories to the group immediately, 2) Then generate next 3 stories + audio in the background so they're ready for next time. Rotate: DS \u2192 OB \u2192 HW. Antoine plays audio from iPhone/iPad for Leo. All series have completed their original book count - new books extend the series. Primary TTS: ElevenLabs (Daniel voice, eleven_turbo_v2_5 model). Fallback: OpenAI TTS (tts-1-hd, voice: onyx). Stories target 1100-1300 words (~8-10 min audio). Use Spotify for lullabies (Leo's Echo device, playlist TBD).",
+  "lastPublished": [
+    {
+      "series": "diamond-sword",
+      "book": 40,
+      "title": "The Lanterns Beneath the Hill",
+      "file": "stories/diamond-sword-book40.md",
+      "audioFile": "audio/diamond-sword-book40.mp3"
+    },
+    {
+      "series": "one-block",
+      "book": 39,
+      "title": "The Hollow of Little Lanterns",
+      "file": "stories/one-block-book39.md",
+      "audioFile": "audio/one-block-book39.mp3"
+    },
+    {
+      "series": "hogwarts",
+      "book": 34,
+      "title": "The Lanterns Under the Water Ceiling",
+      "file": "stories/hogwarts-book34.md",
+      "audioFile": "audio/hogwarts-book34.mp3"
+    }
+  ]
+}
