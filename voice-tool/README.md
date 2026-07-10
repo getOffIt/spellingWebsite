@@ -7,7 +7,8 @@ A comprehensive tool for generating, reviewing, and deploying audio files for th
 - **Batch Audio Generation**: Generate audio for all spelling words using ElevenLabs API
 - **Human-in-the-Loop Review**: Interactive workflow for voice selection and quality control
 - **Multiple Voice Support**: Rachel, Dorothy, Emily, Thomas, Antoni, and Adam voices
-- **AI Agent Integration**: Kiro CLI compatible for automated workflows
+- **Interactive CLI**: Fast local workflow for batch generation, review, status, and upload
+- **AI Agent Integration**: Legacy `kiro-cli.js` interface for agent-driven workflows
 - **S3 Deployment**: Direct upload to AWS S3 with proper structure
 - **Progress Tracking**: Resume capability for interrupted sessions
 - **Error Handling**: Robust retry logic and graceful failure management
@@ -32,50 +33,49 @@ A comprehensive tool for generating, reviewing, and deploying audio files for th
 
 4. **Quick Test (5 words)**:
    ```bash
-   WORDS_FILE=./test-5-words.ts node --env-file=.env kiro-cli.js --batch    # Generate 5 words (~10 seconds)
-   node --env-file=.env kiro-cli.js --play cat # Test audio playbook
-   node --env-file=.env kiro-cli.js --accept cat # Accept the audio
+   WORDS_FILE=./test-5-words.ts node --env-file=.env dist/index.js --batch
+   node --env-file=.env dist/index.js --interactive
    ```
 
 5. **Full Production Run**:
    ```bash
    # Uses ./real-words.ts by default
-   node --env-file=.env kiro-cli.js --batch    # Generate all 230 words (~5-10 minutes)
+   node --env-file=.env dist/index.js --batch
    ```
 
 ## Usage
 
-### Interactive Mode (Human Review)
+### Primary CLI Workflow
 ```bash
+# Open the interactive menu
 node --env-file=.env dist/index.js --interactive
-```
 
-### Command Mode (AI Agent Integration)
-```bash
 # Generate all missing audio
-node --env-file=.env kiro-cli.js --batch
+node --env-file=.env dist/index.js --batch
 
-# Review specific word
-node --env-file=.env kiro-cli.js --play word
-
-# Accept/reject voices
-node --env-file=.env kiro-cli.js --accept word
-node --env-file=.env kiro-cli.js --reject word
-
-# Choose from available voices
-node --env-file=.env kiro-cli.js --list-voices word
-node --env-file=.env kiro-cli.js --choose word voice
-
-# Generate voice manifest
-npm run create-manifest > ../public/voices/voice-manifest.json
-
-# Deploy manifest to S3
-npm run deploy-manifest
-
-# Upload to S3
-node --env-file=.env kiro-cli.js --upload
+# Upload approved audio only
+node --env-file=.env dist/index.js --upload
 
 # Check status
+node --env-file=.env dist/index.js --status
+```
+
+### Manifest Workflow
+```bash
+# 1. Upload approved audio only
+node --env-file=.env dist/index.js --upload
+
+# 2. Generate manifest from approved review state
+npm run create-manifest
+
+# 3. Deploy manifest to S3
+npm run deploy-manifest
+```
+
+### Legacy AI-Agent Interface
+```bash
+# `kiro-cli.js` is still available for agent-driven workflows, but
+# `dist/index.js` / `CLIInterface` is the primary path for manual use.
 node --env-file=.env kiro-cli.js --status
 ```
 
@@ -103,7 +103,7 @@ WORDS_FILE=./real-words.ts  # Default: ./real-words.ts (use ./test-5-words.ts fo
 
 - **TypeScript**: Full type safety and modern ES modules
 - **Modular Design**: Separate services for each concern
-- **Dual Interface**: Interactive CLI and command-mode for AI agents
+- **Dual Interface**: Interactive CLI for manual use, plus a legacy agent-focused interface
 - **State Persistence**: JSON-based progress tracking with resume capability
 - **AWS Integration**: Direct S3 upload with proper caching headers
 
@@ -114,6 +114,7 @@ WORDS_FILE=./real-words.ts  # Default: ./real-words.ts (use ./test-5-words.ts fo
 3. **Reject** to try alternative voices (Dorothy → Emily → Thomas → Antoni → Adam)
 4. **Choose** your preferred voice from any generated options
 5. **Upload** approved audio files to S3
+6. **Generate and deploy** the manifest from approved review state
 
 ## File Structure
 
@@ -124,7 +125,7 @@ voice-tool/
 │   ├── types/             # TypeScript interfaces
 │   ├── config/            # Configuration management
 │   └── cli/               # CLI interfaces
-├── kiro-cli.js            # AI agent interface
+├── kiro-cli.js            # Legacy AI agent interface
 ├── real-words.ts          # Production word list (220 unique words, flat structure)
 ├── test-5-words.ts        # Quick test word list (5 words)
 └── test-words.ts          # Development word list
@@ -137,14 +138,14 @@ voice-tool/
 npm run build
 
 # Quick test with 5 words (fast development cycle)
-WORDS_FILE=./test-5-words.ts node --env-file=.env kiro-cli.js --batch     # ~10 seconds for 5 words
-node --env-file=.env kiro-cli.js --status    # Check progress
-node --env-file=.env kiro-cli.js --play cat  # Test playback
+WORDS_FILE=./test-5-words.ts node --env-file=.env dist/index.js --batch
+node --env-file=.env dist/index.js --status
+node --env-file=.env dist/index.js --interactive
 
 # Interactive development
 node --env-file=.env dist/index.js --interactive
 
-# AI agent testing
+# Legacy AI agent testing
 node --env-file=.env kiro-cli.js --status
 ```
 

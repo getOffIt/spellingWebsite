@@ -134,7 +134,7 @@ export class ProgressManager {
 
     const completed: CompletedWord[] = [];
     for (const [wordId, progress] of this.progressData.words) {
-      if (progress.status === 'completed' && progress.voiceUsed && progress.localAudioPath && progress.completedAt) {
+      if (progress.status === 'completed' && progress.voiceUsed && progress.localAudioPath) {
         completed.push({
           wordId,
           voiceUsed: progress.voiceUsed,
