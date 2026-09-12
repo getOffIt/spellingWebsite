@@ -263,7 +263,9 @@ async function handleListVoices(wordId, fileManager) {
 }
 
 async function handleUpload(fileManager, config) {
-  const approvedFiles = await fileManager.prepareApprovedFiles();
+  const progressManager = new ProgressManager();
+  await progressManager.loadProgress();
+  const approvedFiles = await fileManager.prepareApprovedFiles(progressManager.getCompletedWords());
   
   if (approvedFiles.length === 0) {
     console.log('❌ No approved files found for upload');
