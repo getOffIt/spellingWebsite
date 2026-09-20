@@ -7,6 +7,7 @@ import WordSelection from "./pages/WordSelection";
 import CommonWordsSelection from "./pages/CommonWordsSelection";
 import SpellingListASelection from "./pages/SpellingListASelection";
 import SpellingListBSelection from "./pages/SpellingListBSelection";
+import WeeklySpellingsSelection from "./pages/WeeklySpellingsSelection";
 import './App.css'
 import SpellingTest from './pages/SpellingTest'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -86,6 +87,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <CommonWordsSelection onSelectWords={handleSelectWords} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/weekly-spellings"
+            element={
+              <ProtectedRoute>
+                <WeeklySpellingsSelection onSelectWords={handleSelectWords} />
               </ProtectedRoute>
             }
           />

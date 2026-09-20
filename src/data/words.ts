@@ -300,6 +300,24 @@ export const YEAR2_WORDS: Word[] = [
   { text: 'Christmas', year: 2, category: 'misc' }
 ];
 
+// Weekly homework set from Google Classroom, posted 17 September 2026.
+// Keep the challenge words separate so Leo can practise either group directly.
+export const WEEKLY_SPELLING_WORDS: Word[] = [
+  { text: 'ancient', year: 2, category: "This week's words" },
+  { text: 'colossal', year: 2, category: "This week's words" },
+  { text: 'excited', year: 2, category: "This week's words" },
+  { text: 'gigantic', year: 2, category: "This week's words" },
+  { text: 'hour', year: 2, category: "This week's words" },
+  { text: 'our', year: 2, category: "This week's words" },
+  { text: 'minute', year: 2, category: "This week's words" },
+  { text: 'really', year: 2, category: "This week's words" },
+  { text: 'were', year: 2, category: "This week's words" },
+  { text: 'where', year: 2, category: "This week's words" },
+  { text: 'incisor', year: 2, category: 'Challenge words' },
+  { text: 'canine', year: 2, category: 'Challenge words' },
+  { text: 'molar', year: 2, category: 'Challenge words' },
+];
+
 export const SPELLING_LIST_A: Word[] = [
   // tion-and-sion
   { text: 'occasion', year: 2, category: 'tion-and-sion' },
@@ -466,4 +484,11 @@ export const SPELLING_LIST_B: Word[] = [
   { text: 'water', year: 2, category: 'other-b' },
 ];
 
-export const ALL_WORDS = [...YEAR1_WORDS, ...COMMON_WORDS, ...YEAR2_WORDS, ...SPELLING_LIST_A, ...SPELLING_LIST_B] 
+export const ALL_WORDS = [
+  ...YEAR1_WORDS,
+  ...COMMON_WORDS,
+  ...YEAR2_WORDS,
+  ...WEEKLY_SPELLING_WORDS,
+  ...SPELLING_LIST_A,
+  ...SPELLING_LIST_B,
+]

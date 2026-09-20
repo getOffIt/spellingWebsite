@@ -1,6 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { YEAR1_WORDS, COMMON_WORDS, SPELLING_LIST_A, SPELLING_LIST_B } from '../data/words';
+import {
+  YEAR1_WORDS,
+  COMMON_WORDS,
+  WEEKLY_SPELLING_WORDS,
+  SPELLING_LIST_A,
+  SPELLING_LIST_B,
+} from '../data/words';
 import { useWord } from '../hooks/useWord';
 import './ChallengesPage.css';
 
@@ -32,8 +38,30 @@ const ChallengesPage: React.FC = () => {
   const listBTotalWords = SPELLING_LIST_B.length;
   const listBProgress = Math.round((listBMastered / listBTotalWords) * 100);
 
+  // Calculate this week's homework progress
+  const weeklyStatusList = WEEKLY_SPELLING_WORDS.map(word => useWord(word.text));
+  const weeklyMastered = weeklyStatusList.filter(status => status.status === 'mastered').length;
+  const weeklyTotalWords = WEEKLY_SPELLING_WORDS.length;
+  const weeklyProgress = Math.round((weeklyMastered / weeklyTotalWords) * 100);
+
   // Current focus challenge
   const currentChallenges = [
+    {
+      id: 'weekly-spellings',
+      title: "📚 This Week's Spellings — 17 September",
+      description: 'Practise the 10 homework words and 3 challenge words for Tuesday.',
+      progress: weeklyProgress,
+      masteredWords: weeklyMastered,
+      totalWords: weeklyTotalWords,
+      status: weeklyProgress === 100 ? 'completed' : weeklyProgress > 75 ? 'close' : weeklyProgress > 50 ? 'good' : weeklyProgress > 25 ? 'steady' : weeklyProgress > 0 ? 'starting' : 'beginning',
+      route: '/weekly-spellings',
+      bgColor: 'linear-gradient(135deg, #0F766E 0%, #14B8A6 100%)',
+      borderColor: '#0F766E'
+    }
+  ];
+
+  // Other available challenges
+  const otherChallenges = [
     {
       id: 'spelling-list-b',
       title: "📝 The Big Test 27th Feb — List B",
@@ -45,11 +73,7 @@ const ChallengesPage: React.FC = () => {
       route: '/spelling-list-b',
       bgColor: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
       borderColor: '#6D28D9'
-    }
-  ];
-
-  // Other available challenges
-  const otherChallenges = [
+    },
     {
       id: 'spelling-list-a',
       title: "📝 The Big Test 27th Feb — List A",

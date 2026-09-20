@@ -1,4 +1,11 @@
-import { Word, YEAR1_WORDS, COMMON_WORDS, SPELLING_LIST_A, SPELLING_LIST_B } from '../data/words';
+import {
+  Word,
+  YEAR1_WORDS,
+  COMMON_WORDS,
+  WEEKLY_SPELLING_WORDS,
+  SPELLING_LIST_A,
+  SPELLING_LIST_B,
+} from '../data/words';
 import { ChallengeConfig } from '../components/Challenge';
 
 /**
@@ -16,6 +23,23 @@ export interface WordSelectionConfig {
  * Centralized configurations for all word selection types
  */
 export const wordSelectionConfigs: Record<string, WordSelectionConfig> = {
+  weeklySpellings: {
+    words: WEEKLY_SPELLING_WORDS,
+    title: "This Week's Spellings — 17 September",
+    challengeConfig: {
+      title: "📚 This Week's Spellings — 17 September",
+      description: 'Practise all {total} homework words, including the three challenge words.',
+      rewardText: '',
+      motivationMessages: {
+        complete: '🎉 Brilliant — this week\'s spellings are mastered! 🎉',
+        close: '🔥 Nearly there — just {remaining} words left! 🔥',
+        good: '💪 Great progress — keep going! 💪',
+        steady: '🚀 You\'re getting there! 🚀',
+        starting: '🌟 Good start — keep practising! 🌟',
+        beginning: '🎯 Ready to practise this week\'s words? Let\'s go! 🎯',
+      },
+    },
+  },
   year1: {
     words: YEAR1_WORDS,
     title: 'Word Selection',
