@@ -34,6 +34,13 @@ jobs:
     - name: Deploy to S3
       run: |
         aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET }} --delete --exclude "voices/*"
+        aws s3 sync dist/voices/ s3://${{ secrets.AWS_S3_BUCKET }}/voices/ \
+          --exclude "voice-manifest.json" \
+          --cache-control "public, max-age=31536000, immutable"
+        aws s3 cp dist/voices/voice-manifest.json \
+          s3://${{ secrets.AWS_S3_BUCKET }}/voices/voice-manifest.json \
+          --content-type "application/json" \
+          --cache-control "public, max-age=60"
         
     - name: Invalidate CloudFront
       run: |

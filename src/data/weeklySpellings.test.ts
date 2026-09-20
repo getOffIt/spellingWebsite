@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import voiceManifest from '../../public/voices/voice-manifest.json';
 import { WEEKLY_SPELLING_WORDS } from './words';
 import { wordSelectionConfigs } from '../config/wordSelectionConfigs';
 
@@ -27,5 +28,13 @@ describe('weekly spelling homework', () => {
   it('is exposed as the weekly practice section', () => {
     expect(wordSelectionConfigs.weeklySpellings.words).toBe(WEEKLY_SPELLING_WORDS);
     expect(wordSelectionConfigs.weeklySpellings.title).toContain('17 September');
+  });
+
+  it('has recorded audio for every weekly spelling', () => {
+    for (const word of WEEKLY_SPELLING_WORDS) {
+      expect(voiceManifest[word.text as keyof typeof voiceManifest]).toMatch(
+        new RegExp(`/voices/.+/${word.text}\\.mp3$`),
+      );
+    }
   });
 });

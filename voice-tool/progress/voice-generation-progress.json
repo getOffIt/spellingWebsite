@@ -2,9 +2,9 @@
   "version": "1.0.0",
   "sessionId": "session_1767274313460",
   "startedAt": "2026-01-01T13:31:53.460Z",
-  "lastUpdatedAt": "2026-01-08T18:36:54.595Z",
+  "lastUpdatedAt": "2026-09-20T20:22:11.912Z",
   "totalWords": 220,
-  "completedCount": 220,
+  "completedCount": 231,
   "failedCount": 0,
   "words": {
     "off": {
@@ -2429,14 +2429,13 @@
       "wordId": "hour",
       "status": "completed",
       "generatedVoices": [
-        "emily",
-        "thomas"
+        "alice"
       ],
       "s3Uploaded": false,
       "attempts": 0,
-      "voiceUsed": "thomas",
-      "localAudioPath": "./audio-cache/thomas/hour.mp3",
-      "completedAt": "2026-01-01T17:24:35.516Z"
+      "voiceUsed": "alice",
+      "localAudioPath": "./audio-cache/alice/hour.mp3",
+      "completedAt": "2026-09-20T20:22:11.910Z"
     },
     "move": {
       "wordId": "move",
@@ -2653,6 +2652,138 @@
       "voiceUsed": "rachel",
       "localAudioPath": "audio-cache/rachel/children.mp3",
       "completedAt": "2026-01-01T16:52:00.000Z"
+    },
+    "ancient": {
+      "wordId": "ancient",
+      "status": "completed",
+      "generatedVoices": [
+        "alice"
+      ],
+      "attempts": 0,
+      "voiceUsed": "alice",
+      "localAudioPath": "./audio-cache/alice/ancient.mp3",
+      "completedAt": "2026-09-20T20:22:11.905Z",
+      "s3Uploaded": false
+    },
+    "colossal": {
+      "wordId": "colossal",
+      "status": "completed",
+      "generatedVoices": [
+        "alice"
+      ],
+      "attempts": 0,
+      "voiceUsed": "alice",
+      "localAudioPath": "./audio-cache/alice/colossal.mp3",
+      "completedAt": "2026-09-20T20:22:11.909Z",
+      "s3Uploaded": false
+    },
+    "excited": {
+      "wordId": "excited",
+      "status": "completed",
+      "generatedVoices": [
+        "alice"
+      ],
+      "attempts": 0,
+      "voiceUsed": "alice",
+      "localAudioPath": "./audio-cache/alice/excited.mp3",
+      "completedAt": "2026-09-20T20:22:11.909Z",
+      "s3Uploaded": false
+    },
+    "gigantic": {
+      "wordId": "gigantic",
+      "status": "completed",
+      "generatedVoices": [
+        "alice"
+      ],
+      "attempts": 0,
+      "voiceUsed": "alice",
+      "localAudioPath": "./audio-cache/alice/gigantic.mp3",
+      "completedAt": "2026-09-20T20:22:11.909Z",
+      "s3Uploaded": false
+    },
+    "our": {
+      "wordId": "our",
+      "status": "completed",
+      "generatedVoices": [
+        "alice"
+      ],
+      "attempts": 0,
+      "voiceUsed": "alice",
+      "localAudioPath": "./audio-cache/alice/our.mp3",
+      "completedAt": "2026-09-20T20:22:11.910Z",
+      "s3Uploaded": false
+    },
+    "minute": {
+      "wordId": "minute",
+      "status": "completed",
+      "generatedVoices": [
+        "alice"
+      ],
+      "attempts": 0,
+      "voiceUsed": "alice",
+      "localAudioPath": "./audio-cache/alice/minute.mp3",
+      "completedAt": "2026-09-20T20:22:11.911Z",
+      "s3Uploaded": false
+    },
+    "really": {
+      "wordId": "really",
+      "status": "completed",
+      "generatedVoices": [
+        "alice"
+      ],
+      "attempts": 0,
+      "voiceUsed": "alice",
+      "localAudioPath": "./audio-cache/alice/really.mp3",
+      "completedAt": "2026-09-20T20:22:11.911Z",
+      "s3Uploaded": false
+    },
+    "where": {
+      "wordId": "where",
+      "status": "completed",
+      "generatedVoices": [
+        "alice"
+      ],
+      "attempts": 0,
+      "voiceUsed": "alice",
+      "localAudioPath": "./audio-cache/alice/where.mp3",
+      "completedAt": "2026-09-20T20:22:11.911Z",
+      "s3Uploaded": false
+    },
+    "incisor": {
+      "wordId": "incisor",
+      "status": "completed",
+      "generatedVoices": [
+        "alice"
+      ],
+      "attempts": 0,
+      "voiceUsed": "alice",
+      "localAudioPath": "./audio-cache/alice/incisor.mp3",
+      "completedAt": "2026-09-20T20:22:11.911Z",
+      "s3Uploaded": false
+    },
+    "canine": {
+      "wordId": "canine",
+      "status": "completed",
+      "generatedVoices": [
+        "alice"
+      ],
+      "attempts": 0,
+      "voiceUsed": "alice",
+      "localAudioPath": "./audio-cache/alice/canine.mp3",
+      "completedAt": "2026-09-20T20:22:11.912Z",
+      "s3Uploaded": false
+    },
+    "molar": {
+      "wordId": "molar",
+      "status": "completed",
+      "generatedVoices": [
+        "alice"
+      ],
+      "attempts": 0,
+      "voiceUsed": "alice",
+      "localAudioPath": "./audio-cache/alice/molar.mp3",
+      "completedAt": "2026-09-20T20:22:11.912Z",
+      "s3Uploaded": false
     }
   }
 }
