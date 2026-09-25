@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Word } from '../data/words';
 import { useWord } from '../hooks/useWord';
-import { selectNextWords } from '../utils/wordSelection';
+import { selectNextWords, selectTestWords } from '../utils/wordSelection';
 import Challenge, { ChallengeConfig } from './Challenge';
 import AudioLesson from './AudioLesson';
 import { getLessonForCategory } from '../data/categoryLessons';
@@ -144,7 +144,7 @@ const BaseWordSelection: React.FC<BaseWordSelectionProps> = ({
   const handleTestClick = (category: string, event: React.MouseEvent) => {
     event.stopPropagation();
     const wordList = categoryToWordStatuses[category] || [];
-    const allWords = wordList.map(w => w.text);
+    const allWords = selectTestWords(wordList);
     onSelectWords(allWords, 'single', 'full_test');
     navigate('/spelling-test');
   };

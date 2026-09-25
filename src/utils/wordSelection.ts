@@ -11,7 +11,7 @@ export interface WordWithStatus extends Word {
  * - unmastered: Highest priority (lost progress needs attention)
  * - in-progress: Second priority (continue building streaks)  
  * - not-started: Third priority (new learning)
- * - mastered: Lowest priority (already achieved)
+ * - mastered: Excluded from practice selection (still available to full tests)
  */
 export const WORD_PRIORITY: Record<WordStatus, number> = {
   'unmastered': 0,    // Highest priority - words that lost mastery
@@ -37,12 +37,20 @@ export function sortWordsByPriority<T extends { status: WordStatus | string }>(w
 }
 
 /**
- * Selects the next words to practice based on priority, limiting to a maximum count
+ * Selects the next non-mastered words to practise based on priority, limiting to a maximum count.
+ * Full tests do not use this helper and continue to include every word in the category.
  */
 export function selectNextWords<T extends { status: WordStatus | string; text: string }>(
   words: T[], 
   maxCount: number = 3
 ): string[] {
-  const sortedWords = sortWordsByPriority(words);
+  const sortedWords = sortWordsByPriority(words.filter(word => word.status !== 'mastered'));
   return sortedWords.slice(0, maxCount).map(w => w.text);
+}
+
+/**
+ * Selects every word for a full test, including green/mastered words.
+ */
+export function selectTestWords<T extends { text: string }>(words: T[]): string[] {
+  return words.map(word => word.text);
 }

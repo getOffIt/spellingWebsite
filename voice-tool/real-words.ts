@@ -226,5 +226,12 @@ export const ALL_WORDS: Word[] = [
   { id: 'half', text: 'half', year: 2, category: 'misc' },
   { id: 'money', text: 'money', year: 2, category: 'misc' },
   { id: 'parents', text: 'parents', year: 2, category: 'misc' },
-  { id: 'christmas', text: 'Christmas', year: 2, category: 'misc' }
+  { id: 'christmas', text: 'Christmas', year: 2, category: 'misc' },
+  { id: 'colourful', text: 'colourful', year: 2, category: 'weekly-2026-09-24' },
+  { id: 'colossal', text: 'colossal', year: 2, category: 'weekly-2026-09-24' },
+  { id: 'gigantic', text: 'gigantic', year: 2, category: 'weekly-2026-09-24' },
+  { id: 'enormous', text: 'enormous', year: 2, category: 'weekly-2026-09-24' },
+  { id: 'scribe', text: 'scribe', year: 2, category: 'weekly-2026-09-24' },
+  { id: 'describe', text: 'describe', year: 2, category: 'weekly-2026-09-24' },
+  { id: 'description', text: 'description', year: 2, category: 'weekly-2026-09-24' }
 ];
