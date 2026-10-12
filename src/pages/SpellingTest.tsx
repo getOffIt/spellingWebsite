@@ -38,10 +38,11 @@ interface SpellingTestProps {
   listType: 'single' | 'less_family';
   testMode?: 'practice' | 'full_test';
   passThreshold?: number;
+  returnLabel?: string;
   onComplete: () => void;
 }
 
-export default function SpellingTest({ words, listType, testMode = 'practice', passThreshold, onComplete }: SpellingTestProps) {
+export default function SpellingTest({ words, listType, testMode = 'practice', passThreshold, returnLabel, onComplete }: SpellingTestProps) {
   const navigate = useNavigate();
   // If listType is 'less_family', generate base words
   const baseWords = listType === 'less_family' ? words.map(word => getBaseWord(word)) : [];
@@ -259,6 +260,7 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
           listType={listType}
           isBaseStageResults={listType === 'less_family' && currentStage === 'base'}
           passThreshold={passThreshold}
+          returnLabel={returnLabel}
         />
       );
     }

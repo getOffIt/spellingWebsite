@@ -22,6 +22,7 @@ interface FullTestResultsProps {
   listType: 'single' | 'less_family';
   isBaseStageResults: boolean;
   passThreshold?: number;
+  returnLabel?: string;
 }
 
 export default function FullTestResults({
@@ -32,6 +33,7 @@ export default function FullTestResults({
   listType,
   isBaseStageResults,
   passThreshold = DEFAULT_PASS_THRESHOLD,
+  returnLabel = "Back to Challenges",
 }: FullTestResultsProps) {
   // Determine which words to check against
   const wordsForCorrectionCheck = isBaseStageResults && listType === 'less_family'
@@ -172,7 +174,7 @@ export default function FullTestResults({
           className="full-test-results-btn back" 
           onClick={onComplete}
         >
-          Back to Challenges
+          {returnLabel}
         </button>
       </div>
     </div>

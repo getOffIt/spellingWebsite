@@ -47,6 +47,18 @@ const ChallengesPage: React.FC = () => {
   // Current focus challenge
   const currentChallenges = [
     {
+      id: 'spelling-chart',
+      title: '📋 Spelling Chart — Full Year',
+      description: 'Your school sheet: all 64 words, rule tests, next 5 and individual word history.',
+      progress: listBProgress,
+      masteredWords: listBMastered,
+      totalWords: listBTotalWords,
+      status: listBProgress === 100 ? 'completed' : listBProgress > 50 ? 'good' : 'starting',
+      route: '/spelling-chart',
+      bgColor: 'linear-gradient(135deg, #276346 0%, #408363 100%)',
+      borderColor: '#276346'
+    },
+    {
       id: 'weekly-spellings',
       title: "📚 This Week's Spellings — 17 September",
       description: 'Practise the 10 homework words and 3 challenge words for Tuesday.',

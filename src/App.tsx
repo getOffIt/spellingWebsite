@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import Login from "./pages/Login";
+import SpellingChart from './pages/SpellingChart';
 import ChallengesPage from "./pages/ChallengesPage";
 import WordSelection from "./pages/WordSelection";
 import CommonWordsSelection from "./pages/CommonWordsSelection";
@@ -18,6 +19,8 @@ import ApiTest from './pages/ApiTest'
 
 export default function App() {
   const auth = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
  
   const [selectedList, setSelectedList] = useState<{ 
     words: string[]; 
@@ -42,6 +45,7 @@ export default function App() {
 
   const handleReset = () => {
     setSelectedList(null)
+    navigate(location.state?.returnTo || "/");
   }
 
   if (auth.isLoading) {
@@ -106,6 +110,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/spelling-chart" element={<ProtectedRoute><SpellingChart onSelectWords={handleSelectWords} /></ProtectedRoute>} />
           <Route
             path="/spelling-list-b"
             element={
@@ -124,6 +129,7 @@ export default function App() {
                     listType={selectedList.type}
                     testMode={selectedList.testMode || 'practice'}
                     passThreshold={selectedList.passThreshold}
+                    returnLabel={location.state?.returnTo === "/spelling-chart" ? "Back to Spelling Chart" : undefined}
                     onComplete={handleReset} 
                   />
                 ) : (
