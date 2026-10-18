@@ -1,5 +1,6 @@
 import {
   Word,
+  ANIMAL_DIET_WORDS,
   YEAR1_WORDS,
   COMMON_WORDS,
   WEEKLY_SPELLING_WORDS,
@@ -23,6 +24,10 @@ export interface WordSelectionConfig {
  * Centralized configurations for all word selection types
  */
 export const wordSelectionConfigs: Record<string, WordSelectionConfig> = {
+  animalDiets: {
+    words: ANIMAL_DIET_WORDS,
+    title: 'Animal Diets',
+  },
   weeklySpellings: {
     words: WEEKLY_SPELLING_WORDS,
     title: "This Week's Spellings — 24 September",

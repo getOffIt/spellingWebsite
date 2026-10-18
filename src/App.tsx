@@ -8,6 +8,7 @@ import WordSelection from "./pages/WordSelection";
 import CommonWordsSelection from "./pages/CommonWordsSelection";
 import SpellingListASelection from "./pages/SpellingListASelection";
 import SpellingListBSelection from "./pages/SpellingListBSelection";
+import AnimalDietsSelection from "./pages/AnimalDietsSelection";
 import WeeklySpellingsSelection from "./pages/WeeklySpellingsSelection";
 import './App.css'
 import SpellingTest from './pages/SpellingTest'
@@ -91,6 +92,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <CommonWordsSelection onSelectWords={handleSelectWords} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/animal-diets"
+            element={
+              <ProtectedRoute>
+                <AnimalDietsSelection onSelectWords={handleSelectWords} />
               </ProtectedRoute>
             }
           />

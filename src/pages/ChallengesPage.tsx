@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
+  ANIMAL_DIET_WORDS,
   YEAR1_WORDS,
   COMMON_WORDS,
   WEEKLY_SPELLING_WORDS,
@@ -44,6 +45,11 @@ const ChallengesPage: React.FC = () => {
   const weeklyTotalWords = WEEKLY_SPELLING_WORDS.length;
   const weeklyProgress = Math.round((weeklyMastered / weeklyTotalWords) * 100);
 
+  const animalDietStatusList = ANIMAL_DIET_WORDS.map(word => useWord(word.text));
+  const animalDietMastered = animalDietStatusList.filter(status => status.status === 'mastered').length;
+  const animalDietTotal = ANIMAL_DIET_WORDS.length;
+  const animalDietProgress = Math.round((animalDietMastered / animalDietTotal) * 100);
+
   // Current focus challenge
   const currentChallenges = [
     {
@@ -57,6 +63,18 @@ const ChallengesPage: React.FC = () => {
       route: '/spelling-chart',
       bgColor: 'linear-gradient(135deg, #276346 0%, #408363 100%)',
       borderColor: '#276346'
+    },
+    {
+      id: 'animal-diets',
+      title: '🦁 Animal Diets',
+      description: 'Learn carnivore, herbivore and omnivore.',
+      progress: animalDietProgress,
+      masteredWords: animalDietMastered,
+      totalWords: animalDietTotal,
+      status: animalDietProgress === 100 ? 'completed' : animalDietProgress > 0 ? 'starting' : 'beginning',
+      route: '/animal-diets',
+      bgColor: 'linear-gradient(135deg, #92400E 0%, #D97706 100%)',
+      borderColor: '#92400E'
     },
     {
       id: 'weekly-spellings',

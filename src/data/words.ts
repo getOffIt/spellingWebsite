@@ -479,11 +479,19 @@ export const SPELLING_LIST_B: Word[] = [
   { text: 'water', year: 2, category: 'other-b' },
 ];
 
+// Parent-requested custom science list, 18 October 2026.
+export const ANIMAL_DIET_WORDS: Word[] = [
+  { text: 'carnivore', year: 2, category: 'Animal diets' },
+  { text: 'herbivore', year: 2, category: 'Animal diets' },
+  { text: 'omnivore', year: 2, category: 'Animal diets' },
+];
+
 export const ALL_WORDS = [
   ...YEAR1_WORDS,
   ...COMMON_WORDS,
   ...YEAR2_WORDS,
   ...WEEKLY_SPELLING_WORDS,
+  ...ANIMAL_DIET_WORDS,
   ...SPELLING_LIST_A,
   ...SPELLING_LIST_B,
 ]
