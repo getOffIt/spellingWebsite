@@ -5,9 +5,10 @@ import confetti from 'canvas-confetti';
 interface PracticePageProps {
   words: string[];
   onComplete: () => void;
+  returnLabel?: string;
 }
 
-export default function PracticePage({ words, onComplete }: PracticePageProps) {
+export default function PracticePage({ words, onComplete, returnLabel = "Back to Home" }: PracticePageProps) {
   const [step, setStep] = useState(0);
   const [input, setInput] = useState('');
   const [done, setDone] = useState(false);
@@ -27,7 +28,7 @@ export default function PracticePage({ words, onComplete }: PracticePageProps) {
     return (
       <div className="spelling-container">
         <h2 className="spelling-title">No words to practice!</h2>
-        <button className="spelling-btn" onClick={onComplete}>Back to Home</button>
+        <button className="spelling-btn" onClick={onComplete}>{returnLabel}</button>
       </div>
     );
   }
@@ -121,14 +122,15 @@ export default function PracticePage({ words, onComplete }: PracticePageProps) {
     return (
       <div className="spelling-container">
         <h2 className="spelling-title">🎉 Great job practicing! 🎉</h2>
-        <button className="spelling-btn" onClick={onComplete}>Back to Home</button>
+        <button className="spelling-btn" onClick={() => { setStep(0); setInput(''); setDone(false); }}>Practise again</button>
+        <button className="spelling-btn" onClick={onComplete}>{returnLabel}</button>
       </div>
     );
   }
 
   return (
     <div className="spelling-container">
-      <h2 className="spelling-title">Practice Misspelled Words</h2>
+      <h2 className="spelling-title">Spelling Practice</h2>
       <div className="spelling-progress">
         Word {step + 1} of {words.length}: <b>{currentWord}</b>
       </div>

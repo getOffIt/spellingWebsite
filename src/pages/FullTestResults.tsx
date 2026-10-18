@@ -18,6 +18,7 @@ interface FullTestResultsProps {
   words: Word[];
   answers: string[];
   onRetry: () => void;
+  onPracticeAgain: () => void;
   onComplete: () => void;
   listType: 'single' | 'less_family';
   isBaseStageResults: boolean;
@@ -29,6 +30,7 @@ export default function FullTestResults({
   words,
   answers,
   onRetry,
+  onPracticeAgain,
   onComplete,
   listType,
   isBaseStageResults,
@@ -160,6 +162,7 @@ export default function FullTestResults({
 
       {/* Action Buttons */}
       <div className="full-test-results-actions">
+        <button className="full-test-results-btn retry" onClick={onPracticeAgain}>Practise again</button>
         {!passed && (
           <button className={`full-test-results-btn retry`} onClick={onRetry}>
             Try Again! 💪

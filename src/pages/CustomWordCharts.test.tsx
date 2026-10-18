@@ -14,7 +14,7 @@ vi.mock('../hooks/useProgressApi');
 
 function Location() {
   const location = useLocation();
-  return <output data-testid="return-to">{location.state?.returnTo}</output>;
+  return <><output data-testid="return-to">{location.state?.returnTo}</output><output data-testid="practice-selection">{JSON.stringify(location.state?.practiceWords)}</output></>;
 }
 
 beforeEach(() => {
@@ -49,6 +49,9 @@ describe.each([
     expect(within(screen.getByRole('dialog')).getAllByRole('row')).toHaveLength(11);
     fireEvent.click(screen.getByRole('button', { name: 'Test this word' }));
     expect(select).toHaveBeenLastCalledWith([green], 'single', 'full_test');
+    fireEvent.click(screen.getByRole('button', { name: 'Practise this word' }));
+    expect(screen.getByTestId('practice-selection')).toHaveTextContent(JSON.stringify([green]));
+    expect(screen.getByTestId('return-to')).toHaveTextContent(route);
   });
 });
 

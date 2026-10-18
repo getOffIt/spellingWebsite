@@ -39,7 +39,7 @@ function ChartWord({ word, onClick }: { word: string; onClick: () => void }) {
   </button>;
 }
 
-function WordHistory({ word, onClose, onTest }: { word: string; onClose: () => void; onTest: () => void }) {
+function WordHistory({ word, onClose, onTest, onPractice }: { word: string; onClose: () => void; onTest: () => void; onPractice: () => void }) {
   const stats = useWord(word);
   const ref = useRef<HTMLDialogElement>(null);
   const voiceRef = useRef<VoiceService | null>(null);
@@ -64,7 +64,7 @@ function WordHistory({ word, onClose, onTest }: { word: string; onClose: () => v
       <div><dt>Last 10 attempts</dt><dd>{recent.filter(attempt => attempt.correct).length}/{recent.length}</dd></div>
       <div><dt>Last practised</dt><dd>{stats.lastSeen ? new Date(stats.lastSeen).toLocaleDateString('en-GB') : 'Never'}</dd></div>
     </dl>
-    <div className="chart-actions"><button onClick={onTest}>Test this word</button><button onClick={async () => {
+    <div className="chart-actions"><button onClick={onPractice}>Practise this word</button><button onClick={onTest}>Test this word</button><button onClick={async () => {
       setAudioError(false);
       try { voiceRef.current ??= new VoiceService(); await voiceRef.current.speak(word); } catch { setAudioError(true); }
     }}>Listen to word</button></div>
@@ -117,7 +117,9 @@ export default function WordListChart({ onSelectWords, config }: Props) {
         </section>)}
       </div>)}</div>
     </div>
-    {activeWord && <WordHistory word={activeWord} onClose={() => setActiveWord(null)} onTest={() => start([activeWord])} />}
+    {activeWord && <WordHistory word={activeWord} onClose={() => setActiveWord(null)} onTest={() => start([activeWord])} onPractice={() => {
+      navigate('/spelling-practice', { state: { returnTo: config.returnTo, practiceWords: [activeWord] } });
+    }} />}
     {lesson && <AudioLesson lesson={lesson} onClose={() => setLessonCategory(null)} />}
   </div>;
 }

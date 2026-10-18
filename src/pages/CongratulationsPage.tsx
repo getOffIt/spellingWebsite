@@ -4,9 +4,10 @@ import './SpellingTest.css';
 
 interface CongratulationsPageProps {
   onComplete: () => void;
+  onPracticeAgain?: () => void;
 }
 
-export default function CongratulationsPage({ onComplete }: CongratulationsPageProps) {
+export default function CongratulationsPage({ onComplete, onPracticeAgain }: CongratulationsPageProps) {
   useEffect(() => {
     // Trigger confetti when the component mounts
     confetti({
@@ -29,6 +30,7 @@ export default function CongratulationsPage({ onComplete }: CongratulationsPageP
         You've completed all the words correctly!<br />
         Great job! 🌟
       </div>
+      {onPracticeAgain && <button className="spelling-btn" onClick={onPracticeAgain}>Practise again</button>}
       <button 
         className="spelling-btn" 
         onClick={onComplete}

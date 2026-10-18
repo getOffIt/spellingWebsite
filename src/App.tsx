@@ -12,6 +12,7 @@ import AnimalDietsSelection from "./pages/AnimalDietsSelection";
 import WeeklySpellingsSelection from "./pages/WeeklySpellingsSelection";
 import './App.css'
 import SpellingTest from './pages/SpellingTest'
+import PracticePage from './pages/PracticePage'
 import ProtectedRoute from './components/ProtectedRoute'
 import ProfilePage from './pages/ProfilePage'
 import Header from './components/Header'
@@ -125,6 +126,16 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <SpellingListBSelection onSelectWords={handleSelectWords} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/spelling-practice"
+            element={
+              <ProtectedRoute>
+                {location.state?.practiceWords?.length ? (
+                  <PracticePage words={location.state.practiceWords} onComplete={handleReset} returnLabel="Back to word list" />
+                ) : <Navigate to="/" replace />}
               </ProtectedRoute>
             }
           />

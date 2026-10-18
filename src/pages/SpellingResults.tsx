@@ -41,11 +41,12 @@ interface SpellingResultsProps {
   answers: string[];
   onPractice: () => void;
   onRetry: () => void;
+  onPracticeAgain: () => void;
   listType: 'single' | 'less_family';
   isBaseStageResults: boolean; // Already present, indicates if the test run was for base words
 }
 
-export default function SpellingResults({ words, answers, onPractice, onRetry, listType, isBaseStageResults }: SpellingResultsProps) {
+export default function SpellingResults({ words, answers, onPractice, onRetry, onPracticeAgain, listType, isBaseStageResults }: SpellingResultsProps) {
   const navigate = useNavigate();
   // We need to check correctness against the words corresponding to the stage being displayed
   // Map over the word objects and get the base word string if it's the base stage
@@ -91,6 +92,7 @@ export default function SpellingResults({ words, answers, onPractice, onRetry, l
           );
         })}
       </ul>
+      <button className="spelling-btn" onClick={onPracticeAgain}>Practise again</button>
       {/* Buttons logic remains the same, based on incorrectWords from the current stage results */}
       {allCorrect && (
         <button className="spelling-btn" onClick={onRetry}>Try Again</button>

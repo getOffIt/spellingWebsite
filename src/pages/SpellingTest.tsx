@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './SpellingTest.css';
 import PracticePage from './PracticePage';
 import SpellingResults from './SpellingResults';
@@ -44,6 +44,7 @@ interface SpellingTestProps {
 
 export default function SpellingTest({ words, listType, testMode = 'practice', passThreshold, returnLabel, onComplete }: SpellingTestProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   // If listType is 'less_family', generate base words
   const baseWords = listType === 'less_family' ? words.map(word => getBaseWord(word)) : [];
 
@@ -222,6 +223,13 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
   const wordsForResultsOrPractice = listType === 'less_family' && currentStage === 'base' ? baseWords : words;
   const answersForResultsOrPractice = answers; // Answers are always for the last completed stage
 
+  const handlePracticeAgain = () => {
+    navigate('/spelling-practice', { state: {
+      returnTo: location.state?.returnTo || '/',
+      practiceWords: [...wordsForResultsOrPractice],
+    } });
+  };
+
   // Scroll input into view on focus (for iPad/mobile)
   const handleInputFocus = () => {
     setTimeout(() => {
@@ -230,7 +238,7 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
   };
 
   if (done) {
-    return <CongratulationsPage onComplete={onComplete} />;
+    return <CongratulationsPage onComplete={onComplete} onPracticeAgain={handlePracticeAgain} />;
   }
 
   if (showPractice && testMode === 'practice') {
@@ -255,6 +263,7 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
         <FullTestResults
           words={wordsForSpellingResults.map(word => ({ word, sentence: '' }))}
           answers={answersForResultsOrPractice}
+          onPracticeAgain={handlePracticeAgain}
           onRetry={handleRetry}
           onComplete={onComplete}
           listType={listType}
@@ -271,6 +280,7 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
         words={wordsForSpellingResults.map(word => ({ word, sentence: '' }))}
         answers={answersForResultsOrPractice}
         onPractice={() => setShowPractice(true)}
+        onPracticeAgain={handlePracticeAgain}
         onRetry={handleRetry}
         listType={listType}
         isBaseStageResults={listType === 'less_family' && currentStage === 'base'}
