@@ -30,10 +30,10 @@ export const wordSelectionConfigs: Record<string, WordSelectionConfig> = {
   },
   weeklySpellings: {
     words: WEEKLY_SPELLING_WORDS,
-    title: "This Week's Spellings — 24 September",
+    title: "Words of the Week — 18 October",
     challengeConfig: {
-      title: "📚 This Week's Spellings — 24 September",
-      description: 'Practise the five Must words and three linked ELS words.',
+      title: "📚 Words of the Week — 18 October",
+      description: 'Practise the 10 words from your Words of the Week sheet.',
       rewardText: '',
       motivationMessages: {
         complete: '🎉 Brilliant — this week\'s spellings are mastered! 🎉',

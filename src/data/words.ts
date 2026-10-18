@@ -302,7 +302,7 @@ export const YEAR2_WORDS: Word[] = [
 
 // Weekly homework set from Google Classroom, posted 24 September 2026.
 // Keep the required words separate from the linked ELS words so Leo can practise either group directly.
-export const WEEKLY_SPELLING_WORDS: Word[] = [
+export const SEPTEMBER_24_SPELLING_WORDS: Word[] = [
   { text: 'colourful', year: 2, category: 'Must words' },
   { text: 'beautiful', year: 2, category: 'Must words' },
   { text: 'colossal', year: 2, category: 'Must words' },
@@ -311,6 +311,21 @@ export const WEEKLY_SPELLING_WORDS: Word[] = [
   { text: 'scribe', year: 2, category: 'Linked ELS words' },
   { text: 'describe', year: 2, category: 'Linked ELS words' },
   { text: 'description', year: 2, category: 'Linked ELS words' },
+];
+
+// Words of the Week photographed by Antoine on 18 October 2026.
+// Preserve the photo's row order and British spellings; ticks do not change app progress.
+export const WEEKLY_SPELLING_WORDS: Word[] = [
+  { text: 'favourite', year: 2, category: 'Words of the Week' },
+  { text: 'gold', year: 2, category: 'Words of the Week' },
+  { text: 'omnivore', year: 2, category: 'Words of the Week' },
+  { text: 'cold', year: 2, category: 'Words of the Week' },
+  { text: 'old', year: 2, category: 'Words of the Week' },
+  { text: 'carnivore', year: 2, category: 'Words of the Week' },
+  { text: 'herbivore', year: 2, category: 'Words of the Week' },
+  { text: 'poor', year: 2, category: 'Words of the Week' },
+  { text: 'floor', year: 2, category: 'Words of the Week' },
+  { text: 'favour', year: 2, category: 'Words of the Week' },
 ];
 
 export const SPELLING_LIST_A: Word[] = [
@@ -491,6 +506,7 @@ export const ALL_WORDS = [
   ...COMMON_WORDS,
   ...YEAR2_WORDS,
   ...WEEKLY_SPELLING_WORDS,
+  ...SEPTEMBER_24_SPELLING_WORDS,
   ...ANIMAL_DIET_WORDS,
   ...SPELLING_LIST_A,
   ...SPELLING_LIST_B,

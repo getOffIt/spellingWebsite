@@ -78,8 +78,8 @@ const ChallengesPage: React.FC = () => {
     },
     {
       id: 'weekly-spellings',
-      title: "📚 This Week's Spellings — 17 September",
-      description: 'Practise the 10 homework words and 3 challenge words for Tuesday.',
+      title: "📚 Words of the Week — 18 October",
+      description: 'Practise the 10 words from your Words of the Week sheet.',
       progress: weeklyProgress,
       masteredWords: weeklyMastered,
       totalWords: weeklyTotalWords,
