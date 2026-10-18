@@ -138,7 +138,11 @@ export default function App() {
                     listType={selectedList.type}
                     testMode={selectedList.testMode || 'practice'}
                     passThreshold={selectedList.passThreshold}
-                    returnLabel={location.state?.returnTo === "/spelling-chart" ? "Back to Spelling Chart" : undefined}
+                    returnLabel={{
+                      '/spelling-chart': 'Back to Spelling Chart',
+                      '/animal-diets': 'Back to Animal Diets',
+                      '/weekly-spellings': 'Back to Words of the Week',
+                    }[location.state?.returnTo as string]}
                     onComplete={handleReset} 
                   />
                 ) : (

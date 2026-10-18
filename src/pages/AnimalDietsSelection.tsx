@@ -1,29 +1,18 @@
 import React from 'react';
-import BaseWordSelection from '../components/BaseWordSelection';
-import { wordSelectionConfigs } from '../config/wordSelectionConfigs';
-import './WordSelection.css';
+import WordListChart, { type WordListChartConfig } from '../components/WordListChart';
+import { ANIMAL_DIET_WORDS } from '../data/words';
 
-interface AnimalDietsSelectionProps {
-  onSelectWords: (
-    words: string[],
-    type: 'single' | 'less_family',
-    testMode?: 'practice' | 'full_test',
-    passThreshold?: number
-  ) => void;
-}
-
-const AnimalDietsSelection: React.FC<AnimalDietsSelectionProps> = ({ onSelectWords }) => {
-  const config = wordSelectionConfigs.animalDiets;
-
-  return (
-    <BaseWordSelection
-      words={config.words}
-      title={config.title}
-      themeClass={config.themeClass}
-      challengeConfig={config.challengeConfig}
-      onSelectWords={onSelectWords}
-    />
-  );
+const config: WordListChartConfig = {
+  title: 'Animal Diets',
+  eyebrow: 'Science spelling list',
+  description: 'Carnivore, herbivore and omnivore — what do animals eat?',
+  words: ANIMAL_DIET_WORDS,
+  columns: [[{ id: 'animal-diets', title: 'Animal diets', color: 'gold', words: ANIMAL_DIET_WORDS.map(word => word.text) }]],
+  returnTo: '/animal-diets',
+  fullTestLabel: 'Test all words',
+  nextCount: 3,
 };
 
-export default AnimalDietsSelection;
+export default function AnimalDietsSelection({ onSelectWords }: Pick<React.ComponentProps<typeof WordListChart>, 'onSelectWords'>) {
+  return <WordListChart config={config} onSelectWords={onSelectWords} />;
+}

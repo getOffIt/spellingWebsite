@@ -48,3 +48,7 @@
 .chart-tip audio { width: 100%; }
 @media (max-width: 1100px) { .chart-mobile-hint { display: block; } }
 @media (max-width: 600px) { .spelling-chart-page { padding: 16px 10px; } .chart-heading { align-items: start; flex-direction: column; } .chart-history { padding: 16px; } .chart-history-stats { grid-template-columns: repeat(2, 1fr); } }
+
+/* The same chart and word-history design, scaled to shorter custom lists. */
+.spelling-chart-grid-compact { grid-template-columns: repeat(var(--chart-columns), minmax(160px, 1fr)); min-width: 0; }
+@media (max-width: 600px) { .spelling-chart-grid-compact { grid-template-columns: 1fr; } .spelling-chart-grid-compact .chart-column { border-right: 0; } }

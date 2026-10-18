@@ -4,7 +4,7 @@ export interface ChartSection {
   id: string;
   title: string;
   color: 'red' | 'blue' | 'gold' | 'green' | 'purple';
-  lessonCategory: string;
+  lessonCategory?: string;
   words: string[];
 }
 
