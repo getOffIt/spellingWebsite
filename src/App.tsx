@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-
 import { useAuth } from "react-oidc-context";
 import Login from "./pages/Login";
 import SpellingChart from './pages/SpellingChart';
+import OctoberSpellingChart from './pages/OctoberSpellingChart';
 import ChallengesPage from "./pages/ChallengesPage";
 import WordSelection from "./pages/WordSelection";
 import CommonWordsSelection from "./pages/CommonWordsSelection";
@@ -120,6 +121,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/october-spelling-chart" element={<ProtectedRoute><OctoberSpellingChart onSelectWords={handleSelectWords} /></ProtectedRoute>} />
           <Route path="/spelling-chart" element={<ProtectedRoute><SpellingChart onSelectWords={handleSelectWords} /></ProtectedRoute>} />
           <Route
             path="/spelling-list-b"
@@ -151,6 +153,7 @@ export default function App() {
                     passThreshold={selectedList.passThreshold}
                     returnLabel={{
                       '/spelling-chart': 'Back to Spelling Chart',
+                      '/october-spelling-chart': 'Back to October Spelling Chart',
                       '/animal-diets': 'Back to Animal Diets',
                       '/weekly-spellings': 'Back to Words of the Week',
                     }[location.state?.returnTo as string]}

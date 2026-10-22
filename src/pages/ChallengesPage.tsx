@@ -8,6 +8,7 @@ import {
   SPELLING_LIST_A,
   SPELLING_LIST_B,
 } from '../data/words';
+import { OCTOBER_CHART_WORDS } from '../data/octoberSpellingChart';
 import { useWord } from '../hooks/useWord';
 import './ChallengesPage.css';
 
@@ -50,8 +51,25 @@ const ChallengesPage: React.FC = () => {
   const animalDietTotal = ANIMAL_DIET_WORDS.length;
   const animalDietProgress = Math.round((animalDietMastered / animalDietTotal) * 100);
 
+  const octoberStatusList = OCTOBER_CHART_WORDS.map(word => useWord(word.text));
+  const octoberMastered = octoberStatusList.filter(status => status.status === 'mastered').length;
+  const octoberTotal = OCTOBER_CHART_WORDS.length;
+  const octoberProgress = Math.round(octoberMastered / octoberTotal * 100);
+
   // Current focus challenge
   const currentChallenges = [
+    {
+      id: 'october-spelling-chart',
+      title: '📋 Spelling Chart — October',
+      description: 'Your new school sheet: all 57 words, rule tests, next 5 and individual word history.',
+      progress: octoberProgress,
+      masteredWords: octoberMastered,
+      totalWords: octoberTotal,
+      status: octoberProgress === 100 ? 'completed' : octoberProgress > 50 ? 'good' : 'starting',
+      route: '/october-spelling-chart',
+      bgColor: 'linear-gradient(135deg, #276346 0%, #408363 100%)',
+      borderColor: '#276346'
+    },
     {
       id: 'spelling-chart',
       title: '📋 Spelling Chart — Full Year',

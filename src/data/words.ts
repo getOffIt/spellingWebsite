@@ -1,3 +1,4 @@
+import { OCTOBER_CHART_WORDS } from './octoberSpellingChart';
 export type Word = {
   text: string        // plain word (used as unique key)
   year: 1 | 2
@@ -510,4 +511,5 @@ export const ALL_WORDS = [
   ...ANIMAL_DIET_WORDS,
   ...SPELLING_LIST_A,
   ...SPELLING_LIST_B,
+  ...OCTOBER_CHART_WORDS,
 ]
