@@ -20,7 +20,7 @@ function Location() {
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(useAuth).mockReturnValue({ user: { profile: { sub: 'leo' }, access_token: 'test' }, isLoading: false } as ReturnType<typeof useAuth>);
-  vi.mocked(api.getAllProgress).mockResolvedValue(['carnivore', 'favourite', 'poor'].map(word => ({
+  vi.mocked(api.getAllProgress).mockResolvedValue(['carnivore', 'circus', 'century'].map(word => ({
     wordId: word,
     progress: Array.from({ length: 10 }, () => ({ date: '2026-10-18T10:00:00Z', correct: true, attempt: word })),
   })));
@@ -29,7 +29,7 @@ beforeEach(() => {
 
 describe.each([
   { title: 'Animal Diets', Page: AnimalDietsSelection, words: ANIMAL_DIET_WORDS, next: ['herbivore', 'omnivore'], green: 'carnivore', route: '/animal-diets', group: 'Animal diets', groupWords: ['carnivore', 'herbivore', 'omnivore'] },
-  { title: 'Words of the Week', Page: WeeklySpellingsSelection, words: WEEKLY_SPELLING_WORDS, next: ['gold', 'omnivore', 'cold'], green: 'favourite', route: '/weekly-spellings', group: "'oor' letter string", groupWords: ['poor', 'floor'] },
+  { title: 'Words of the Week', Page: WeeklySpellingsSelection, words: WEEKLY_SPELLING_WORDS, next: ['magic', 'magician', 'acrobat'], green: 'circus', route: '/weekly-spellings', group: 'Linked ELS examples', groupWords: ['century', 'centimetre'] },
 ])('$title shared chart', ({ title, Page, words, next, green, route, group, groupWords }) => {
   it('uses chart rows, green history, full-list tests and non-green next-word selection', async () => {
     const select = vi.fn();

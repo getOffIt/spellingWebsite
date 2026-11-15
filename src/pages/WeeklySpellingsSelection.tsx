@@ -4,14 +4,12 @@ import { WEEKLY_SPELLING_WORDS } from '../data/words';
 
 const config: WordListChartConfig = {
   title: 'Words of the Week',
-  eyebrow: '18 October 2026 · Your spelling sheet',
-  description: 'Your ten weekly words, grouped by their spelling patterns.',
+  eyebrow: '12 November 2026 · Classroom spelling',
+  description: 'Optional English words and two ELS examples. Still practise your next five big-list words and complete one Spelling Frame test.',
   words: WEEKLY_SPELLING_WORDS,
   columns: [
-    [{ id: 'favour', title: "'favour' letter string", color: 'blue', words: ['favourite', 'favour'] }],
-    [{ id: 'old', title: "'old' letter string", color: 'red', words: ['gold', 'cold', 'old'] }],
-    [{ id: 'vore', title: 'Animal diets — -vore', color: 'gold', words: ['omnivore', 'carnivore', 'herbivore'] }],
-    [{ id: 'oor', title: "'oor' letter string", color: 'green', words: ['poor', 'floor'] }],
+    [{ id: 'english', title: 'Could · English extension', color: 'blue', words: ['circus', 'magic', 'magician', 'acrobat', 'unicycle'] }],
+    [{ id: 'els', title: 'Linked ELS examples', color: 'green', words: ['century', 'centimetre'] }],
   ],
   returnTo: '/weekly-spellings',
   fullTestLabel: 'Test all words',

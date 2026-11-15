@@ -316,7 +316,7 @@ export const SEPTEMBER_24_SPELLING_WORDS: Word[] = [
 
 // Words of the Week photographed by Antoine on 18 October 2026.
 // Preserve the photo's row order and British spellings; ticks do not change app progress.
-export const WEEKLY_SPELLING_WORDS: Word[] = [
+export const OCTOBER_18_SPELLING_WORDS: Word[] = [
   { text: 'favourite', year: 2, category: 'Words of the Week' },
   { text: 'gold', year: 2, category: 'Words of the Week' },
   { text: 'omnivore', year: 2, category: 'Words of the Week' },
@@ -327,6 +327,19 @@ export const WEEKLY_SPELLING_WORDS: Word[] = [
   { text: 'poor', year: 2, category: 'Words of the Week' },
   { text: 'floor', year: 2, category: 'Words of the Week' },
   { text: 'favour', year: 2, category: 'Words of the Week' },
+];
+
+// Classroom SPELLING HOME LEARNING, Suzanne Tucker, 12 November 2026.
+// English words are optional "Could" work; ELS words are examples, not the full test.
+// The required next five words still come from Leo's separate big spelling chart.
+export const WEEKLY_SPELLING_WORDS: Word[] = [
+  { text: 'circus', year: 2, category: 'English extension' },
+  { text: 'magic', year: 2, category: 'English extension' },
+  { text: 'magician', year: 2, category: 'English extension' },
+  { text: 'acrobat', year: 2, category: 'English extension' },
+  { text: 'unicycle', year: 2, category: 'English extension' },
+  { text: 'century', year: 2, category: 'Linked ELS examples' },
+  { text: 'centimetre', year: 2, category: 'Linked ELS examples' },
 ];
 
 export const SPELLING_LIST_A: Word[] = [
@@ -507,6 +520,7 @@ export const ALL_WORDS = [
   ...COMMON_WORDS,
   ...YEAR2_WORDS,
   ...WEEKLY_SPELLING_WORDS,
+  ...OCTOBER_18_SPELLING_WORDS,
   ...SEPTEMBER_24_SPELLING_WORDS,
   ...ANIMAL_DIET_WORDS,
   ...SPELLING_LIST_A,
