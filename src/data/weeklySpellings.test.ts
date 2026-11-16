@@ -28,14 +28,14 @@ describe('weekly spelling homework', () => {
     ]);
   });
 
-  it('separates the five November English words from the two ELS examples', () => {
+  it('includes the full Spelling Frame test separately from optional English words', () => {
     expect(WEEKLY_SPELLING_WORDS.filter(w => w.category === 'English extension').map(w => w.text)).toEqual(['circus', 'magic', 'magician', 'acrobat', 'unicycle']);
-    expect(WEEKLY_SPELLING_WORDS.filter(w => w.category === 'Linked ELS examples').map(w => w.text)).toEqual(['century', 'centimetre']);
+    expect(WEEKLY_SPELLING_WORDS.filter(w => w.category === 'Spelling Frame weekly test').map(w => w.text)).toEqual(['Mr', 'Mrs', 'any', 'busy', 'centimetre', 'centipede', 'century', 'many', 'recent', 'recently']);
   });
 
   it('is exposed as the weekly practice section' , () => {
     expect(wordSelectionConfigs.weeklySpellings.words).toBe(WEEKLY_SPELLING_WORDS);
-    expect(wordSelectionConfigs.weeklySpellings.title).toContain('12 November');
+    expect(wordSelectionConfigs.weeklySpellings.title).toContain('Week 46 · 12–17 November');
   });
 
   it('preserves recorded audio for the previous September spellings', () => {

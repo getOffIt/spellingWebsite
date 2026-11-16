@@ -29,7 +29,7 @@ beforeEach(() => {
 
 describe.each([
   { title: 'Animal Diets', Page: AnimalDietsSelection, words: ANIMAL_DIET_WORDS, next: ['herbivore', 'omnivore'], green: 'carnivore', route: '/animal-diets', group: 'Animal diets', groupWords: ['carnivore', 'herbivore', 'omnivore'] },
-  { title: 'Words of the Week', Page: WeeklySpellingsSelection, words: WEEKLY_SPELLING_WORDS, next: ['magic', 'magician', 'acrobat'], green: 'circus', route: '/weekly-spellings', group: 'Linked ELS examples', groupWords: ['century', 'centimetre'] },
+  { title: 'Words of the Week — Week 46', Page: WeeklySpellingsSelection, words: WEEKLY_SPELLING_WORDS, next: ['magic', 'magician', 'acrobat'], green: 'circus', route: '/weekly-spellings', group: 'Should · Spelling Frame weekly test', groupWords: ['Mr', 'Mrs', 'any', 'busy', 'centimetre', 'centipede', 'century', 'many', 'recent', 'recently'] },
 ])('$title shared chart', ({ title, Page, words, next, green, route, group, groupWords }) => {
   it('uses chart rows, green history, full-list tests and non-green next-word selection', async () => {
     const select = vi.fn();
@@ -58,4 +58,11 @@ describe.each([
 it('registers exactly the three requested animal-diet words for shared history', () => {
   expect(ANIMAL_DIET_WORDS.map(word => word.text)).toEqual(['carnivore', 'herbivore', 'omnivore']);
   for (const word of ANIMAL_DIET_WORDS) expect(ALL_WORDS).toContain(word);
+});
+
+ it('shows personal Must guidance without inventing assigned words', async () => {
+  render(<MemoryRouter><ProgressProvider><WeeklySpellingsSelection onSelectWords={vi.fn()} /></ProgressProvider></MemoryRouter>);
+  expect(await screen.findByRole('heading', { name: 'Perso · Must · Personal big list' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Open your personal spelling chart →' })).toHaveAttribute('href', '/spelling-chart');
+  expect(screen.getByRole('heading', { name: 'Last · Could · Optional topic words' })).toBeInTheDocument();
 });

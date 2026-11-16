@@ -330,7 +330,7 @@ export const OCTOBER_18_SPELLING_WORDS: Word[] = [
 ];
 
 // Classroom SPELLING HOME LEARNING, Suzanne Tucker, 12 November 2026.
-// English words are optional "Could" work; ELS words are examples, not the full test.
+// Includes the full Spelling Frame test for 12–17 November and optional English words.
 // The required next five words still come from Leo's separate big spelling chart.
 export const WEEKLY_SPELLING_WORDS: Word[] = [
   { text: 'circus', year: 2, category: 'English extension' },
@@ -338,8 +338,16 @@ export const WEEKLY_SPELLING_WORDS: Word[] = [
   { text: 'magician', year: 2, category: 'English extension' },
   { text: 'acrobat', year: 2, category: 'English extension' },
   { text: 'unicycle', year: 2, category: 'English extension' },
-  { text: 'century', year: 2, category: 'Linked ELS examples' },
-  { text: 'centimetre', year: 2, category: 'Linked ELS examples' },
+  { text: 'Mr', year: 2, category: 'Spelling Frame weekly test' },
+  { text: 'Mrs', year: 2, category: 'Spelling Frame weekly test' },
+  { text: 'any', year: 2, category: 'Spelling Frame weekly test' },
+  { text: 'busy', year: 2, category: 'Spelling Frame weekly test' },
+  { text: 'centimetre', year: 2, category: 'Spelling Frame weekly test' },
+  { text: 'centipede', year: 2, category: 'Spelling Frame weekly test' },
+  { text: 'century', year: 2, category: 'Spelling Frame weekly test' },
+  { text: 'many', year: 2, category: 'Spelling Frame weekly test' },
+  { text: 'recent', year: 2, category: 'Spelling Frame weekly test' },
+  { text: 'recently', year: 2, category: 'Spelling Frame weekly test' },
 ];
 
 export const SPELLING_LIST_A: Word[] = [

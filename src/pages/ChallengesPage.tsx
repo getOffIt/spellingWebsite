@@ -59,6 +59,18 @@ const ChallengesPage: React.FC = () => {
   // Current focus challenge
   const currentChallenges = [
     {
+      id: 'weekly-spellings',
+      title: "📚 Words of the Week — Week 46 · 12–17 November",
+      description: 'Practise all ten Spelling Frame words and five optional English words.',
+      progress: weeklyProgress,
+      masteredWords: weeklyMastered,
+      totalWords: weeklyTotalWords,
+      status: weeklyProgress === 100 ? 'completed' : weeklyProgress > 75 ? 'close' : weeklyProgress > 50 ? 'good' : weeklyProgress > 25 ? 'steady' : weeklyProgress > 0 ? 'starting' : 'beginning',
+      route: '/weekly-spellings',
+      bgColor: 'linear-gradient(135deg, #0F766E 0%, #14B8A6 100%)',
+      borderColor: '#0F766E'
+    },
+    {
       id: 'october-spelling-chart',
       title: '📋 Spelling Chart — October',
       description: 'Your new school sheet: all 57 words, rule tests, next 5 and individual word history.',
@@ -93,18 +105,6 @@ const ChallengesPage: React.FC = () => {
       route: '/animal-diets',
       bgColor: 'linear-gradient(135deg, #92400E 0%, #D97706 100%)',
       borderColor: '#92400E'
-    },
-    {
-      id: 'weekly-spellings',
-      title: "📚 Words of the Week — 12 November",
-      description: 'Practise five English extension words and two linked ELS examples.',
-      progress: weeklyProgress,
-      masteredWords: weeklyMastered,
-      totalWords: weeklyTotalWords,
-      status: weeklyProgress === 100 ? 'completed' : weeklyProgress > 75 ? 'close' : weeklyProgress > 50 ? 'good' : weeklyProgress > 25 ? 'steady' : weeklyProgress > 0 ? 'starting' : 'beginning',
-      route: '/weekly-spellings',
-      bgColor: 'linear-gradient(135deg, #0F766E 0%, #14B8A6 100%)',
-      borderColor: '#0F766E'
     }
   ];
 

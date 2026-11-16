@@ -26,6 +26,7 @@ export interface WordListChartConfig {
 
 interface Props {
   config: WordListChartConfig;
+  beforeGroups?: React.ReactNode;
   onSelectWords: (words: string[], type: 'single' | 'less_family', mode?: 'practice' | 'full_test', passThreshold?: number) => void;
 }
 
@@ -78,7 +79,7 @@ function WordHistory({ word, onClose, onTest, onPractice }: { word: string; onCl
   </dialog>;
 }
 
-export default function WordListChart({ onSelectWords, config }: Props) {
+export default function WordListChart({ onSelectWords, config, beforeGroups }: Props) {
   const navigate = useNavigate();
   const { getWordStats, progress } = useProgress();
   const [activeWord, setActiveWord] = useState<string | null>(null);
@@ -104,6 +105,7 @@ export default function WordListChart({ onSelectWords, config }: Props) {
     <p className="chart-help">Green + ✓ = {getMasteryThreshold(config.words[0].text)} correct in a row. Click any word for effort and history. Next {config.nextCount} prioritises words needing practice; full-list and group tests include green words.</p>
     {!!next.length && <p className="chart-next">Next up: {next.join(', ')}</p>}
     {!next.length && <p className="chart-next">All words are green! Take a full-list or group test to check recall.</p>}
+    {beforeGroups}
     {config.fullYear && <p className="chart-mobile-hint">Swipe across to see all six columns →</p>}
     <div className="chart-scroll" tabIndex={0} role="region" aria-label={config.fullYear ? "Six-column spelling chart" : `${config.title} spelling chart`}>
       <div className={`spelling-chart-grid${config.fullYear ? "" : " spelling-chart-grid-compact"}`} style={config.fullYear ? undefined : { '--chart-columns': config.columns.length } as React.CSSProperties}>{config.columns.map((column, index) => <div className="chart-column" key={index}>
