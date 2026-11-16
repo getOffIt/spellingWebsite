@@ -1,13 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  ANIMAL_DIET_WORDS,
-  YEAR1_WORDS,
-  COMMON_WORDS,
-  WEEKLY_SPELLING_WORDS,
-  SPELLING_LIST_A,
-  SPELLING_LIST_B,
-} from '../data/words';
+import { WEEKLY_SPELLING_WORDS } from '../data/words';
 import { OCTOBER_CHART_WORDS } from '../data/octoberSpellingChart';
 import { useWord } from '../hooks/useWord';
 import './ChallengesPage.css';
@@ -15,41 +8,11 @@ import './ChallengesPage.css';
 const ChallengesPage: React.FC = () => {
   const navigate = useNavigate();
 
-  // Calculate KS1-1 progress for Leo's challenge
-  const ks1Words = YEAR1_WORDS.filter(word => !word.category.startsWith('adding'));
-  const ks1WordsStatusList = ks1Words.map(word => useWord(word.text));
-  const ks1MasteredWords = ks1WordsStatusList.filter(status => status.status === 'mastered').length;
-  const ks1TotalWords = ks1Words.length;
-  const ks1Progress = Math.round((ks1MasteredWords / ks1TotalWords) * 100);
-
-  // Calculate Common Words progress
-  const commonWordsStatusList = COMMON_WORDS.map(word => useWord(word.text));
-  const commonWordsMastered = commonWordsStatusList.filter(status => status.status === 'mastered').length;
-  const commonWordsTotalWords = COMMON_WORDS.length;
-  const commonWordsProgress = Math.round((commonWordsMastered / commonWordsTotalWords) * 100);
-
-  // Calculate Spelling List A progress (threshold handled by useWord/getWordStats)
-  const listAStatusList = SPELLING_LIST_A.map(word => useWord(word.text));
-  const listAMastered = listAStatusList.filter(status => status.status === 'mastered').length;
-  const listATotalWords = SPELLING_LIST_A.length;
-  const listAProgress = Math.round((listAMastered / listATotalWords) * 100);
-
-  // Calculate Spelling List B progress
-  const listBStatusList = SPELLING_LIST_B.map(word => useWord(word.text));
-  const listBMastered = listBStatusList.filter(status => status.status === 'mastered').length;
-  const listBTotalWords = SPELLING_LIST_B.length;
-  const listBProgress = Math.round((listBMastered / listBTotalWords) * 100);
-
   // Calculate this week's homework progress
   const weeklyStatusList = WEEKLY_SPELLING_WORDS.map(word => useWord(word.text));
   const weeklyMastered = weeklyStatusList.filter(status => status.status === 'mastered').length;
   const weeklyTotalWords = WEEKLY_SPELLING_WORDS.length;
   const weeklyProgress = Math.round((weeklyMastered / weeklyTotalWords) * 100);
-
-  const animalDietStatusList = ANIMAL_DIET_WORDS.map(word => useWord(word.text));
-  const animalDietMastered = animalDietStatusList.filter(status => status.status === 'mastered').length;
-  const animalDietTotal = ANIMAL_DIET_WORDS.length;
-  const animalDietProgress = Math.round((animalDietMastered / animalDietTotal) * 100);
 
   const octoberStatusList = OCTOBER_CHART_WORDS.map(word => useWord(word.text));
   const octoberMastered = octoberStatusList.filter(status => status.status === 'mastered').length;
@@ -61,7 +24,7 @@ const ChallengesPage: React.FC = () => {
     {
       id: 'weekly-spellings',
       title: "📚 Words of the Week — Week 46 · 12–17 November",
-      description: 'Practise all ten Spelling Frame words and five optional English words.',
+      description: 'Your next five Year 3 words, ten Spelling Frame words and optional topic words.',
       progress: weeklyProgress,
       masteredWords: weeklyMastered,
       totalWords: weeklyTotalWords,
@@ -72,8 +35,8 @@ const ChallengesPage: React.FC = () => {
     },
     {
       id: 'october-spelling-chart',
-      title: '📋 Spelling Chart — October',
-      description: 'Your new school sheet: all 57 words, rule tests, next 5 and individual word history.',
+      title: '📋 Year 3 words',
+      description: 'Your personal spelling list: all 57 words, rule tests, next 5 and individual word history.',
       progress: octoberProgress,
       masteredWords: octoberMastered,
       totalWords: octoberTotal,
@@ -82,82 +45,6 @@ const ChallengesPage: React.FC = () => {
       bgColor: 'linear-gradient(135deg, #276346 0%, #408363 100%)',
       borderColor: '#276346'
     },
-    {
-      id: 'spelling-chart',
-      title: '📋 Spelling Chart — Full Year',
-      description: 'Your school sheet: all 64 words, rule tests, next 5 and individual word history.',
-      progress: listBProgress,
-      masteredWords: listBMastered,
-      totalWords: listBTotalWords,
-      status: listBProgress === 100 ? 'completed' : listBProgress > 50 ? 'good' : 'starting',
-      route: '/spelling-chart',
-      bgColor: 'linear-gradient(135deg, #276346 0%, #408363 100%)',
-      borderColor: '#276346'
-    },
-    {
-      id: 'animal-diets',
-      title: '🦁 Animal Diets',
-      description: 'Learn carnivore, herbivore and omnivore.',
-      progress: animalDietProgress,
-      masteredWords: animalDietMastered,
-      totalWords: animalDietTotal,
-      status: animalDietProgress === 100 ? 'completed' : animalDietProgress > 0 ? 'starting' : 'beginning',
-      route: '/animal-diets',
-      bgColor: 'linear-gradient(135deg, #92400E 0%, #D97706 100%)',
-      borderColor: '#92400E'
-    }
-  ];
-
-  // Other available challenges
-  const otherChallenges = [
-    {
-      id: 'spelling-list-b',
-      title: "📝 The Big Test 27th Feb — List B",
-      description: "Master all List B spelling words to earn £40! 10 correct in a row per word.",
-      progress: listBProgress,
-      masteredWords: listBMastered,
-      totalWords: listBTotalWords,
-      status: listBProgress === 100 ? 'completed' : listBProgress > 75 ? 'close' : listBProgress > 50 ? 'good' : listBProgress > 25 ? 'steady' : listBProgress > 0 ? 'starting' : 'beginning',
-      route: '/spelling-list-b',
-      bgColor: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
-      borderColor: '#6D28D9'
-    },
-    {
-      id: 'spelling-list-a',
-      title: "📝 The Big Test 27th Feb — List A",
-      description: "Master all List A spelling words to earn £40! 10 correct in a row per word.",
-      progress: listAProgress,
-      masteredWords: listAMastered,
-      totalWords: listATotalWords,
-      status: listAProgress === 100 ? 'completed' : listAProgress > 75 ? 'close' : listAProgress > 50 ? 'good' : listAProgress > 25 ? 'steady' : listAProgress > 0 ? 'starting' : 'beginning',
-      route: '/spelling-list-a',
-      bgColor: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
-      borderColor: '#6D28D9'
-    },
-    {
-      id: 'leo-ks1-challenge',
-      title: "Leo's £50 KS1-1 Challenge",
-      description: "Master all KS1-1 spelling words to earn £50!",
-      progress: ks1Progress,
-      masteredWords: ks1MasteredWords,
-      totalWords: ks1TotalWords,
-      status: ks1Progress === 100 ? 'completed' : ks1Progress > 75 ? 'close' : ks1Progress > 50 ? 'good' : ks1Progress > 25 ? 'steady' : ks1Progress > 0 ? 'starting' : 'beginning',
-      route: '/word-selection',
-      bgColor: 'linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%)',
-      borderColor: '#ffb347'
-    },
-    {
-      id: 'common-words-challenge',
-      title: "🎃 Spooky Common Words Challenge 👻",
-      description: "Enter the haunted library and master spooky common words... if you dare! 🦇",
-      progress: commonWordsProgress,
-      masteredWords: commonWordsMastered,
-      totalWords: commonWordsTotalWords,
-      status: commonWordsProgress === 100 ? 'completed' : commonWordsProgress > 75 ? 'close' : commonWordsProgress > 50 ? 'good' : commonWordsProgress > 25 ? 'steady' : commonWordsProgress > 0 ? 'starting' : 'beginning',
-      route: '/common-words-selection',
-      bgColor: 'linear-gradient(135deg, #1a0d2e 0%, #ff8c00 50%, #1a0d2e 100%)',
-      borderColor: '#ff4500'
-    }
   ];
 
   const getStatusMessage = (status: string, progress: number) => {
@@ -228,68 +115,7 @@ const ChallengesPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Divider */}
-      <div className="challenges-divider">
-        <div className="divider-line"></div>
-        <span className="divider-text">Other Challenges</span>
-        <div className="divider-line"></div>
-      </div>
 
-      {/* Other Challenges Section */}
-      <div className="challenges-section challenges-section-other">
-        <div className="challenges-grid">
-          {otherChallenges.map((challenge) => (
-            <div
-              key={challenge.id}
-              className={`challenge-card ${getStatusClass(challenge.status)}`}
-              style={{
-                background: challenge.bgColor,
-                borderColor: challenge.borderColor
-              }}
-              onClick={() => navigate(challenge.route)}
-            >
-              <div className="challenge-card-header">
-                <h2 className="challenge-card-title">{challenge.title}</h2>
-                <p className="challenge-card-description">{challenge.description}</p>
-              </div>
-
-              <div className="challenge-card-progress">
-                <div className="challenge-progress-bar">
-                  <div
-                    className="challenge-progress-fill"
-                    style={{ width: `${challenge.progress}%` }}
-                  />
-                </div>
-                <div className="challenge-progress-stats">
-                  <span className="challenge-progress-percentage">{challenge.progress}%</span>
-                  <span className="challenge-progress-words">
-                    {challenge.masteredWords}/{challenge.totalWords} words
-                  </span>
-                </div>
-              </div>
-
-              <div className="challenge-card-motivation">
-                <div className={`challenge-motivation-message challenge-motivation-${challenge.status}`}>
-                  {getStatusMessage(challenge.status, challenge.progress)}
-                </div>
-              </div>
-
-              <div className="challenge-card-action">
-                <button className="challenge-start-button">
-                  {challenge.progress > 0 ? 'Continue Challenge' : 'Start Challenge'}
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="challenges-coming-soon">
-        <div className="coming-soon-card">
-          <h3>More Challenges Coming Soon!</h3>
-          <p>Stay tuned for additional spelling challenges and rewards.</p>
-        </div>
-      </div>
     </div>
   );
 };

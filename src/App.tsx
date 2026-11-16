@@ -153,7 +153,7 @@ export default function App() {
                     passThreshold={selectedList.passThreshold}
                     returnLabel={{
                       '/spelling-chart': 'Back to Spelling Chart',
-                      '/october-spelling-chart': 'Back to October Spelling Chart',
+                      '/october-spelling-chart': 'Back to Year 3 words',
                       '/animal-diets': 'Back to Animal Diets',
                       '/weekly-spellings': 'Back to Words of the Week',
                     }[location.state?.returnTo as string]}
