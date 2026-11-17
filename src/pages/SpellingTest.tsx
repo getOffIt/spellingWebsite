@@ -1,3 +1,4 @@
+import { useTypedAnswer } from '../hooks/useTypedAnswer';
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './SpellingTest.css';
@@ -75,6 +76,7 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
   const [skipEnabled, setSkipEnabled] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const typedAnswer = useTypedAnswer(inputRef);
   const inputContainerRef = useRef<HTMLDivElement>(null);
 
   // Streak indicator state
@@ -334,13 +336,16 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
         </div>
       ) : null}
 
+      {typedAnswer.reminder && <p role="status">{typedAnswer.reminder}</p>}
       <div ref={inputContainerRef}>
         <input
           ref={inputRef}
           className="spelling-input"
           type="text"
           value={answers[step]}
-          onChange={handleInput}
+          onChange={event => { typedAnswer.clearReminder(); handleInput(event); }}
+          onPaste={typedAnswer.onPaste}
+          onDrop={typedAnswer.onDrop}
           placeholder="Type the word here"
           autoFocus
           onKeyDown={handleKeyDown}

@@ -36,3 +36,46 @@ describe.each(['full_test', 'practice'] as const)('%s results', mode => {
     expect(recordAttempt).toHaveBeenCalledTimes(2); // Opening guided practice does not fabricate mastery attempts.
   });
 });
+
+describe.each(['test', 'practice'])('%s answer entry', mode => {
+  function openField() {
+    render(<MemoryRouter>{mode === 'test'
+      ? <SpellingTest words={['carnivore']} listType="single" onComplete={vi.fn()} />
+      : <PracticePage words={['carnivore']} onComplete={vi.fn()} />}</MemoryRouter>);
+    return screen.getByRole('textbox');
+  }
+
+  it.each(['paste', 'drop'])('blocks %s without altering the answer or recording progress', type => {
+    const field = openField();
+    fireEvent.change(field, { target: { value: 'car' } });
+    const event = new Event(type, { bubbles: true, cancelable: true });
+    fireEvent(field, event);
+    expect(event.defaultPrevented).toBe(true);
+    expect(field).toHaveValue('car');
+    expect(screen.getByRole('status')).toHaveTextContent('Type it yourself, ninja');
+    expect(recordAttempt).not.toHaveBeenCalled();
+    fireEvent.change(field, { target: { value: 'carn' } });
+    expect(field).toHaveValue('carn');
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+
+  it.each(['insertFromPaste', 'insertFromPasteAsQuotation', 'insertFromDrop'])('blocks native %s insertion', inputType => {
+    const field = openField();
+    const event = new InputEvent('beforeinput', { inputType, data: 'carnivore', bubbles: true, cancelable: true });
+    fireEvent(field, event);
+    expect(event.defaultPrevented).toBe(true);
+    expect(field).toHaveValue('');
+    expect(recordAttempt).not.toHaveBeenCalled();
+  });
+
+  it.each(['insertText', 'deleteContentBackward', 'insertCompositionText'])('allows normal %s editing and copying', inputType => {
+    const field = openField();
+    const event = new InputEvent('beforeinput', { inputType, bubbles: true, cancelable: true });
+    fireEvent(field, event);
+    expect(event.defaultPrevented).toBe(false);
+    const copy = new Event('copy', { bubbles: true, cancelable: true });
+    fireEvent(field, copy);
+    expect(copy.defaultPrevented).toBe(false);
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+});

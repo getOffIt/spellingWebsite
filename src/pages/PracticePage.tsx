@@ -1,3 +1,4 @@
+import { useTypedAnswer } from '../hooks/useTypedAnswer';
 import React, { useState, useEffect, useRef } from 'react';
 import './SpellingTest.css';
 import confetti from 'canvas-confetti';
@@ -13,6 +14,7 @@ export default function PracticePage({ words, onComplete, returnLabel = "Back to
   const [input, setInput] = useState('');
   const [done, setDone] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const typedAnswer = useTypedAnswer(textareaRef);
 
   useEffect(() => {
     if (done) {
@@ -141,13 +143,16 @@ export default function PracticePage({ words, onComplete, returnLabel = "Back to
           Write the word five times below (separate with spaces or line returns):
         </p>
         
+        {typedAnswer.reminder && <p role="status">{typedAnswer.reminder}</p>}
         {renderInputPreview()}
         
         <textarea
           ref={textareaRef}
           className="spelling-input"
           value={input}
-          onChange={handleInputChange}
+          onChange={event => { typedAnswer.clearReminder(); handleInputChange(event); }}
+          onPaste={typedAnswer.onPaste}
+          onDrop={typedAnswer.onDrop}
           onKeyDown={handleKeyDown}
           autoFocus
           autoComplete="new-password"
