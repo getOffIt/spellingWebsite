@@ -350,6 +350,7 @@ export default function SpellingTest({ words, listType, testMode = 'practice', p
           autoFocus
           onKeyDown={handleKeyDown}
           autoComplete="new-password"
+          writingsuggestions="false"
           spellCheck={false}
           inputMode="text"
           autoCapitalize="off"

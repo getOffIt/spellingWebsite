@@ -156,6 +156,7 @@ export default function PracticePage({ words, onComplete, returnLabel = "Back to
           onKeyDown={handleKeyDown}
           autoFocus
           autoComplete="new-password"
+          writingsuggestions="false"
           spellCheck={false}
           autoCapitalize="off"
           autoCorrect="off"
