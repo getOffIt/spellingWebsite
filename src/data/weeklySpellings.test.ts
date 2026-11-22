@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import voiceManifest from '../../public/voices/voice-manifest.json';
-import { WEEKLY_SPELLING_WORDS, OCTOBER_18_SPELLING_WORDS, SEPTEMBER_24_SPELLING_WORDS } from './words';
+import { WEEKLY_SPELLING_WORDS, WEEKLY_FRAME_WORDS, WEEKLY_KEEP_GOING_WORDS, WEEKLY_HISTORY_WORDS, OCTOBER_18_SPELLING_WORDS, SEPTEMBER_24_SPELLING_WORDS } from './words';
 import { wordSelectionConfigs } from '../config/wordSelectionConfigs';
 
 describe('weekly spelling homework', () => {
@@ -28,14 +28,17 @@ describe('weekly spelling homework', () => {
     ]);
   });
 
-  it('includes the full Spelling Frame test separately from optional English words', () => {
-    expect(WEEKLY_SPELLING_WORDS.filter(w => w.category === 'English extension').map(w => w.text)).toEqual(['circus', 'magic', 'magician', 'acrobat', 'unicycle']);
-    expect(WEEKLY_SPELLING_WORDS.filter(w => w.category === 'Spelling Frame weekly test').map(w => w.text)).toEqual(['Mr', 'Mrs', 'any', 'busy', 'centimetre', 'centipede', 'century', 'many', 'recent', 'recently']);
+  it('preserves both assigned tests, but counts their shared word only once overall', () => {
+    expect(WEEKLY_FRAME_WORDS).toEqual(['again', 'any', 'central', 'centre', 'concentrate', 'concentrating', 'concentration', 'many', 'most', 'who']);
+    expect(WEEKLY_KEEP_GOING_WORDS).toEqual(['called', 'centre', 'girl', 'have', 'hear', 'laugh']);
+    expect(WEEKLY_HISTORY_WORDS).toEqual(['soldier', 'battle', 'arrow', 'marching', 'leader']);
+    expect(WEEKLY_SPELLING_WORDS.filter(word => word.text === 'centre')).toHaveLength(1);
+    expect(WEEKLY_SPELLING_WORDS).toHaveLength(25);
   });
 
   it('is exposed as the weekly practice section' , () => {
     expect(wordSelectionConfigs.weeklySpellings.words).toBe(WEEKLY_SPELLING_WORDS);
-    expect(wordSelectionConfigs.weeklySpellings.title).toContain('Week 46 · 12–17 November');
+    expect(wordSelectionConfigs.weeklySpellings.title).toContain('Week 47 · 19–26 November');
   });
 
   it('preserves recorded audio for the previous September spellings', () => {

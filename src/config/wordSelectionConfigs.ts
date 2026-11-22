@@ -30,10 +30,10 @@ export const wordSelectionConfigs: Record<string, WordSelectionConfig> = {
   },
   weeklySpellings: {
     words: WEEKLY_SPELLING_WORDS,
-    title: "Words of the Week — Week 46 · 12–17 November",
+    title: "Words of the Week — Week 47 · 19–26 November",
     challengeConfig: {
-      title: "📚 Words of the Week — Week 46 · 12–17 November",
-      description: 'Practise all ten Spelling Frame words and five optional English words.',
+      title: "📚 Words of the Week — Week 47 · 19–26 November",
+      description: 'Practise your personal five, both Spelling Frame lists and optional history words.',
       rewardText: '',
       motivationMessages: {
         complete: '🎉 Brilliant — this week\'s spellings are mastered! 🎉',

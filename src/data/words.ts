@@ -332,7 +332,7 @@ export const OCTOBER_18_SPELLING_WORDS: Word[] = [
 // Classroom SPELLING HOME LEARNING, Suzanne Tucker, 12 November 2026.
 // Includes the full Spelling Frame test for 12–17 November and optional English words.
 // The required next five words still come from Leo's separate big spelling chart.
-export const WEEKLY_SPELLING_WORDS: Word[] = [
+const WEEK_46_SPELLING_WORDS: Word[] = [
   // Source order within each group; required test words precede optional extensions.
   { text: 'Mr', year: 2, category: 'Spelling Frame weekly test' },
   { text: 'Mrs', year: 2, category: 'Spelling Frame weekly test' },
@@ -350,6 +350,22 @@ export const WEEKLY_SPELLING_WORDS: Word[] = [
   { text: 'acrobat', year: 2, category: 'English extension' },
   { text: 'unicycle', year: 2, category: 'English extension' },
 ];
+
+// Freeze the personal selection when the week's lists are set, not as mastery changes.
+export const WEEKLY_PERSONAL_WORDS = ['business', 'February', 'interest', 'possession', 'accidentally'];
+export const WEEKLY_FRAME_WORDS = ['again', 'any', 'central', 'centre', 'concentrate', 'concentrating', 'concentration', 'many', 'most', 'who'];
+export const WEEKLY_KEEP_GOING_WORDS = ['called', 'centre', 'girl', 'have', 'hear', 'laugh'];
+export const WEEKLY_HISTORY_WORDS = ['soldier', 'battle', 'arrow', 'marching', 'leader'];
+
+const weeklyGroups = [
+  { category: 'Personal words', words: WEEKLY_PERSONAL_WORDS },
+  { category: 'Spelling Frame weekly test', words: WEEKLY_FRAME_WORDS },
+  { category: 'Keep going', words: WEEKLY_KEEP_GOING_WORDS },
+  { category: 'History extension', words: WEEKLY_HISTORY_WORDS },
+];
+export const WEEKLY_SPELLING_WORDS: Word[] = weeklyGroups
+  .flatMap(({ category, words }) => words.map(text => ({ text, year: 2 as const, category })))
+  .filter((word, index, words) => words.findIndex(other => other.text === word.text) === index);
 
 export const SPELLING_LIST_A: Word[] = [
   // tion-and-sion
@@ -529,6 +545,7 @@ export const ALL_WORDS = [
   ...COMMON_WORDS,
   ...YEAR2_WORDS,
   ...WEEKLY_SPELLING_WORDS,
+  ...WEEK_46_SPELLING_WORDS,
   ...OCTOBER_18_SPELLING_WORDS,
   ...SEPTEMBER_24_SPELLING_WORDS,
   ...ANIMAL_DIET_WORDS,

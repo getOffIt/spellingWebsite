@@ -23,8 +23,8 @@ const ChallengesPage: React.FC = () => {
   const currentChallenges = [
     {
       id: 'weekly-spellings',
-      title: "📚 Words of the Week — Week 46 · 12–17 November",
-      description: 'Your next five Year 3 words, ten Spelling Frame words and optional topic words.',
+      title: "📚 Words of the Week — Week 47 · 19–26 November",
+      description: 'Your personal five, both Spelling Frame lists and optional history words.',
       progress: weeklyProgress,
       masteredWords: weeklyMastered,
       totalWords: weeklyTotalWords,
