@@ -156,7 +156,7 @@ export default function App() {
                       '/october-spelling-chart': 'Back to Year 3 words',
                       '/animal-diets': 'Back to Animal Diets',
                       '/weekly-spellings': 'Back to Words of the Week',
-                    }[location.state?.returnTo as string]}
+                    }[(location.state?.returnTo as string | undefined)?.split('?')[0] ?? '']}
                     onComplete={handleReset} 
                   />
                 ) : (

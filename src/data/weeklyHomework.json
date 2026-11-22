@@ -1,0 +1,69 @@
+[
+  {
+    "id": "2026-11-19",
+    "label": "Week 47",
+    "dates": "19–26 November",
+    "year": 2026,
+    "description": "Start with your personal five, then practise your Spelling Frame lists. The history words are optional.",
+    "groups": [
+      {
+        "id": "personal",
+        "title": "Perso · Must · Your five",
+        "color": "green",
+        "category": "Personal words",
+        "words": [
+          "business",
+          "February",
+          "interest",
+          "possession",
+          "accidentally"
+        ]
+      },
+      {
+        "id": "spelling-frame",
+        "title": "Should · Spelling Frame · Due 24 November",
+        "color": "green",
+        "category": "Spelling Frame weekly test",
+        "words": [
+          "again",
+          "any",
+          "central",
+          "centre",
+          "concentrate",
+          "concentrating",
+          "concentration",
+          "many",
+          "most",
+          "who"
+        ]
+      },
+      {
+        "id": "keep-going",
+        "title": "Keep going · Spelling Frame · Due 26 November",
+        "color": "gold",
+        "category": "Keep going",
+        "words": [
+          "called",
+          "centre",
+          "girl",
+          "have",
+          "hear",
+          "laugh"
+        ]
+      },
+      {
+        "id": "history",
+        "title": "Could · Optional history words",
+        "color": "blue",
+        "category": "History extension",
+        "words": [
+          "soldier",
+          "battle",
+          "arrow",
+          "marching",
+          "leader"
+        ]
+      }
+    ]
+  }
+]

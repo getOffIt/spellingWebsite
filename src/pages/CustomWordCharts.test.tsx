@@ -8,7 +8,14 @@ import * as api from '../hooks/useProgressApi';
 import ChallengesPage from './ChallengesPage';
 import AnimalDietsSelection from './AnimalDietsSelection';
 import WeeklySpellingsSelection from './WeeklySpellingsSelection';
-import { ANIMAL_DIET_WORDS, ALL_WORDS, WEEKLY_SPELLING_WORDS } from '../data/words';
+import { ANIMAL_DIET_WORDS, ALL_WORDS, WEEK_46_SPELLING_WORDS, WEEKLY_SPELLING_WORDS } from '../data/words';
+
+import { getMasteryThreshold } from '../config/masteryThresholds';
+import { currentWeek } from '../data/weeklyHomework';
+
+const personal = currentWeek.groups.find(group => group.id === 'personal')!;
+const frame = currentWeek.groups.find(group => group.id === 'spelling-frame')!;
+const masteredFrameWord = frame.words.find(word => !personal.words.includes(word))!;
 
 vi.mock('react-oidc-context');
 vi.mock('../hooks/useProgressApi');
@@ -21,7 +28,7 @@ function Location() {
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(useAuth).mockReturnValue({ user: { profile: { sub: 'leo' }, access_token: 'test' }, isLoading: false } as ReturnType<typeof useAuth>);
-  vi.mocked(api.getAllProgress).mockResolvedValue(['carnivore', 'centre'].map(word => ({
+  vi.mocked(api.getAllProgress).mockResolvedValue(['carnivore', masteredFrameWord].map(word => ({
     wordId: word,
     progress: Array.from({ length: 10 }, () => ({ date: '2026-10-18T10:00:00Z', correct: true, attempt: word })),
   })));
@@ -30,7 +37,7 @@ beforeEach(() => {
 
 describe.each([
   { title: 'Animal Diets', Page: AnimalDietsSelection, words: ANIMAL_DIET_WORDS, next: ['herbivore', 'omnivore'], green: 'carnivore', route: '/animal-diets', group: 'Animal diets', groupWords: ['carnivore', 'herbivore', 'omnivore'] },
-  { title: 'Words of the Week — Week 47', Page: WeeklySpellingsSelection, words: WEEKLY_SPELLING_WORDS, next: ['business', 'February', 'interest'], green: 'centre', route: '/weekly-spellings', group: 'Should · Spelling Frame · Due 24 November', groupWords: ['again', 'any', 'central', 'centre', 'concentrate', 'concentrating', 'concentration', 'many', 'most', 'who'] },
+  { title: `Words of the Week — ${currentWeek.label}`, Page: WeeklySpellingsSelection, words: WEEKLY_SPELLING_WORDS, next: personal.words.slice(0, 3), green: masteredFrameWord, route: '/weekly-spellings', group: frame.title, groupWords: frame.words },
 ])('$title shared chart', ({ title, Page, words, next, green, route, group, groupWords }) => {
   it('uses chart rows, green history, full-list tests and non-green next-word selection', async () => {
     const select = vi.fn();
@@ -65,27 +72,28 @@ it('shows next five from the Year 3 personal list', async () => {
   render(<MemoryRouter><ProgressProvider><WeeklySpellingsSelection onSelectWords={vi.fn()} /></ProgressProvider></MemoryRouter>);
   expect(await screen.findByRole('heading', { name: 'Perso · Must · Year 3 words' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Open Year 3 words →' })).toHaveAttribute('href', '/october-spelling-chart');
-  expect(screen.getByRole('button', { name: 'Test group: Perso · Must · Your five' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: `Test group: ${personal.title}` })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Could · Optional history words' })).toBeInTheDocument();
 });
 
 it('keeps the same personal five when a word becomes green', async () => {
-  const attempts = Array.from({ length: 9 }, () => ({ date: '2026-11-22T10:00:00Z', correct: true, attempt: 'business' }));
-  vi.mocked(api.getAllProgress).mockResolvedValue([{ wordId: 'business', progress: attempts }]);
+  const first = personal.words[0];
+  const attempts = Array.from({ length: getMasteryThreshold(first) - 1 }, () => ({ date: '2026-11-22T10:00:00Z', correct: true, attempt: first }));
+  vi.mocked(api.getAllProgress).mockResolvedValue([{ wordId: first, progress: attempts }]);
   vi.mocked(api.putWordProgress).mockImplementation(async (_token, wordId, newAttempts) => [
     { wordId, progress: [...attempts, ...newAttempts] },
   ]);
   const select = vi.fn();
   function FinishWord() {
     const { recordAttempt } = useProgress();
-    return <button onClick={() => recordAttempt('business', true, 'business')}>Finish business</button>;
+    return <button onClick={() => recordAttempt(first, true, first)}>Finish word</button>;
   }
   render(<MemoryRouter><ProgressProvider><WeeklySpellingsSelection onSelectWords={select} /><FinishWord /></ProgressProvider></MemoryRouter>);
-  await screen.findByRole('button', { name: 'business: in progress. View effort and history' });
-  fireEvent.click(screen.getByRole('button', { name: 'Finish business' }));
-  await screen.findByRole('button', { name: 'business: mastered. View effort and history' });
-  fireEvent.click(screen.getByRole('button', { name: 'Test group: Perso · Must · Your five' }));
-  expect(select).toHaveBeenLastCalledWith(['business', 'February', 'interest', 'possession', 'accidentally'], 'single', 'full_test');
+  await screen.findByRole('button', { name: `${first}: in progress. View effort and history` });
+  fireEvent.click(screen.getByRole('button', { name: 'Finish word' }));
+  await screen.findByRole('button', { name: `${first}: mastered. View effort and history` });
+  fireEvent.click(screen.getByRole('button', { name: `Test group: ${personal.title}` }));
+  expect(select).toHaveBeenLastCalledWith(personal.words, 'single', 'full_test');
 });
 
 it('shows only this week and Year 3 words on the challenge screen', async () => {
@@ -93,4 +101,17 @@ it('shows only this week and Year 3 words on the challenge screen', async () => 
   expect(await screen.findByRole('heading', { name: '📋 Year 3 words' })).toBeInTheDocument();
   expect(document.querySelectorAll('.challenge-card')).toHaveLength(2);
   expect(screen.queryByText('Other Challenges')).not.toBeInTheDocument();
+});
+
+it('reopens a previous week for practice without mixing it into the current test', async () => {
+  const select = vi.fn();
+  render(<MemoryRouter initialEntries={['/weekly-spellings']}><ProgressProvider>
+    <WeeklySpellingsSelection onSelectWords={select} /><Location />
+  </ProgressProvider></MemoryRouter>);
+
+  fireEvent.click(await screen.findByRole('link', { name: 'Week 46 · 12–17 November 2026' }));
+  expect(screen.getByRole('heading', { name: 'Week 46 · 12–17 November 2026' })).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Test all words · 15 words' }));
+  expect(select).toHaveBeenLastCalledWith(WEEK_46_SPELLING_WORDS.map(word => word.text), 'single', 'full_test');
+  expect(screen.getByTestId('return-to')).toHaveTextContent('/weekly-spellings?week=2026-11-12');
 });

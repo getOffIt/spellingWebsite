@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import voiceManifest from '../../public/voices/voice-manifest.json';
-import { WEEKLY_SPELLING_WORDS, WEEKLY_FRAME_WORDS, WEEKLY_KEEP_GOING_WORDS, WEEKLY_HISTORY_WORDS, OCTOBER_18_SPELLING_WORDS, SEPTEMBER_24_SPELLING_WORDS } from './words';
+import { WEEKLY_SPELLING_WORDS, OCTOBER_18_SPELLING_WORDS, SEPTEMBER_24_SPELLING_WORDS } from './words';
+import { currentWeek, previousSnapshots, snapshotWords, weeklyTitle } from './weeklyHomework';
 import { wordSelectionConfigs } from '../config/wordSelectionConfigs';
 
 describe('weekly spelling homework', () => {
@@ -29,16 +30,17 @@ describe('weekly spelling homework', () => {
   });
 
   it('preserves both assigned tests, but counts their shared word only once overall', () => {
-    expect(WEEKLY_FRAME_WORDS).toEqual(['again', 'any', 'central', 'centre', 'concentrate', 'concentrating', 'concentration', 'many', 'most', 'who']);
-    expect(WEEKLY_KEEP_GOING_WORDS).toEqual(['called', 'centre', 'girl', 'have', 'hear', 'laugh']);
-    expect(WEEKLY_HISTORY_WORDS).toEqual(['soldier', 'battle', 'arrow', 'marching', 'leader']);
-    expect(WEEKLY_SPELLING_WORDS.filter(word => word.text === 'centre')).toHaveLength(1);
-    expect(WEEKLY_SPELLING_WORDS).toHaveLength(25);
+    const week47 = [currentWeek, ...previousSnapshots].find(week => week.id === '2026-11-19')!;
+    expect(week47.groups.find(group => group.id === 'spelling-frame')?.words).toEqual(['again', 'any', 'central', 'centre', 'concentrate', 'concentrating', 'concentration', 'many', 'most', 'who']);
+    expect(week47.groups.find(group => group.id === 'keep-going')?.words).toEqual(['called', 'centre', 'girl', 'have', 'hear', 'laugh']);
+    expect(week47.groups.find(group => group.id === 'history')?.words).toEqual(['soldier', 'battle', 'arrow', 'marching', 'leader']);
+    expect(snapshotWords(week47).filter(word => word.text === 'centre')).toHaveLength(1);
+    expect(snapshotWords(week47)).toHaveLength(25);
   });
 
   it('is exposed as the weekly practice section' , () => {
     expect(wordSelectionConfigs.weeklySpellings.words).toBe(WEEKLY_SPELLING_WORDS);
-    expect(wordSelectionConfigs.weeklySpellings.title).toContain('Week 47 · 19–26 November');
+    expect(wordSelectionConfigs.weeklySpellings.title).toBe(weeklyTitle);
   });
 
   it('preserves recorded audio for the previous September spellings', () => {

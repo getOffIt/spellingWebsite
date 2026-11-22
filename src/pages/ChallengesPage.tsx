@@ -1,3 +1,4 @@
+import { currentWeek, weeklyTitle } from '../data/weeklyHomework';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { WEEKLY_SPELLING_WORDS } from '../data/words';
@@ -23,8 +24,8 @@ const ChallengesPage: React.FC = () => {
   const currentChallenges = [
     {
       id: 'weekly-spellings',
-      title: "📚 Words of the Week — Week 47 · 19–26 November",
-      description: 'Your personal five, both Spelling Frame lists and optional history words.',
+      title: `📚 ${weeklyTitle}`,
+      description: currentWeek.description,
       progress: weeklyProgress,
       masteredWords: weeklyMastered,
       totalWords: weeklyTotalWords,

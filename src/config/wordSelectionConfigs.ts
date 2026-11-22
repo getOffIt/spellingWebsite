@@ -1,3 +1,4 @@
+import { currentWeek, weeklyTitle } from '../data/weeklyHomework';
 import {
   Word,
   ANIMAL_DIET_WORDS,
@@ -30,10 +31,10 @@ export const wordSelectionConfigs: Record<string, WordSelectionConfig> = {
   },
   weeklySpellings: {
     words: WEEKLY_SPELLING_WORDS,
-    title: "Words of the Week — Week 47 · 19–26 November",
+    title: weeklyTitle,
     challengeConfig: {
-      title: "📚 Words of the Week — Week 47 · 19–26 November",
-      description: 'Practise your personal five, both Spelling Frame lists and optional history words.',
+      title: `📚 ${weeklyTitle}`,
+      description: currentWeek.description,
       rewardText: '',
       motivationMessages: {
         complete: '🎉 Brilliant — this week\'s spellings are mastered! 🎉',
